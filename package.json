@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "pub": "lerna publish --contents dist"
   },
   "workspaces": [
     "packages/*"
