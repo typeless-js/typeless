@@ -4,8 +4,6 @@ export * from './createEpic';
 export * from './RootReducer';
 export * from './Epic';
 export * from './RootEpic';
-export * from './ofType';
-export * from './waitForType';
 export * from './actions';
 export * from './withBatch';
 export * from './TypelessContext';
