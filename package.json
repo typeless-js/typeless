@@ -1,16 +1,15 @@
 {
   "name": "typeless",
-  "version": "0.0.5",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "sideEffects": false,
+  "private": true,
   "scripts": {
-    "lint": "tslint -t codeFrame 'src/**/*.ts' '__tests__/**/*.ts'",
-    "jest": "jest",
-    "test": "yarn run lint && tsc --noEmit && yarn run jest --coverage --no-cache"
+    "test": "lerna run test",
+    "pub": "lerna publish --contents dist"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "author": "Łukasz Sentkiewicz <lukasz@sentkiewicz.pl>",
   "license": "MIT",
   "repository": {
@@ -21,53 +20,7 @@
     "url": "https://github.com/typeless-js/typeless/issues"
   },
   "homepage": "https://github.com/typeless-js/typeless#readme",
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testURL": "http://localhost",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 50,
-        "functions": 50,
-        "lines": 50,
-        "statements": 50
-      }
-    }
-  },
   "devDependencies": {
-    "@types/jest": "^22.0.0",
-    "@types/node": "^10.12.10",
-    "@types/react": "^16.8.3",
-    "@types/redux-mock-store": "^1.0.0",
-    "jest": "^22.0.2",
-    "react": "^16.8.2",
-    "redux": "^4.0.1",
-    "redux-mock-store": "^1.5.3",
-    "rimraf": "^2.6.1",
-    "rxjs": "^6.3.3",
-    "ts-jest": "^22.0.0",
-    "ts-node": "^5.0.1",
-    "tslint": "5.11.0",
-    "typescript": "^3.3.3"
-  },
-  "peerDependencies": {
-    "react": "^16.8.2",
-    "redux": "^4.0.1",
-    "rxjs": "^6.3.3"
-  },
-  "dependencies": {
-    "immer": "^1.8.0",
-    "redux-react-hook": "^3.1.0"
+    "lerna": "^3.13.0"
   }
 }
