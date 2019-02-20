@@ -75,7 +75,9 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('doc1.html')}>GET STARTED</Button>
+            <Button href={docUrl('introduction/quick-start')}>
+              GET STARTED
+            </Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -112,104 +114,53 @@ class Index extends React.Component {
       </div>
     );
 
-    const TryOut = () => (
-      <Block id="try">
-        {[
-          {
-            content: 'Talk about trying this out',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'left',
-            title: 'Try it Out',
-          },
-        ]}
-      </Block>
-    );
-
-    const Description = () => (
-      <Block background="dark">
+    const Features = () => (
+      <Block layout="fourColumn" background="light">
         {[
           {
             content:
-              'This is another description of how this project is useful',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Description',
-          },
-        ]}
-      </Block>
-    );
-
-    const LearnHow = () => (
-      <Block background="light">
-        {[
-          {
-            content: 'Talk about learning how to use this',
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Learn How',
-          },
-        ]}
-      </Block>
-    );
-
-    const Features = () => (
-      <Block layout="fourColumn">
-        {[
-          {
-            content: 'This is the content of my feature',
-            image: `${baseUrl}img/docusaurus.svg`,
+              'Only minimal type annotations are required, all types are inferred where possible.',
+            image: `${baseUrl}img/dev/003-bug.svg`,
             imageAlign: 'top',
-            title: 'Feature One',
+            title: 'Designed for Typescript',
           },
           {
-            content: 'The content of my second feature',
-            image: `${baseUrl}img/docusaurus.svg`,
+            content:
+              'Simple and developer friendly syntax with React hooks.  \nNo more higher-order components, decorators or classes.',
+            image: `${baseUrl}img/dev/010-dynamic.svg`,
             imageAlign: 'top',
-            title: 'Feature Two',
+            title: 'Modern React',
+          },
+          {
+            content:
+              'Dispatch and react on actions.  \nBased on Redux and RxJS.',
+            image: `${baseUrl}img/dev/018-launch.svg`,
+            imageAlign: 'top',
+            title: 'Event-driven architecture',
+          },
+          {
+            content:
+              'Code splitting for reducers and epics work out of the box.',
+            image: `${baseUrl}img/dev/001-analysis.svg`,
+            imageAlign: 'top',
+            title: 'Scalable',
+          },
+          {
+            content:
+              'All basic building blocks are provided: **actions**, **epics**, **reducers**, **selectors**.  \nNo need to combine multiple small libraries.',
+            image: `${baseUrl}img/dev/008-developer.svg`,
+            imageAlign: 'top',
+            title: 'Complete toolkit',
           },
         ]}
       </Block>
     );
-
-    const Showcase = () => {
-      if ((siteConfig.users || []).length === 0) {
-        return null;
-      }
-
-      const showcase = siteConfig.users
-        .filter(user => user.pinned)
-        .map(user => (
-          <a href={user.infoLink} key={user.infoLink}>
-            <img src={user.image} alt={user.caption} title={user.caption} />
-          </a>
-        ));
-
-      const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
-
-      return (
-        <div className="productShowcaseSection paddingBottom">
-          <h2>Who is Using This?</h2>
-          <p>This project is used by all these people</p>
-          <div className="logos">{showcase}</div>
-          <div className="more-users">
-            <a className="button" href={pageUrl('users.html')}>
-              More {siteConfig.title} Users
-            </a>
-          </div>
-        </div>
-      );
-    };
 
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
-        <div className="mainContainer">
+        <div className="mainContainer" style={{ paddingBottom: 0 }}>
           <Features />
-          <FeatureCallout />
-          <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase />
         </div>
       </div>
     );

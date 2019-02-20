@@ -20,16 +20,19 @@
       },
       "doc5": {
         "title": "Fifth Document"
+      },
+      "introduction/quick-start": {
+        "title": "Quick Start",
+        "sidebar_label": "Quick Start"
       }
     },
     "links": {
       "Docs": "Docs",
       "API": "API",
-      "Help": "Help",
-      "Blog": "Blog"
+      "Help": "Help"
     },
     "categories": {
-      "Docusaurus": "Docusaurus",
+      "Introduction": "Introduction",
       "First Category": "First Category",
       "Second Category": "Second Category"
     }
