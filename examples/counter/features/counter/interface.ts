@@ -8,7 +8,7 @@ export const MODULE = 'counter';
 // `type` property is generated automatically
 export const CounterActions = createActions(MODULE, {
   startCount: null, // null means no args
-  countDone: (amount: number) => ({ payload: { amount } }),
+  countDone: (count: number) => ({ payload: { count } }),
 });
 
 // Redux state for this module

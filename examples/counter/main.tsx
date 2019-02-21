@@ -25,7 +25,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const store = createReduxStore(
   rootReducer.getReducer(),
-  {},
   applyMiddleware(...middleware)
 );
 
@@ -33,7 +32,7 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
   try {
-    const App = require('./App').App;
+    const CounterModule = require('./features/counter/module').default;
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
     ReactDOM.render(
       <TypelessProvider
@@ -41,7 +40,7 @@ const render = () => {
         rootEpic={rootEpic}
         rootReducer={rootReducer}
       >
-        <App />
+        <CounterModule />
       </TypelessProvider>,
       MOUNT_NODE
     );
@@ -56,7 +55,7 @@ const render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept('./App', () => {
+  module.hot.accept('./features/counter/module', () => {
     onHmr(render);
   });
 }

@@ -6647,10 +6647,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeless@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.0.10.tgz#ca63a51b4f7dd5f347e5980be29b2e2a4de6172c"
-  integrity sha512-i7UczA8OSajrtsQuuvwcn31g2O1S2UCba3VCVaNb/KQfrTq1YYO9H5ofOAdPh3G0pacvgDyH4V/B1I3IBzdijw==
+typeless@0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.0.11.tgz#1953a3c4286a28226dadca4f0083686b2dbfc2b7"
+  integrity sha512-OfO/XSFx3HjjuZfoHnckDdu7CmcwhSyNrRi1ingz14g0Hb2jGrtRNNRKsNxqdRT6wFiTEchQLc8vvFIcILi6yQ==
   dependencies:
     immer "^1.8.0"
     redux-react-hook "^3.1.0"
