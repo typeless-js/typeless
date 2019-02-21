@@ -13,7 +13,7 @@
     "redux": "4.0.1",
     "redux-logger": "3.0.6",
     "rxjs": "6.4.0",
-    "typeless": "0.0.4"
+    "typeless": "0.0.10"
   },
   "devDependencies": {
     "@babel/core": "7.2.0",
