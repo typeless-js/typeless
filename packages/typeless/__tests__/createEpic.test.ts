@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/operators';
 import { of, throwError, concat, empty } from 'rxjs';
 import { createActions } from '../src/createActions';
 import { createEpic } from '../src/createEpic';
-import { ofType } from '../src/ofType';
+import { ofType } from '../src/rx/ofType';
 import { RootEpic } from '../src/RootEpic';
 
 const {

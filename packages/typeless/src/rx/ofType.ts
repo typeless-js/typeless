@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs/operators';
 import { Action } from 'redux';
 import { OperatorFunction } from 'rxjs';
-import { AC } from './types';
+import { AC } from '../types';
 
 export type OfType = {
   <T extends AC>(ac: T): OperatorFunction<Action, ReturnType<T>>;

@@ -30,7 +30,7 @@ function removeAtPath(obj: AnyObject, path: string[]) {
 }
 
 function applyReducerTree(
-  state: AnyObject,
+  state: AnyObject = {},
   tree: AnyObject,
   action: ActionLike
 ) {
