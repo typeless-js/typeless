@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { ofType } from '../src/ofType';
+import { ofType } from '../src/rx/ofType';
 import { createActions } from '../src/createActions';
 import { toArray } from 'rxjs/operators';
 
