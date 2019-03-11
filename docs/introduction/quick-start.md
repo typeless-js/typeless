@@ -37,12 +37,12 @@ import ReactDOM from 'react-dom';
 import { initialize } from 'typeless';
 import CounterModule from './features/counter/module';
 
-const { Provider } = initialize();
+const { TypelessProvider } = initialize();
 
 ReactDOM.render(
-  <Provider>
+  <TypelessProvider>
     <CounterModule />
-  </Provider>,
+  </TypelessProvider>,
   document.getElementById('app')
 );
 ```

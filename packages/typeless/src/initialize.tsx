@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { RootEpic } from './RootEpic';
 import { RootReducer } from './RootReducer';
 import { createEpicMiddleware } from './createEpicMiddleware';
-import { TypelessProvider } from './TypelessProvider';
+import { TypelessProvider as BaseProvider } from './TypelessProvider';
 
 export function initialize() {
   const rootEpic = new RootEpic();
@@ -16,17 +16,13 @@ export function initialize() {
     applyMiddleware(epicMiddleware)
   );
 
-  function Provider({ children }: { children: React.ReactChild }) {
+  function TypelessProvider({ children }: { children: React.ReactChild }) {
     return (
-      <TypelessProvider
-        store={store}
-        rootEpic={rootEpic}
-        rootReducer={rootReducer}
-      >
+      <BaseProvider store={store} rootEpic={rootEpic} rootReducer={rootReducer}>
         {children}
-      </TypelessProvider>
+      </BaseProvider>
     );
   }
 
-  return { store, Provider };
+  return { store, TypelessProvider };
 }
