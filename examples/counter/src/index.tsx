@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TypelessProvider } from 'typeless';
-import { store, rootEpic, rootReducer } from './store';
+import { initialize } from 'typeless';
 import CounterModule from './features/counter/module';
 
+const { TypelessProvider } = initialize();
+
 ReactDOM.render(
-  <TypelessProvider store={store} rootEpic={rootEpic} rootReducer={rootReducer}>
+  <TypelessProvider>
     <CounterModule />
   </TypelessProvider>,
   document.getElementById('app')

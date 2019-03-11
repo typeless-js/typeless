@@ -5,18 +5,19 @@
   "keywords": [],
   "dependencies": {
     "@types/webpack-env": "^1.13.7",
-    "react": "16.8.2",
-    "react-dom": "16.8.2",
-    "react-scripts": "2.1.5",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-scripts": "2.1.8",
     "redux": "4.0.1",
-    "rxjs": "6.4.0",
-    "typeless": "0.0.12"
+    "rxjs": "6.3.3",
+    "typeless": "0.0.14"
   },
   "devDependencies": {
-    "@types/react": "16.8.3",
+    "@types/react": "16.8.7",
     "@types/react-dom": "16.8.2"
   },
   "scripts": {
+    "tsc": "tsc",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
