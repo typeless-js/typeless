@@ -26,27 +26,7 @@ yarn add typeless
 👉 [Check here full code of the below example.](https://codesandbox.io/s/x3qwol55xq)
 
 
-## `Store`
-Create a regular redux store with a custom middleware.  
-
-```tsx
-// ./store.ts
-
-import { applyMiddleware, createStore } from 'redux';
-import { createEpicMiddleware, RootEpic, RootReducer } from 'typeless';
-
-export const rootEpic = new RootEpic();
-export const rootReducer = new RootReducer();
-
-const epicMiddleware = createEpicMiddleware(rootEpic);
-
-export const store = createStore(
-  rootReducer.getReducer(),
-  applyMiddleware(epicMiddleware)
-);
-```
-
-## `Provider`
+## `Setup`
 Wrap your application with a provider.
 
 ```tsx
@@ -54,14 +34,15 @@ Wrap your application with a provider.
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TypelessProvider } from 'typeless';
-import { store, rootEpic, rootReducer } from './store';
+import { initialize } from 'typeless';
 import CounterModule from './features/counter/module';
 
+const { Provider } = initialize();
+
 ReactDOM.render(
-  <TypelessProvider store={store} rootEpic={rootEpic} rootReducer={rootReducer}>
+  <Provider>
     <CounterModule />
-  </TypelessProvider>,
+  </Provider>,
   document.getElementById('app')
 );
 ```

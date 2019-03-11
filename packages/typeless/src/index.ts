@@ -14,3 +14,4 @@ export * from './useActions';
 export * from './useMappedState';
 export * from './useModule';
 export * from './TypelessProvider';
+export * from './initialize';
