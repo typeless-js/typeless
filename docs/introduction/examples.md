@@ -36,8 +36,8 @@ A basic demo with HMR support.
 
 ----
 
-### Socket chat with HMR
+### Sockets with HMR
 Subscribe to the socket with developer-friendly HMR support.  
 Create epic handlers that are reloadable or non-reloadable.  
-<a href="#" target="_blank">Live demo</a>  
-<a href="#" target="_blank">Source code</a>  
+<a href="https://codesandbox.io/s/kx438mnx5v" target="_blank">Live demo</a>  
+<a href="https://github.com/typeless-js/typeless/tree/master/examples/socket-hmr" target="_blank">Source code</a>  
