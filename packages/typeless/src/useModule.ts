@@ -60,6 +60,9 @@ export function useModule<
 
   useEffect(() => {
     return () => {
+      if (actions && actions.$unmounting) {
+        store.dispatch(actions.$unmounting());
+      }
       rootEpic.removeEpic(epic.epicName);
       rootReducer.removeReducer(reducerPath as string[]);
       if (actions && actions.$unmounted) {
