@@ -13,7 +13,7 @@ const reducer = createReducer(initialState)
   .on(SubBActions.decrease, state => {
     state.counter--;
   })
-  .on(SubBActions.$unmounted, state => {
+  .on(SubBActions.$unmounting, state => {
     state.counter = 0;
   });
 
