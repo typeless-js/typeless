@@ -1,0 +1,33 @@
+{
+  "name": "counter",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "dependencies": {
+    "@types/webpack-env": "^1.13.7",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-scripts": "2.1.8",
+    "redux": "4.0.1",
+    "rxjs": "6.3.3",
+    "typeless": "0.0.14",
+    "redbox-react": "1.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.8.7",
+    "@types/react-dom": "16.8.2"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
