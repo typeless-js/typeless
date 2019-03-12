@@ -4,6 +4,7 @@ export const MODULE = 'subB';
 
 export const SubBActions = createActions(MODULE, {
   decrease: null,
+  $unmounted: null,
 });
 
 export interface SubBState {

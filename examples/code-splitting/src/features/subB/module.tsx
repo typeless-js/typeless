@@ -9,15 +9,20 @@ const initialState: SubBState = {
   counter: 0,
 };
 
-const reducer = createReducer(initialState).on(SubBActions.decrease, state => {
-  state.counter--;
-});
+const reducer = createReducer(initialState)
+  .on(SubBActions.decrease, state => {
+    state.counter--;
+  })
+  .on(SubBActions.$unmounted, state => {
+    state.counter = 0;
+  });
 
 export default function CatModule() {
   useModule({
     epic,
     reducer,
     reducerPath: ['subB'],
+    actions: SubBActions,
   });
 
   return <SubBView />;
