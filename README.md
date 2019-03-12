@@ -28,7 +28,7 @@ Creating scalable React apps with Typescript can be painful. There are many smal
 
 
 ## Quick start
-(https://typeless.netlify.com/introduction/quick-start)[https://typeless.netlify.com/introduction/quick-start] 
+[https://typeless.netlify.com/introduction/quick-start](https://typeless.netlify.com/introduction/quick-start)
 
 
 
