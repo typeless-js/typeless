@@ -1,6 +1,10 @@
 {
   "docs": {
-    "Introduction": ["introduction/quick-start", "introduction/motivation"],
+    "Introduction": [
+      "introduction/quick-start",
+      "introduction/motivation",
+      "introduction/examples"
+    ],
     "Using typeless": ["using-typeless/actions"],
     "API Reference": ["api/provider"]
   }
