@@ -9,6 +9,10 @@
         "title": "Provider",
         "sidebar_label": "Provider"
       },
+      "introduction/examples": {
+        "title": "Examples",
+        "sidebar_label": "Examples"
+      },
       "introduction/motivation": {
         "title": "Motivation",
         "sidebar_label": "Motivation"

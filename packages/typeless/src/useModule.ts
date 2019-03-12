@@ -47,23 +47,26 @@ export function useModule<
     rootReducer.addReducer(reducer, reducerPath as string[]);
 
     if (getIsHmr()) {
-      if (actions && actions.remounted) {
-        store.dispatch(actions.remounted());
+      if (actions && actions.$remounted) {
+        store.dispatch(actions.$remounted());
       }
     } else {
       store.dispatch({ type: '@@typeless/added' });
-      if (actions && actions.mounted) {
-        store.dispatch(actions.mounted());
+      if (actions && actions.$mounted) {
+        store.dispatch(actions.$mounted());
       }
     }
   }, []);
 
   useEffect(() => {
     return () => {
+      if (actions && actions.$unmounting) {
+        store.dispatch(actions.$unmounting());
+      }
       rootEpic.removeEpic(epic.epicName);
       rootReducer.removeReducer(reducerPath as string[]);
-      if (actions && actions.unmounted) {
-        store.dispatch(actions.unmounted());
+      if (actions && actions.$unmounted) {
+        store.dispatch(actions.$unmounted());
       }
     };
   }, []);

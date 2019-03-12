@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { initialize } from 'typeless';
-import CounterModule from './features/counter/module';
+import MainModule from './features/main/module';
 
 const { TypelessProvider } = initialize();
 
 ReactDOM.render(
   <TypelessProvider>
-    <CounterModule />
+    <MainModule />
   </TypelessProvider>,
   document.getElementById('app')
 );
