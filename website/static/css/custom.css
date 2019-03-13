@@ -11,21 +11,21 @@
 @media only screen and (min-width: 1500px) {}
 
 .button.hero {
-  background: #2C3D50;
+  background: #2c3d50;
   color: #fff;
   font-size: 30px;
-  padding: .5em 1.25em;
+  padding: 0.5em 1.25em;
   font-weight: 700;
 }
 
 .button.hero:hover {
   background: #fff;
-  color: #2C3D50;
+  color: #2c3d50;
 }
 
 .post article a {
   position: relative;
-  transition: outline-offset .2s ease-in-out;
+  transition: outline-offset 0.2s ease-in-out;
 }
 
 .post article a {
@@ -35,23 +35,28 @@
 .post article a:active,
 .post article a:focus,
 .post article a:hover {
-  background-color: #2C3D50;
+  background-color: #2c3d50;
   color: #fff;
-  box-shadow: 0 0 0 2px #2C3D50;
+  box-shadow: 0 0 0 2px #2c3d50;
   outline: none;
+}
+
+.hash-link {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 header.postHeader:empty+article h1 {
   margin-top: 0;
 }
 
-.navigationSlider .slidingNav ul a[href*=github] {
-  font-size: 0
+.navigationSlider .slidingNav ul a[href*='github'] {
+  font-size: 0;
 }
 
-.navigationSlider .slidingNav ul a[href*=github]:before {
-  content: "";
+.navigationSlider .slidingNav ul a[href*='github']:before {
+  content: '';
   width: 32px;
   height: 32px;
-  background: url(/img/github-brands.svg)
+  background: url(/img/github-brands.svg);
 }

@@ -5,6 +5,14 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
+      "api/createActions": {
+        "title": "createActions",
+        "sidebar_label": "createActions"
+      },
+      "api/createEpic": {
+        "title": "createEpic",
+        "sidebar_label": "createEpic"
+      },
       "api/provider": {
         "title": "Provider",
         "sidebar_label": "Provider"

@@ -6,6 +6,6 @@
       "introduction/examples"
     ],
     "Using typeless": ["using-typeless/actions"],
-    "API Reference": ["api/provider"]
+    "API Reference": ["api/createActions", "api/createEpic"]
   }
 }
