@@ -22,7 +22,7 @@ Load 😺 from API with cancellation and retry on errors.
 
 ----
 
-### Code Splitting
+### Code-Splitting
 A simple demo with code splitting for modules using React Suspense and React Lazy.  
 <a href="https://codesandbox.io/s/7kw91q67k6" target="_blank">Live demo</a>  
 <a href="https://github.com/typeless-js/typeless/tree/master/examples/code-splitting" target="_blank">Source code</a>  

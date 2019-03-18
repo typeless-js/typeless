@@ -3,9 +3,24 @@
     "Introduction": [
       "introduction/quick-start",
       "introduction/motivation",
-      "introduction/examples"
+      "introduction/examples",
+      "introduction/roadmap"
     ],
-    "Using typeless": ["using-typeless/actions"],
-    "API Reference": ["api/provider"]
+    "Using typeless": [
+      "using-typeless/hmr",
+      "using-typeless/code-splitting",
+      "using-typeless/custom-store"
+    ],
+    "API Reference": [
+      "api/createActions",
+      "api/createEpic",
+      "api/createReducer",
+      "api/createSelector",
+      "api/useActions",
+      "api/useModule",
+      "api/useMappedState",
+      "api/initialize",
+      "api/rx"
+    ]
   }
 }

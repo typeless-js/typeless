@@ -5,9 +5,45 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
+      "api/createActions": {
+        "title": "createActions",
+        "sidebar_label": "createActions"
+      },
+      "api/createEpic": {
+        "title": "createEpic",
+        "sidebar_label": "createEpic"
+      },
+      "api/createReducer": {
+        "title": "createReducer",
+        "sidebar_label": "createReducer"
+      },
+      "api/createSelector": {
+        "title": "Create Selector",
+        "sidebar_label": "createSelector"
+      },
+      "api/initialize": {
+        "title": "initialize",
+        "sidebar_label": "initialize"
+      },
       "api/provider": {
         "title": "Provider",
         "sidebar_label": "Provider"
+      },
+      "api/rx": {
+        "title": "Rx",
+        "sidebar_label": "Rx"
+      },
+      "api/useActions": {
+        "title": "useActions",
+        "sidebar_label": "useActions"
+      },
+      "api/useMappedState": {
+        "title": "useMappedState",
+        "sidebar_label": "useMappedState"
+      },
+      "api/useModule": {
+        "title": "useModule",
+        "sidebar_label": "useModule"
       },
       "introduction/examples": {
         "title": "Examples",
@@ -21,9 +57,25 @@
         "title": "Quick Start",
         "sidebar_label": "Quick Start"
       },
+      "introduction/roadmap": {
+        "title": "Roadmap",
+        "sidebar_label": "Roadmap"
+      },
       "using-typeless/actions": {
         "title": "Actions",
         "sidebar_label": "Actions"
+      },
+      "using-typeless/code-splitting": {
+        "title": "Code-Splitting",
+        "sidebar_label": "Code-Splitting"
+      },
+      "using-typeless/custom-store": {
+        "title": "Custom Store",
+        "sidebar_label": "Custom Store"
+      },
+      "using-typeless/hmr": {
+        "title": "HMR",
+        "sidebar_label": "HMR"
       }
     },
     "links": {
