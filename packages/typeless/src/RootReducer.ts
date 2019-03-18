@@ -67,7 +67,7 @@ export class RootReducer<TState = DefaultState> {
   getReducer() {
     return withBatch((state: TState, action: ActionLike) =>
       applyReducerTree(state, this.tree, action)
-    );
+    ) as Reducer<TState>;
   }
 
   addReducer(reducer: Reducer<any>, path: string[]) {
