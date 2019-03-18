@@ -15,3 +15,5 @@ Work in progress.
 Work in progress. For now use [redux-logger](https://github.com/LogRocket/redux-logger).
 - **Server-side rendering**  
 It cannot be implemented at this moment. `React.Lazy` doesn't support SSR.
+- **Testing example**  
+Work in progress. Everything is testable, but need to create explicit examples.

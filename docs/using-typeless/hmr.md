@@ -7,6 +7,7 @@ sidebar_label: HMR
  
 # HMR
 To enable Hot Module Replacement, you must wrap your main render method with `onHmr`.  
+There is no need for methods like `replaceReducer` or `replaceEpic`. Everything is updated automatically!  
 Check [Basic HMR](/introduction/examples#basic-hmr) for full working example.
 
 #### Example

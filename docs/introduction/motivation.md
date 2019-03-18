@@ -53,3 +53,8 @@ All recommendations and best practices are provided!
 
 
 
+## Credits
+- [redux-observable](https://github.com/redux-observable/redux-observable) - Epics are highly inspired by this library.
+- [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) - `useMappedState` is a simple wrapper for this library.
+- [immer](https://github.com/mweststrate/immer) - `createReducer` uses this library.
+- [reselect](https://github.com/reduxjs/reselect) - `createSelector` is a simple re-implementation of this library.

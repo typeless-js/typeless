@@ -17,6 +17,10 @@
         "title": "createReducer",
         "sidebar_label": "createReducer"
       },
+      "api/createSelector": {
+        "title": "Create Selector",
+        "sidebar_label": "createSelector"
+      },
       "api/initialize": {
         "title": "initialize",
         "sidebar_label": "initialize"

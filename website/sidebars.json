@@ -15,6 +15,7 @@
       "api/createActions",
       "api/createEpic",
       "api/createReducer",
+      "api/createSelector",
       "api/useActions",
       "api/useModule",
       "api/useMappedState",
