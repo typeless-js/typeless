@@ -3,16 +3,23 @@
     "Introduction": [
       "introduction/quick-start",
       "introduction/motivation",
-      "introduction/examples"
+      "introduction/examples",
+      "introduction/roadmap"
     ],
-    "Using typeless": ["using-typeless/actions"],
+    "Using typeless": [
+      "using-typeless/hmr",
+      "using-typeless/code-splitting",
+      "using-typeless/custom-store"
+    ],
     "API Reference": [
       "api/createActions",
       "api/createEpic",
       "api/createReducer",
       "api/useActions",
       "api/useModule",
-      "api/useMappedState"
+      "api/useMappedState",
+      "api/initialize",
+      "api/rx"
     ]
   }
 }

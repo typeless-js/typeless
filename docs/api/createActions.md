@@ -12,7 +12,7 @@ Create action creators for the given namespace. The `action.type` property will 
 1. `ns: string`- the prefix used in `action.type`.
 2. `actionMap: {[name: string]: Function | null}` the map with action creators. Each function should wrap input arguments into an object with `payload` property. If the function doesn't have any arguments, you can provide `null` instead.  
 
-   There are special **lifecycle actions** dispatched automatically by **useModule**. Actions are only dispatched when you defined them in `createActions`.
+   There are special **lifecycle actions** dispatched automatically by **useModule**. Actions are only dispatched when you define them in `createActions`.
     - `$mounted` - dispatched **after** the module was mounted.
     - `$remounted` - dispatched **after** the module was remounted during HMR.
     - `$unmounting` - dispatched **before** the module was unmounted.
@@ -101,4 +101,4 @@ const UserActions = createActions('user', {
 ```
 
 5. Don't define lifecycle methods if you don't use them in epics or reducers.  
-**Why?** The log will be harder to read, if there are too many actions.
+**Why?** The log will be harder to read if there are too many actions.
