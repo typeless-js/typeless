@@ -6,6 +6,13 @@
       "introduction/examples"
     ],
     "Using typeless": ["using-typeless/actions"],
-    "API Reference": ["api/createActions", "api/createEpic"]
+    "API Reference": [
+      "api/createActions",
+      "api/createEpic",
+      "api/createReducer",
+      "api/useActions",
+      "api/useModule",
+      "api/useMappedState"
+    ]
   }
 }

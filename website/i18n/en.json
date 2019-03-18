@@ -13,9 +13,25 @@
         "title": "createEpic",
         "sidebar_label": "createEpic"
       },
+      "api/createReducer": {
+        "title": "createReducer",
+        "sidebar_label": "createReducer"
+      },
       "api/provider": {
         "title": "Provider",
         "sidebar_label": "Provider"
+      },
+      "api/useActions": {
+        "title": "useActions",
+        "sidebar_label": "useActions"
+      },
+      "api/useMappedState": {
+        "title": "useMappedState",
+        "sidebar_label": "useMappedState"
+      },
+      "api/useModule": {
+        "title": "useModule",
+        "sidebar_label": "useModule"
       },
       "introduction/examples": {
         "title": "Examples",
