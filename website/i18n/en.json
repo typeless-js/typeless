@@ -61,6 +61,10 @@
         "title": "Roadmap",
         "sidebar_label": "Roadmap"
       },
+      "introduction/starter-kits": {
+        "title": "Starter Kits",
+        "sidebar_label": "Starters Kits"
+      },
       "using-typeless/actions": {
         "title": "Actions",
         "sidebar_label": "Actions"
