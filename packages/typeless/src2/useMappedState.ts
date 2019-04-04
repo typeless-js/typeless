@@ -32,44 +32,40 @@ export function useMappedState(
   mapper: (...args: any[]) => any,
   deps: any[] = []
 ) {
-  const [renderCount, forceUpdate] = React.useReducer(x => x + 1, 0);
-  const stores = stateGetters.map((getter: any) => getter._store as Store);
+  const mapperCached = React.useCallback(mapper, deps);
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+  const stores = React.useMemo(
+    () => stateGetters.map((getter: any) => getter._store as Store),
+    []
+  );
+
   const getMappedState = () => {
     const states = stores.map(store => store.state);
-    return mapper(...states);
+    return mapperCached(...states);
+  };
+
+  const getSubscribeFn = () => {
+    stateRef.current = getMappedState();
+    forceUpdate({});
   };
 
   const stateRef = React.useRef(getMappedState());
-  const initialRef = React.useRef(true);
-
-  // const [state, setState] = React.useState(getMappedState());
+  const subscribeRef = React.useRef(getSubscribeFn);
 
   React.useEffect(() => {
-    // console.log('init effect', renderCount);
-    if (!initialRef.current) {
-      stateRef.current = getMappedState();
-      forceUpdate({});
-    } else {
-      initialRef.current = false;
-    }
-    // setState(getMappedState());
-    // forceUpdate({});
     const subscriptions = stores.map(store =>
-      store.subscribe(() => {
-        console.log('update from subscribe');
-        stateRef.current = getMappedState();
-        forceUpdate({});
-      })
+      store.subscribe(() => subscribeRef.current())
     );
     return () => {
       subscriptions.forEach(subscription => subscription());
     };
-  }, deps);
+  }, []);
 
-  // React.useEffect(() => {
-  //   console.log('update from deps');
-  //   setState(getMappedState());
-  // }, deps);
+  React.useMemo(() => {
+    stateRef.current = getMappedState();
+    subscribeRef.current = getSubscribeFn;
+  }, deps);
 
   return stateRef.current;
 }
