@@ -163,7 +163,7 @@ it('two modules', () => {
   expect(renderCount).toEqual(4);
 });
 
-fit('single module with deps', () => {
+it('single module with deps', () => {
   const [handle, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: (type: 'a' | 'b') => ({ payload: { type } }),
@@ -172,21 +172,20 @@ fit('single module with deps', () => {
 
   const useModule = handle.addReducer({ a: 0, b: 1000 }, reducer =>
     reducer.on(Actions.increase, (state, { type }) => {
-      console.log('update reducer');
       state[type]++;
     })
   );
 
   let renderCount = 0;
+  const values = [];
 
   function App() {
     renderCount++;
-    console.log('render', renderCount);
     const [type, setType] = React.useState('a' as 'a' | 'b');
     useModule();
     const { increase } = useActions(Actions);
     const count = useMappedState([getState], state => state[type], [type]);
-    console.log({ type, count });
+    values.push({ type, count });
     return (
       <div>
         <p id="count">{count}</p>
@@ -210,7 +209,6 @@ fit('single module with deps', () => {
   expect(renderCount).toEqual(1);
 
   // increase 'a'
-  console.log('increase a');
   act(() => {
     inc.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
@@ -218,17 +216,24 @@ fit('single module with deps', () => {
   expect(renderCount).toEqual(2);
 
   // switch to 'b'
-  console.log('toggle');
   act(() => {
     toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   expect(label.textContent).toBe('1000');
   expect(renderCount).toEqual(3);
 
-  // increase 'n'
+  // increase 'b'
   act(() => {
     inc.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   expect(label.textContent).toBe('1001');
-  expect(renderCount).toEqual(3);
+  expect(renderCount).toEqual(4);
+
+  // ensure no renders with stale props
+  expect(values).toEqual([
+    { count: 0, type: 'a' },
+    { count: 1, type: 'a' },
+    { count: 1000, type: 'b' },
+    { count: 1001, type: 'b' },
+  ]);
 });
