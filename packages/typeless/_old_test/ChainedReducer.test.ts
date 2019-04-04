@@ -1,7 +1,6 @@
 import { nothing } from 'immer';
-import { ChainedReducer } from '../src2/ChainedReducer';
-import { createModule } from '../src2/createModule';
-import { AC } from '../src2/types';
+import { createReducer } from '../src/createReducer';
+import { createActions } from '../src/createActions';
 
 const getInitialState = () => ({
   str: 'foo',
@@ -12,21 +11,19 @@ const getInitialState = () => ({
   },
 });
 
-const createReducer = <T>(initialState: T) =>
-  new ChainedReducer(initialState).asReducer();
-
-const [, { textAction, textAction2, textAction3, strAction }] = createModule(
-  Symbol('ns')
-).withActions({
-  textAction: (text: string) => ({ payload: { text } }),
-  textAction2: (text: string) => ({ payload: { text } }),
-  textAction3: (text: string) => ({ payload: { text } }),
-  strAction: (str: string) => ({ payload: { str } }),
-});
+const { textAction, textAction2, textAction3, strAction } = createActions(
+  'ns',
+  {
+    textAction: (text: string) => ({ payload: { text } }),
+    textAction2: (text: string) => ({ payload: { text } }),
+    textAction3: (text: string) => ({ payload: { text } }),
+    strAction: (str: string) => ({ payload: { str } }),
+  }
+);
 
 it('no actions', () => {
   const reducer = createReducer(getInitialState());
-  const state = reducer(undefined, { type: Symbol('some-action') });
+  const state = reducer(undefined, { type: 'some-action' });
   expect(state).toEqual(getInitialState());
 });
 
@@ -174,7 +171,7 @@ describe('nested', () => {
 describe('attach', () => {
   function getReducer() {
     return createReducer(getInitialState()).attach((state, action) => {
-      if (action.type === (textAction as AC).getSymbol()) {
+      if (action.type === textAction.toString()) {
         return {
           ...state,
           str: action.payload.text,
@@ -186,7 +183,7 @@ describe('attach', () => {
 
   function getInnerReducer() {
     return createReducer(getInitialState()).attach('inner', (state, action) => {
-      if (action.type === (textAction as AC).getSymbol()) {
+      if (action.type === textAction.toString()) {
         return {
           ...state,
           prop: action.payload.text,

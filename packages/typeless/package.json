@@ -23,11 +23,8 @@
   },
   "homepage": "https://github.com/typeless-js/typeless#readme",
   "jest": {
-    "transform": {
-      ".(ts|tsx)": "ts-jest/preprocessor.js"
-    },
     "testURL": "http://localhost",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testRegex": "(/__tests__/.*\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -47,20 +44,26 @@
     }
   },
   "devDependencies": {
-    "@types/jest": "^22.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@types/jest": "^24.0.11",
     "@types/node": "^10.12.10",
     "@types/react": "^16.8.3",
+    "@types/react-dom": "^16.8.3",
     "@types/redux-mock-store": "^1.0.0",
-    "jest": "^22.0.2",
+    "jest": "^24.7.1",
     "react": "^16.8.2",
+    "react-dom": "^16.8.2",
     "redux": "^4.0.1",
     "redux-mock-store": "^1.5.3",
     "rimraf": "^2.6.1",
     "rxjs": "^6.3.3",
-    "ts-jest": "^22.0.0",
+    "ts-jest": "^24.0.1",
     "ts-node": "^5.0.1",
     "tslint": "5.11.0",
-    "typescript": "^3.3.3"
+    "typescript": "3.4.1"
   },
   "peerDependencies": {
     "react": "^16.8.2",
@@ -69,6 +72,7 @@
   },
   "dependencies": {
     "immer": "^1.8.0",
+    "prettier": "^1.16.4",
     "redux-react-hook": "^3.1.0"
   }
 }

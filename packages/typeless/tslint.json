@@ -11,13 +11,13 @@
     "no-console": [true, "log"],
     "interface-over-type-literal": false,
     "ordered-imports": false,
-    "quotemark": [true, "single"],
+    "quotemark": false],
     "arrow-parens": false,
     "max-classes-per-file": false,
     "trailing-comma": false,
     "curly": false,
     "no-empty-interface": false,
     "prefer-object-spread": false,
-    "max-line-length": false
+    "max-line-length": false 
   }
 }
