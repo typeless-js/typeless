@@ -1,7 +1,5 @@
 import { ChainedReducer } from './ChainedReducer';
 import { Epic } from './Epic';
-// import { Omit } from './types';
-// import { getDisplayName } from './Registry';
 import React from 'react';
 import { getIsHmr } from './onHmr';
 import { registry } from './Registry';
@@ -62,7 +60,6 @@ type ModuleWithActionsAndState<TState, TActions> = [
 ];
 
 export function createModule(name: symbol) {
-  // const { registry } = React.useContext(TypelessContext);
   const store = registry.getStore(name);
   let hasState = false;
   let actions: any = null;
@@ -110,7 +107,7 @@ export function createModule(name: symbol) {
       }, []);
     };
     handle.addEpic = fn => {
-      epic = new Epic('x');
+      epic = new Epic();
       fn(epic);
       return handle;
     };
@@ -167,32 +164,3 @@ export function createModule(name: symbol) {
     return store.state;
   }
 }
-
-// const [h1, b, c] = createModule(Symbol('a'));
-// const arr = createModule(Symbol('a'));
-// const y = [10, 20] as const;
-// // const [a1, a2, a3] = y;
-// const x = 10 as const; // Type 10
-
-const [myHandle, MyActions, getMyState] = createModule(Symbol('my-module'))
-  .withActions({
-    foo: null,
-    bar: null,
-  })
-  .withState<{ a: number }>();
-
-const useModule = myHandle
-  .addReducer({ a: 1 }, reducer => {
-    reducer.on(MyActions.foo, state => {
-      state.a++;
-    });
-  })
-  .addEpic(epic =>
-    epic.on(MyActions.foo, () => {
-      return MyActions.bar();
-    })
-  );
-
-// useModule();
-
-MyActions.foo();
