@@ -53,3 +53,28 @@ export const snakeCase = (str: string) => {
 
 export const toArray = <T>(input: T | T[]): T[] =>
   Array.isArray(input) ? input : [input];
+
+export function shallowEqual(a: any[] | null, b: any[] | null) {
+  if (!a || !b || a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function memoize(fn: (...args: any[]) => any) {
+  let lastArgs: any[] = null;
+  let lastResult: any[];
+
+  return (...args: any[]) => {
+    if (!shallowEqual(args, lastArgs)) {
+      lastResult = fn(...args);
+    }
+    lastArgs = args;
+    return lastResult;
+  };
+}
