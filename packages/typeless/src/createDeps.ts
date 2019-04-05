@@ -1,5 +1,6 @@
 import { StateGetter } from './types';
 import { memoize, shallowEqual } from './utils';
+import { useMappedState } from './useMappedState';
 
 export type DepsSelector<S, R> = (state: S) => R;
 
@@ -321,37 +322,63 @@ interface DepsResult<TState> {
   >;
 
   /* END AUTOMATICALLY GENERATED */
+
+  useMappedState<R>(mapper: (state: TState) => R, deps?: any[]): R;
 }
 
-export function createDeps<T extends { [x: string]: StateGetter<any> }>(
-  deps: T
+interface StateGetterMap {
+  [x: string]: StateGetter<any>;
+}
+
+class StateProxy {
+  private keys: string[];
+  private state: any = null;
+  private stateArr: any[] = [];
+
+  constructor(private stateGetterMap: StateGetterMap) {
+    this.keys = Object.keys(stateGetterMap);
+  }
+
+  getState() {
+    const newState: any = {};
+    const newStateArr: any[] = [];
+    for (let i = 0; i < this.keys.length; i++) {
+      const key = this.keys[i];
+      const localState = this.stateGetterMap[key]();
+      newState[key] = localState;
+      newStateArr[i] = localState;
+    }
+    if (!shallowEqual(this.stateArr, newStateArr)) {
+      this.state = newState;
+      this.stateArr = newStateArr;
+    }
+    return this.state;
+  }
+}
+
+export function createDeps<T extends StateGetterMap>(
+  stateGetterMap: T
 ): DepsResult<ExtractState<T>> {
-  const keys = Object.keys(deps);
+  const stateProxy = new StateProxy(stateGetterMap);
   return {
-    createSelector: (...args: any[]) => {
+    createSelector(...args: any[]) {
       const selector = createDepsSelector(...args);
 
-      let state: any = null;
-      let stateArr: any[] = [];
       const wrapperSelector = () => {
-        const newState: any = {};
-        const newStateArr: any[] = [];
-        for (let i = 0; i < keys.length; i++) {
-          const key = keys[i];
-          const localState = deps[key]();
-          newState[key] = localState;
-          newStateArr[i] = localState;
-        }
-        if (!shallowEqual(stateArr, newStateArr)) {
-          state = newState;
-          stateArr = newStateArr;
-        }
-        return selector(state);
+        return selector(stateProxy.getState());
       };
       wrapperSelector.resultFunc = selector.resultFunc;
       wrapperSelector.resetRecomputations = selector.resetRecomputations;
       wrapperSelector.recomputations = selector.recomputations;
       return wrapperSelector;
+    },
+    useMappedState(mapper, deps: any[] = []) {
+      const stateGetters = Object.values(stateGetterMap);
+      return useMappedState(
+        stateGetters as any,
+        () => mapper(stateProxy.getState()),
+        deps
+      );
     },
   };
 }

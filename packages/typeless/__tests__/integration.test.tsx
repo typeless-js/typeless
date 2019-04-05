@@ -6,6 +6,7 @@ import { useMappedState } from '../src/useMappedState';
 import { useActions } from '../src/useActions';
 import { createSelector } from '../src/createSelector';
 import { useSelector } from '../src/useSelector';
+import { createDeps } from '../src/createDeps';
 
 let container: HTMLDivElement = null;
 
@@ -342,5 +343,63 @@ it('single module with selectors', () => {
     { org: 0, s1: 1, s2: 2 },
     { org: 1, s1: 2, s2: 3 },
     { org: 2, s1: 3, s2: 4 },
+  ]);
+});
+
+it('single module with createDeps', () => {
+  const [handle, Actions, getState] = createModule(Symbol('sample'))
+    .withActions({
+      increase: (type: 'a' | 'b') => ({ payload: { type } }),
+    })
+    .withState<{ a: number; b: number }>();
+
+  const useModule = handle.addReducer({ a: 0, b: 1000 }, reducer =>
+    reducer.on(Actions.increase, (state, { type }) => {
+      state[type]++;
+    })
+  );
+
+  const deps = createDeps({ x: getState });
+
+  const values = [];
+
+  function App() {
+    const [type, setType] = React.useState('a' as 'a' | 'b');
+    useModule();
+    const { increase } = useActions(Actions);
+    const count = deps.useMappedState(state => state.x[type], [type]);
+    values.push({ type, count });
+    return (
+      <div>
+        <button id="inc" onClick={() => increase(type)}>
+          increase
+        </button>
+        <button id="toggle" onClick={() => setType(type === 'a' ? 'b' : 'a')}>
+          increase
+        </button>
+      </div>
+    );
+  }
+  // initial
+  act(() => {
+    ReactDOM.render(<App />, container);
+  });
+  const inc = container.querySelector('#inc');
+  const toggle = container.querySelector('#toggle');
+
+  // increase 'a'
+  clickButton(inc);
+
+  // switch to 'b'
+  clickButton(toggle);
+
+  // increase 'b'
+  clickButton(inc);
+
+  expect(values).toEqual([
+    { count: 0, type: 'a' },
+    { count: 1, type: 'a' },
+    { count: 1000, type: 'b' },
+    { count: 1001, type: 'b' },
   ]);
 });
