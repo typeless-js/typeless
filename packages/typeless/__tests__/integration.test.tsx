@@ -232,3 +232,60 @@ it('single module with deps', () => {
     { count: 1001, type: 'b' },
   ]);
 });
+
+it('single module with epic', () => {
+  const [handle, Actions, getState] = createModule(Symbol('sample'))
+    .withActions({
+      increase: null,
+      set: (count: number) => ({ payload: { count } }),
+    })
+    .withState<{ count: number }>();
+
+  const useModule = handle
+    .addEpic(epic =>
+      epic.on(Actions.increase, () => {
+        return Actions.set(getState().count * 2);
+      })
+    )
+    .addReducer({ count: 0 }, reducer =>
+      reducer
+        .on(Actions.increase, state => {
+          state.count++;
+        })
+        .on(Actions.set, (state, { count }) => {
+          state.count = count;
+        })
+    );
+
+  let renderCount = 0;
+  const values = [];
+  function App() {
+    renderCount++;
+    useModule();
+    const { increase } = useActions(Actions);
+    const count = useMappedState([getState], state => state.count);
+    values.push({ count });
+    return (
+      <div>
+        <p>{count}</p>
+        <button onClick={increase}>increase</button>
+      </div>
+    );
+  }
+
+  // initial render
+  act(() => {
+    ReactDOM.render(<App />, container);
+  });
+  const button = container.querySelector('button');
+  const label = container.querySelector('p');
+  expect(label.textContent).toBe('0');
+  expect(renderCount).toEqual(1);
+
+  clickButton(button);
+  clickButton(button);
+  // 0
+  // (0 + 1) * 2 = 2
+  // (2 + 1) * 2 = 6
+  expect(values).toEqual([{ count: 0 }, { count: 2 }, { count: 6 }]);
+});

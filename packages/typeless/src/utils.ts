@@ -1,7 +1,7 @@
 import { ActionLike } from './types';
 
 export const isAction = (action: any): action is ActionLike => {
-  return action && typeof (action as any).type === 'string';
+  return action && typeof (action as any).type === 'symbol';
 };
 
 export const repeat = (str: string, times: number) =>

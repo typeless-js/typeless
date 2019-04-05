@@ -51,7 +51,7 @@ export function createOutputStream(
               if (action == null) {
                 console.error('Undefined action returned in epic.', {
                   action,
-                  epic: name,
+                  store: name,
                 });
                 return empty();
               }
@@ -59,7 +59,7 @@ export function createOutputStream(
                 console.error('Invalid action returned in epic.', {
                   sourceAction,
                   action,
-                  epic: name,
+                  store: name,
                 });
                 return empty();
               }

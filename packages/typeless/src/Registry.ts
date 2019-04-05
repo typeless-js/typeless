@@ -3,7 +3,7 @@ import { Store } from './Store';
 import { snakeCase } from './utils';
 import { ActionLike } from './types';
 import { Notify } from './Notify';
-import { createOutputStream } from './RootEpic';
+import { createOutputStream } from './createOutputStream';
 
 function getDescription(s: symbol) {
   const match = /Symbol\((.+)\)/.exec(s.toString());

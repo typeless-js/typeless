@@ -14,10 +14,7 @@ export type EpicHandler<TAC extends AC> = (
 ) => EpicResult;
 
 export class Epic {
-  handlers: Map<symbol, EpicHandler<any>[]>;
-  constructor(public epicName: string) {
-    this.handlers = new Map();
-  }
+  handlers: Map<symbol, EpicHandler<any>[]> = new Map();
   attach(epic: Epic) {
     const subHandlers = epic.handlers;
     for (const key of epic.handlers.keys()) {
