@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { createModule } from '../src2/createModule';
-import { useMappedState } from '../src2/useMappedState';
-import { useActions } from '../src2/useActions';
+import { createModule } from '../src/createModule';
+import { useMappedState } from '../src/useMappedState';
+import { useActions } from '../src/useActions';
 
 let container: HTMLDivElement = null;
 
@@ -16,6 +16,12 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null;
 });
+
+function clickButton(element: Element) {
+  act(() => {
+    element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
+}
 
 it('single module', () => {
   const [handle, Actions, getState] = createModule(Symbol('sample'))
@@ -45,6 +51,7 @@ it('single module', () => {
     );
   }
 
+  // initial render
   act(() => {
     ReactDOM.render(<App />, container);
   });
@@ -52,9 +59,9 @@ it('single module', () => {
   const label = container.querySelector('p');
   expect(label.textContent).toBe('0');
   expect(renderCount).toEqual(1);
-  act(() => {
-    button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+
+  // click button
+  clickButton(button);
   expect(label.textContent).toBe('1');
   expect(renderCount).toEqual(2);
 });
@@ -139,25 +146,19 @@ it('two modules', () => {
   expect(renderCount).toEqual(1);
 
   // click X
-  act(() => {
-    incX.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(incX);
   expect(labelX.textContent).toBe('1');
   expect(labelY.textContent).toBe('0');
   expect(renderCount).toEqual(2);
 
   // click Y
-  act(() => {
-    incY.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(incY);
   expect(labelX.textContent).toBe('1');
   expect(labelY.textContent).toBe('1');
   expect(renderCount).toEqual(3);
 
   // reset
-  act(() => {
-    reset.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(reset);
   expect(labelX.textContent).toBe('0');
   expect(labelY.textContent).toBe('0');
   expect(renderCount).toEqual(4);
@@ -209,23 +210,17 @@ it('single module with deps', () => {
   expect(renderCount).toEqual(1);
 
   // increase 'a'
-  act(() => {
-    inc.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(inc);
   expect(label.textContent).toBe('1');
   expect(renderCount).toEqual(2);
 
   // switch to 'b'
-  act(() => {
-    toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(toggle);
   expect(label.textContent).toBe('1000');
   expect(renderCount).toEqual(3);
 
   // increase 'b'
-  act(() => {
-    inc.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
+  clickButton(inc);
   expect(label.textContent).toBe('1001');
   expect(renderCount).toEqual(4);
 
