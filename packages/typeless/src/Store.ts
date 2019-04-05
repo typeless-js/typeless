@@ -11,6 +11,8 @@ export class Store<TState = any> {
   public epic: Epic = null;
   private listeners: Listener[] = [];
 
+  constructor(public name: symbol, public displayName: string) {}
+
   initState() {
     if (this.reducer) {
       this.state = this.reducer(undefined, { type: Symbol('__INIT__') });
@@ -33,18 +35,20 @@ export class Store<TState = any> {
     if (!this.isEnabled) {
       return;
     }
-    const nextState = this.reducer(this.state, action);
-    if (nextState !== this.state) {
-      this.state = nextState;
-      const notifyFn = () => {
-        for (const listener of this.listeners) {
-          listener();
+    if (this.reducer) {
+      const nextState = this.reducer(this.state, action);
+      if (nextState !== this.state) {
+        this.state = nextState;
+        const notifyFn = () => {
+          for (const listener of this.listeners) {
+            listener();
+          }
+        };
+        if (notify) {
+          notify.add(notifyFn);
+        } else {
+          notifyFn();
         }
-      };
-      if (notify) {
-        notify.add(notifyFn);
-      } else {
-        notifyFn();
       }
     }
   }

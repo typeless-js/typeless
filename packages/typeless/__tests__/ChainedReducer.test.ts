@@ -1,7 +1,7 @@
 import { nothing } from 'immer';
-import { ChainedReducer } from '../src2/ChainedReducer';
-import { createModule } from '../src2/createModule';
-import { AC } from '../src2/types';
+import { ChainedReducer } from '../src/ChainedReducer';
+import { createModule } from '../src/createModule';
+import { AC } from '../src/types';
 
 const getInitialState = () => ({
   str: 'foo',

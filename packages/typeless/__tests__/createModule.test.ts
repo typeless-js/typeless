@@ -1,5 +1,5 @@
-import { createModule } from '../src2/createModule';
-import { registry } from '../src2/Registry';
+import { createModule } from '../src/createModule';
+import { registry } from '../src/Registry';
 
 beforeEach(() => {
   registry.reset();

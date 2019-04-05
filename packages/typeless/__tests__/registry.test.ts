@@ -1,4 +1,4 @@
-import { Registry } from '../src2/Registry';
+import { Registry } from '../src/Registry';
 
 let registry: Registry;
 

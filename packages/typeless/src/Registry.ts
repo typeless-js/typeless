@@ -1,7 +1,9 @@
+import { Subject, Observable } from 'rxjs';
 import { Store } from './Store';
 import { snakeCase } from './utils';
 import { ActionLike } from './types';
 import { Notify } from './Notify';
+import { createOutputStream } from './RootEpic';
 
 function getDescription(s: symbol) {
   const match = /Symbol\((.+)\)/.exec(s.toString());
@@ -17,6 +19,20 @@ export class Registry {
   private storesMap: Map<symbol, Store> = new Map();
   private stores: Store[] = [];
   private actionSymbols: Map<symbol, Map<string, symbol>> = new Map();
+  private input$: Subject<ActionLike>;
+  private output$: Observable<ActionLike>;
+
+  constructor() {
+    this.initStreams();
+  }
+
+  private initStreams() {
+    this.input$ = new Subject();
+    this.output$ = createOutputStream(this.input$, this.stores);
+    this.output$.subscribe(action => {
+      this.dispatch(action);
+    });
+  }
 
   reset() {
     this.nameCount.clear();
@@ -24,6 +40,7 @@ export class Registry {
     this.storesMap.clear();
     this.actionSymbols.clear();
     this.stores = [];
+    this.initStreams();
   }
 
   getDisplayName(name: symbol) {
@@ -40,7 +57,7 @@ export class Registry {
 
   getStore(name: symbol) {
     if (!this.storesMap.has(name)) {
-      const store = new Store();
+      const store = new Store(name, this.getDisplayName(name));
       this.storesMap.set(name, store);
       this.stores.push(store);
     }
@@ -55,6 +72,7 @@ export class Registry {
     for (const fn of notify.handlers) {
       fn();
     }
+    this.input$.next(action);
   }
 
   getActionSymbol(name: symbol, action: string) {
