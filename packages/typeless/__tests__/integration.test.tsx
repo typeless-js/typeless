@@ -4,6 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { createModule } from '../src/createModule';
 import { useMappedState } from '../src/useMappedState';
 import { useActions } from '../src/useActions';
+import { createSelector } from '../src/createSelector';
+import { useSelector } from '../src/useSelector';
 
 let container: HTMLDivElement = null;
 
@@ -288,4 +290,57 @@ it('single module with epic', () => {
   // (0 + 1) * 2 = 2
   // (2 + 1) * 2 = 6
   expect(values).toEqual([{ count: 0 }, { count: 2 }, { count: 6 }]);
+});
+
+it('single module with selectors', () => {
+  const [handle, Actions, getState] = createModule(Symbol('sample'))
+    .withActions({
+      increase: null,
+    })
+    .withState<{ count: number }>();
+
+  const useModule = handle.addReducer({ count: 0 }, reducer =>
+    reducer.on(Actions.increase, state => {
+      state.count++;
+    })
+  );
+
+  const selector1 = createSelector(
+    [getState, state => state.count],
+    count => count + 1
+  );
+  const selector2 = createSelector(
+    selector1,
+    count => count + 1
+  );
+  const values = [];
+
+  function App() {
+    useModule();
+    const { increase } = useActions(Actions);
+    const org = useMappedState([getState], state => state.count);
+    const s1 = useSelector(selector1);
+    const s2 = useSelector(selector2);
+    values.push({ org, s1, s2 });
+    return (
+      <div>
+        <button onClick={increase}>increase</button>
+      </div>
+    );
+  }
+
+  // initial render
+  act(() => {
+    ReactDOM.render(<App />, container);
+  });
+  const button = container.querySelector('button');
+
+  // click button x 2
+  clickButton(button);
+  clickButton(button);
+  expect(values).toEqual([
+    { org: 0, s1: 1, s2: 2 },
+    { org: 1, s1: 2, s2: 3 },
+    { org: 2, s1: 3, s2: 4 },
+  ]);
 });
