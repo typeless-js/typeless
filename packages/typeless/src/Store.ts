@@ -7,8 +7,8 @@ type Listener = () => void;
 export class Store<TState = any> {
   public isEnabled: boolean = false;
   public state: TState | undefined = undefined;
-  public reducer: Reducer<TState> = null;
-  public epic: Epic = null;
+  public reducer: Reducer<TState> | null = null;
+  public epic: Epic | null = null;
   private listeners: Listener[] = [];
 
   constructor(public name: symbol, public displayName: string) {}

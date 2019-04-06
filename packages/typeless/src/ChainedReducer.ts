@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { AC, Flatten, ExtractPayload, Reducer, ActionLike } from './types';
-import { toArray } from './utils';
+import { toArray, getACSymbol } from './utils';
 
 export type OnHandler<S, T extends AC> = (
   state: S,
@@ -23,6 +23,11 @@ const createNestedReducer = <S, P extends keyof S>(
   prop: P,
   reducer: Reducer<S[P]>
 ): Reducer<S> => (state, action) => {
+  if (typeof state === 'undefined') {
+    throw new Error(
+      'tried to create createNestedReducer with undefined parent state'
+    );
+  }
   const subState = reducer(state[prop], action);
   if (state[prop] !== subState) {
     return {
@@ -36,7 +41,7 @@ const createNestedReducer = <S, P extends keyof S>(
 export class ChainedReducer<S> {
   private reducerMap: Map<symbol, Array<Reducer<S>>>;
   private defaultReducers: Array<Reducer<S>>;
-  private reducer: ChainedReducer<S> & Reducer<S>;
+  private reducer: ChainedReducer<S> & Reducer<S> | null;
 
   constructor(private initial: S) {
     this.reducerMap = new Map();
@@ -58,18 +63,31 @@ export class ChainedReducer<S> {
     return this.reducer;
   }
 
+  attach<T extends keyof S>(fn: Reducer<S>): ChainedReducer<S> & Reducer<S>;
+  attach<T extends keyof S>(
+    prop: T,
+    fn: Reducer<S[T]>
+  ): ChainedReducer<S> & Reducer<S>;
   attach<T extends keyof S>(prop: T | Reducer<S>, fn?: Reducer<S[T]>) {
-    if (typeof prop === 'function') {
-      this.defaultReducers.push(prop);
-    } else {
+    if (typeof prop === 'string') {
+      if (typeof fn !== 'function') {
+        throw new Error('fn must be a function');
+      }
       this.defaultReducers.push(createNestedReducer(prop, fn));
+    } else {
+      if (typeof prop !== 'function') {
+        throw new Error('fn must be a function');
+      }
+      this.defaultReducers.push(prop);
     }
     return this.asReducer();
   }
 
   replace<T extends AC>(actionCreator: T, fn: ReplaceHandler<S, T>) {
-    this.transform(actionCreator, (state, action: any) =>
-      produce(state, draft => fn(draft as S, action.payload, action))
+    this.transform(
+      actionCreator,
+      (state, action: any) =>
+        produce(state, draft => fn(draft as S, action.payload, action))!
     );
     return this.asReducer();
   }
@@ -91,8 +109,10 @@ export class ChainedReducer<S> {
   }
 
   on<T extends AC>(actionCreator: T, fn: OnHandler<S, T>) {
-    this.transform(actionCreator, (state, action: any) =>
-      produce(state, draft => fn(draft as S, action.payload, action))
+    this.transform(
+      actionCreator,
+      (state, action: any) =>
+        produce(state, draft => fn(draft as S, action.payload, action))!
     );
     return this.asReducer();
   }
@@ -111,6 +131,9 @@ export class ChainedReducer<S> {
 
   private getReducer() {
     return (state: S = this.initial, action: ActionLike) => {
+      if (!action.type) {
+        throw new Error('action.type must be defined');
+      }
       const reducers = (this.reducerMap.get(action.type) || []).concat(
         this.defaultReducers
       );
@@ -121,16 +144,13 @@ export class ChainedReducer<S> {
     };
   }
 
-  private transform(
-    actionCreators: AC | AC[],
-    reducerFn: (state: S, action: ActionLike) => S
-  ) {
-    const actionTypes = toArray(actionCreators).map(ac => ac.getSymbol());
+  private transform(actionCreators: AC | AC[], reducerFn: Reducer<S>) {
+    const actionTypes = toArray(actionCreators).map(ac => getACSymbol(ac));
     actionTypes.forEach(action => {
       if (!this.reducerMap.has(action)) {
         this.reducerMap.set(action, []);
       }
-      this.reducerMap.get(action).push(reducerFn);
+      this.reducerMap.get(action)!.push(reducerFn);
     });
   }
 }

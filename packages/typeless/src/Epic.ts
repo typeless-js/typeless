@@ -1,11 +1,8 @@
 import { Observable } from 'rxjs';
 import { AC, Deps, ExtractPayload, ActionLike } from './types';
+import { getACSymbol } from './utils';
 
 export type EpicResult = Observable<ActionLike> | ActionLike | ActionLike[];
-
-export type HandlerFn = (
-  deps: Deps
-) => (action: ActionLike) => Observable<EpicResult>;
 
 export type EpicHandler<TAC extends AC> = (
   payload: ExtractPayload<ReturnType<TAC>>,
@@ -19,7 +16,7 @@ export class Epic {
     const subHandlers = epic.handlers;
     for (const key of epic.handlers.keys()) {
       this.createKey(key);
-      this.handlers.get(key).push(...subHandlers.get(key));
+      this.handlers.get(key)!.push(...subHandlers.get(key));
     }
     return this;
   }
@@ -61,11 +58,11 @@ export class Epic {
 
   private add(ac: AC | AC[], handler: EpicHandler<AC>) {
     const keys = Array.isArray(ac)
-      ? ac.map(x => x.getSymbol())
-      : [ac.getSymbol()];
+      ? ac.map(x => getACSymbol(x))
+      : [getACSymbol(ac)];
     keys.forEach(key => {
       this.createKey(key);
-      this.handlers.get(key).push(handler);
+      this.handlers.get(key)!.push(handler);
     });
     return this;
   }
