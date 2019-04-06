@@ -23,9 +23,9 @@ function createDepsSelector(...args: any[]) {
   );
   const resultFunc: (...args: any[]) => any = args[args.length - 1];
   let recomputations = 0;
-  const memoizedFn = memoize((...args: any[]) => {
+  const memoizedFn = memoize((...fnArgs: any[]) => {
     recomputations++;
-    return resultFunc(...args);
+    return resultFunc(...fnArgs);
   });
 
   const ret = memoize((state: any) => {

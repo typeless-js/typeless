@@ -26,14 +26,6 @@ export class Registry {
     this.initStreams();
   }
 
-  private initStreams() {
-    this.input$ = new Subject();
-    this.output$ = createOutputStream(this.input$, this.stores);
-    this.output$.subscribe(action => {
-      this.dispatch(action);
-    });
-  }
-
   reset() {
     this.nameCount.clear();
     this.displayNames.clear();
@@ -86,6 +78,14 @@ export class Registry {
       actionMap.set(action, Symbol(fullName));
     }
     return actionMap.get(action);
+  }
+
+  private initStreams() {
+    this.input$ = new Subject();
+    this.output$ = createOutputStream(this.input$, this.stores);
+    this.output$.subscribe(action => {
+      this.dispatch(action);
+    });
   }
 }
 
