@@ -64,7 +64,7 @@ test('recomputations', () => {
 });
 
 test('resultFunc', () => {
-  let defaultState = { n1: 1 };
+  const defaultState = { n1: 1 };
   const selector = createSelector(
     [() => defaultState, state => state.n1],
     n1 => n1 * 10
@@ -76,8 +76,8 @@ test('resultFunc', () => {
 });
 
 test('getStateGetters', () => {
-  let state1 = { n1: 1 };
-  let state2 = { n2: 1 };
+  const state1 = { n1: 1 };
+  const state2 = { n2: 1 };
   const getState1 = () => state1;
   const getState2 = () => state2;
   const selector = createSelector(
@@ -93,8 +93,8 @@ test('getStateGetters', () => {
 });
 
 test('getStateGetters nested', () => {
-  let state1 = { n1: 1 };
-  let state2 = { n2: 1 };
+  const state1 = { n1: 1 };
+  const state2 = { n2: 1 };
   const getState1 = () => state1;
   const getState2 = () => state2;
   const selector1 = createSelector(
@@ -114,7 +114,7 @@ test('getStateGetters nested', () => {
 });
 
 test('1 selector', () => {
-  let defaultState = { n1: 1 };
+  const defaultState = { n1: 1 };
   const selector = createSelector(
     [() => defaultState, state => state.n1],
     n1 => n1 * 10
@@ -124,8 +124,8 @@ test('1 selector', () => {
 });
 
 test('2 selectors', () => {
-  let stateA = { n1: 1 };
-  let stateB = { n2: 2 };
+  const stateA = { n1: 1 };
+  const stateB = { n2: 2 };
   const selector = createSelector(
     [() => stateA, state => state.n1],
     [() => stateB, state => state.n2],
@@ -139,9 +139,9 @@ test('2 selectors', () => {
 });
 
 test('3 selectors', () => {
-  let stateA = { n1: 1 };
-  let stateB = { n2: 2 };
-  let stateC = { n1: 1, n2: 2 };
+  const stateA = { n1: 1 };
+  const stateB = { n2: 2 };
+  const stateC = { n1: 1, n2: 2 };
   const selector = createSelector(
     [() => stateA, state => state.n1],
     [() => stateB, state => state.n2],

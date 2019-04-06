@@ -103,7 +103,7 @@ describe('createSelector', () => {
   });
 
   test('3 selectors', () => {
-    let stateC = { n: 3 };
+    const stateC = { n: 3 };
 
     const getStateC = () => stateC;
     const deps = createDeps({ a: getStateA, b: getStateB, c: getStateC });

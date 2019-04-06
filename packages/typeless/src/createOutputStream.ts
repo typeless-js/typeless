@@ -8,8 +8,7 @@ import {
   of,
   Observable,
 } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-import { observeOn, subscribeOn } from 'rxjs/operators';
+import { mergeMap, observeOn, subscribeOn } from 'rxjs/operators';
 import { Deps, Action } from './types';
 import { Store } from './Store';
 import { logAction, isAction } from './utils';

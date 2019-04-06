@@ -1,5 +1,5 @@
-rm -rf ./dist
-mkdir dist
+mkdir -p dist
+rm -rf ./dist/*
 yarn run tsc --declaration true --module esnext --outDir "./dist/es"
 yarn run tsc --declaration true --module commonjs --outDir "./dist"
 cp package.json ./dist/package.json
