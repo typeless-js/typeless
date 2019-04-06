@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Rx from 'typeless/rx';
 import { createModule, useActions, useMappedState } from 'typeless';
-import CounterModule from './features/counter/module';
 
 /* == Module Interface == */
 
@@ -74,4 +73,4 @@ export function Counter() {
   );
 }
 
-ReactDOM.render(<CounterModule />, document.getElementById('app'));
+ReactDOM.render(<Counter />, document.getElementById('app'));
