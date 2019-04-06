@@ -4,6 +4,7 @@ import { snakeCase, getDescription } from './utils';
 import { Action, ActionLike } from './types';
 import { Notify } from './Notify';
 import { createOutputStream } from './createOutputStream';
+import { StateLogger } from './StateLogger';
 
 export class Registry {
   private nameCount: Map<string, number> = new Map();
@@ -50,8 +51,19 @@ export class Registry {
 
   dispatch(action: ActionLike) {
     const notify = new Notify();
+    let stateLogger: StateLogger | null = null;
+    if (process.env.NODE_ENV === 'development') {
+      stateLogger = new StateLogger(this.stores);
+    }
+    if (stateLogger) {
+      stateLogger.calcState('prev');
+    }
     for (const store of this.stores) {
       store.dispatch(action, notify);
+    }
+    if (stateLogger) {
+      stateLogger.calcState('next');
+      stateLogger.log(action);
     }
     for (const fn of notify.handlers) {
       fn();
