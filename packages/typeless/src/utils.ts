@@ -16,15 +16,14 @@ export const formatTime = (time: Date) =>
     2
   )}.${pad(time.getMilliseconds(), 3)}`;
 
-  export function getDescription(s: symbol) {
-    const match = /Symbol\((.+)\)/.exec(s.toString());
-    if (!match) {
-      throw new Error('Empty symbol: ' + s.toString());
-    }
-    return match[1];
+export function getDescription(s: symbol) {
+  const match = /Symbol\((.+)\)/.exec(s.toString());
+  if (!match) {
+    throw new Error('Empty symbol: ' + s.toString());
   }
+  return match[1];
+}
 
-  
 export const logAction = (epicName: string, action: Action) => {
   const gray = 'color: gray; font-weight: lighter;';
   const bold = 'font-weight: bold';
