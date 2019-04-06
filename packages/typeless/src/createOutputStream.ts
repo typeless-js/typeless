@@ -1,18 +1,29 @@
-import { Subject, queueScheduler, merge, empty, defer, from, of } from 'rxjs';
+import {
+  Subject,
+  queueScheduler,
+  merge,
+  empty,
+  defer,
+  from,
+  of,
+  Observable,
+} from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { observeOn, subscribeOn } from 'rxjs/operators';
-import { ActionLike, Deps } from './types';
+import { Deps, Action } from './types';
 import { Store } from './Store';
 import { logAction, isAction } from './utils';
 
-function getHandlers(stores: Store[], action: ActionLike) {
+function getHandlers(stores: Store[], action: Action) {
   return stores
     .filter(
       store =>
         store.isEnabled && store.epic && store.epic.handlers.has(action.type)
     )
     .map(store =>
-      store.epic.handlers.get(action.type).map(handler => ({ store, handler }))
+      store
+        .epic!.handlers.get(action.type)!
+        .map(handler => ({ store, handler }))
     )
     .reduce((ret, arr) => {
       ret.push(...arr);
@@ -21,9 +32,9 @@ function getHandlers(stores: Store[], action: ActionLike) {
 }
 
 export function createOutputStream(
-  action$: Subject<ActionLike>,
+  action$: Subject<Action>,
   stores: Store[]
-) {
+): Observable<Action> {
   const deps = { action$: action$ as Deps['action$'] };
   return action$.pipe(
     mergeMap(sourceAction => {
@@ -38,7 +49,11 @@ export function createOutputStream(
             if (process.env.NODE_ENV === 'development') {
               logAction(name, sourceAction);
             }
-            const result = handler(sourceAction.payload, deps, sourceAction);
+            const result = handler(
+              sourceAction.payload,
+              deps,
+              sourceAction
+            ) as (Observable<Action> | Action | Action[]);
             if (Array.isArray(result)) {
               return from(result);
             }
@@ -47,7 +62,7 @@ export function createOutputStream(
             }
             return result;
           }).pipe(
-            mergeMap((action: any) => {
+            mergeMap((action: Action) => {
               if (action == null) {
                 console.error('Undefined action returned in epic.', {
                   action,

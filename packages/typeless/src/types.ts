@@ -8,6 +8,7 @@ export interface AC {
 export type Flatten<T> = { [K in keyof T]: T[K] };
 
 export type ActionLike = { type?: symbol; payload?: any; meta?: any };
+export type Action = { type: symbol; payload?: any; meta?: any };
 
 export type Reducer<S = any> = (state: S | undefined, action: ActionLike) => S;
 

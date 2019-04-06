@@ -1,4 +1,4 @@
-import { ActionLike } from './types';
+import { ActionLike, AC } from './types';
 
 export const isAction = (action: any): action is ActionLike => {
   return action && typeof (action as any).type === 'symbol';
@@ -67,7 +67,7 @@ export function shallowEqual(a: any[] | null, b: any[] | null) {
 }
 
 export function memoize(fn: (...args: any[]) => any) {
-  let lastArgs: any[] = null;
+  let lastArgs: any[] | null = null;
   let lastResult: any[];
 
   return (...args: any[]) => {
@@ -77,4 +77,13 @@ export function memoize(fn: (...args: any[]) => any) {
     lastArgs = args;
     return lastResult;
   };
+}
+
+export function getACSymbol(ac: AC) {
+  if (!ac.getSymbol) {
+    throw new Error(
+      'getSymbol() not defined in Action Creator: ' + ac.toString()
+    );
+  }
+  return ac.getSymbol();
 }

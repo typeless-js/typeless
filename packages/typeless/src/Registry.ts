@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs';
 import { Store } from './Store';
 import { snakeCase } from './utils';
-import { ActionLike } from './types';
+import { Action, ActionLike } from './types';
 import { Notify } from './Notify';
 import { createOutputStream } from './createOutputStream';
 
@@ -19,8 +19,8 @@ export class Registry {
   private storesMap: Map<symbol, Store> = new Map();
   private stores: Store[] = [];
   private actionSymbols: Map<symbol, Map<string, symbol>> = new Map();
-  private input$: Subject<ActionLike>;
-  private output$: Observable<ActionLike>;
+  private input$!: Subject<Action>;
+  private output$!: Observable<Action>;
 
   constructor() {
     this.initStreams();
@@ -52,7 +52,7 @@ export class Registry {
       const displayName = count > 1 ? `${description}#${count}` : description;
       this.displayNames.set(name, displayName);
     }
-    return this.displayNames.get(name);
+    return this.displayNames.get(name)!;
   }
 
   getStore(name: symbol) {
@@ -61,7 +61,7 @@ export class Registry {
       this.storesMap.set(name, store);
       this.stores.push(store);
     }
-    return this.storesMap.get(name);
+    return this.storesMap.get(name)!;
   }
 
   dispatch(action: ActionLike) {
@@ -72,14 +72,14 @@ export class Registry {
     for (const fn of notify.handlers) {
       fn();
     }
-    this.input$.next(action);
+    this.input$.next(action as Action);
   }
 
   getActionSymbol(name: symbol, action: string) {
     if (!this.actionSymbols.has(name)) {
       this.actionSymbols.set(name, new Map());
     }
-    const actionMap = this.actionSymbols.get(name);
+    const actionMap = this.actionSymbols.get(name)!;
     if (!actionMap.has(action)) {
       const displayName = this.getDisplayName(name);
       const fullName = displayName + '/' + snakeCase(action).toUpperCase();
