@@ -1,17 +1,9 @@
 import { Subject, Observable } from 'rxjs';
 import { Store } from './Store';
-import { snakeCase } from './utils';
+import { snakeCase, getDescription } from './utils';
 import { Action, ActionLike } from './types';
 import { Notify } from './Notify';
 import { createOutputStream } from './createOutputStream';
-
-function getDescription(s: symbol) {
-  const match = /Symbol\((.+)\)/.exec(s.toString());
-  if (!match) {
-    throw new Error('Empty symbol: ' + s.toString());
-  }
-  return match[1];
-}
 
 export class Registry {
   private nameCount: Map<string, number> = new Map();

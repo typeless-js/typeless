@@ -5,8 +5,8 @@
   "keywords": [],
   "dependencies": {
     "@types/webpack-env": "^1.13.7",
-    "react": "16.8.4",
-    "react-dom": "16.8.4",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-scripts": "2.1.8",
     "redux": "4.0.1",
     "rxjs": "6.3.3",
@@ -14,7 +14,8 @@
   },
   "devDependencies": {
     "@types/react": "16.8.7",
-    "@types/react-dom": "16.8.2"
+    "@types/react-dom": "16.8.2",
+    "typescript": "^3.4.2"
   },
   "scripts": {
     "tsc": "tsc",
