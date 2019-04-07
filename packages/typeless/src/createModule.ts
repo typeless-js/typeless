@@ -4,6 +4,7 @@ import React from 'react';
 import { getIsHmr } from './onHmr';
 import { registry } from './Registry';
 import { StateGetter } from './types';
+import { useMappedState } from './useMappedState';
 
 export type Nullable<T> = T | null;
 
@@ -21,16 +22,13 @@ export type ActionMap = { [name: string]: Nullable<(...args: any[]) => {}> };
 
 interface HandleWithState<TState> {
   (): void;
-  addEpic(fn: (epic: Epic) => void): this;
-  addReducer(
-    initialState: TState,
-    fn: (reducer: ChainedReducer<TState>) => void
-  ): this;
+  epic(): Epic;
+  reducer(initialState: TState): ChainedReducer<TState>;
 }
 
 interface Handle {
   (): void;
-  addEpic(fn: (epic: Epic) => void): this;
+  epic(): Epic;
 }
 
 type ModuleBase = [Handle] & {
@@ -71,6 +69,7 @@ export function createModule(name: symbol) {
   base.withState = withState;
 
   getState._store = store;
+  getState.useState = () => useMappedState([getState as any], state => state);
 
   return base as ModuleBase;
 
@@ -106,16 +105,18 @@ export function createModule(name: symbol) {
         };
       }, []);
     };
-    handle.addEpic = fn => {
-      epic = new Epic();
-      fn(epic);
-      return handle;
+    handle.epic = () => {
+      if (!epic) {
+        epic = new Epic();
+      }
+      return epic;
     };
-    handle.addReducer = (initialState, fn) => {
-      const chained = new ChainedReducer(initialState);
-      fn(chained);
-      reducer = chained.asReducer();
-      return handle;
+    handle.reducer = initialState => {
+      if (!reducer) {
+        const chained = new ChainedReducer(initialState);
+        reducer = chained.asReducer();
+      }
+      return reducer;
     };
     return handle;
   }
