@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Rx from 'typeless/rx';
-import { createModule, useActions, useMappedState } from 'typeless';
+import { createModule, useActions } from 'typeless';
 
 /* == Module Interface == */
 
-export const [handle, CounterActions, getCounterState] = createModule(
+export const [useModule, CounterActions, getCounterState] = createModule(
   Symbol('counter')
 )
   // Create Actions Creators
@@ -27,27 +27,25 @@ const initialState: CounterState = {
   count: 0,
 };
 
-export const useModule = handle
-  // Create Epic for side effects
-  .addEpic(epic =>
-    epic
-      // Listen for `count` and dispatch `countDone` with 500ms delay
-      .on(CounterActions.startCount, () =>
-        Rx.of(CounterActions.countDone(1)).pipe(Rx.delay(500))
-      )
-  )
-  // Create a reducer
-  // Under the hood it uses `immer` and state mutations are allowed
-  .addReducer(initialState, reducer =>
-    reducer
-      .on(CounterActions.startCount, state => {
-        state.isLoading = true;
-      })
-      .on(CounterActions.countDone, (state, { count }) => {
-        state.isLoading = false;
-        state.count += count;
-      })
+// Create Epic for side effects
+useModule
+  .epic()
+  // Listen for `count` and dispatch `countDone` with 500ms delay
+  .on(CounterActions.startCount, () =>
+    Rx.of(CounterActions.countDone(1)).pipe(Rx.delay(500))
   );
+
+// Create a reducer
+// Under the hood it uses `immer` and state mutations are allowed
+useModule
+  .reducer(initialState)
+  .on(CounterActions.startCount, state => {
+    state.isLoading = true;
+  })
+  .on(CounterActions.countDone, (state, { count }) => {
+    state.isLoading = false;
+    state.count += count;
+  });
 
 /* == Use Module in React == */
 
@@ -58,10 +56,7 @@ export function Counter() {
   // wrap actions with `dispatch`
   const { startCount } = useActions(CounterActions);
   // get state from store
-  const { isLoading, count } = useMappedState(
-    [getCounterState],
-    state => state
-  );
+  const { isLoading, count } = getCounterState.useState();
 
   return (
     <div>

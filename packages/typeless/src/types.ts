@@ -20,4 +20,7 @@ export interface Deps {
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export type StateGetter<T> = () => T;
+export interface StateGetter<T> {
+  (): T;
+  useState(): T;
+}

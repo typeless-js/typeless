@@ -27,17 +27,15 @@ function clickButton(element: Element) {
 }
 
 it('single module', () => {
-  const [handle, Actions, getState] = createModule(Symbol('sample'))
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: null,
     })
     .withState<{ count: number }>();
 
-  const useModule = handle.addReducer({ count: 0 }, reducer =>
-    reducer.on(Actions.increase, state => {
-      state.count++;
-    })
-  );
+  useModule.reducer({ count: 0 }).on(Actions.increase, state => {
+    state.count++;
+  });
 
   let renderCount = 0;
 
@@ -70,38 +68,36 @@ it('single module', () => {
 });
 
 it('two modules', () => {
-  const [handleX, XActions, getXState] = createModule(Symbol('moduleX'))
+  const [useXModule, XActions, getXState] = createModule(Symbol('moduleX'))
     .withActions({
       increaseX: null,
       reset: null,
     })
     .withState<{ count: number }>();
 
-  const useXModule = handleX.addReducer({ count: 0 }, reducer =>
-    reducer
-      .on(XActions.increaseX, state => {
-        state.count++;
-      })
-      .on(XActions.reset, state => {
-        state.count = 0;
-      })
-  );
+  useXModule
+    .reducer({ count: 0 })
+    .on(XActions.increaseX, state => {
+      state.count++;
+    })
+    .on(XActions.reset, state => {
+      state.count = 0;
+    });
 
-  const [handleY, YActions, getYState] = createModule(Symbol('moduleY'))
+  const [useYModule, YActions, getYState] = createModule(Symbol('moduleY'))
     .withActions({
       increaseY: null,
     })
     .withState<{ count: number }>();
 
-  const useYModule = handleY.addReducer({ count: 0 }, reducer =>
-    reducer
-      .on(YActions.increaseY, state => {
-        state.count++;
-      })
-      .on(XActions.reset, state => {
-        state.count = 0;
-      })
-  );
+  useYModule
+    .reducer({ count: 0 })
+    .on(YActions.increaseY, state => {
+      state.count++;
+    })
+    .on(XActions.reset, state => {
+      state.count = 0;
+    });
 
   let renderCount = 0;
 
@@ -141,7 +137,7 @@ it('two modules', () => {
   });
   const incX = container.querySelector('#inc-x');
   const incY = container.querySelector('#inc-y');
-  const reset = container.querySelector('#reset');
+  const resetBtn = container.querySelector('#reset');
   const labelX = container.querySelector('#count-x');
   const labelY = container.querySelector('#count-y');
   expect(labelX.textContent).toBe('0');
@@ -161,24 +157,24 @@ it('two modules', () => {
   expect(renderCount).toEqual(3);
 
   // reset
-  clickButton(reset);
+  clickButton(resetBtn);
   expect(labelX.textContent).toBe('0');
   expect(labelY.textContent).toBe('0');
   expect(renderCount).toEqual(4);
 });
 
 it('single module with deps', () => {
-  const [handle, Actions, getState] = createModule(Symbol('sample'))
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: (type: 'a' | 'b') => ({ payload: { type } }),
     })
     .withState<{ a: number; b: number }>();
 
-  const useModule = handle.addReducer({ a: 0, b: 1000 }, reducer =>
-    reducer.on(Actions.increase, (state, { type }) => {
+  useModule
+    .reducer({ a: 0, b: 1000 })
+    .on(Actions.increase, (state, { type }) => {
       state[type]++;
-    })
-  );
+    });
 
   let renderCount = 0;
   const values = [];
@@ -237,28 +233,25 @@ it('single module with deps', () => {
 });
 
 it('single module with epic', () => {
-  const [handle, Actions, getState] = createModule(Symbol('sample'))
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: null,
       set: (count: number) => ({ payload: { count } }),
     })
     .withState<{ count: number }>();
 
-  const useModule = handle
-    .addEpic(epic =>
-      epic.on(Actions.increase, () => {
-        return Actions.set(getState().count * 2);
-      })
-    )
-    .addReducer({ count: 0 }, reducer =>
-      reducer
-        .on(Actions.increase, state => {
-          state.count++;
-        })
-        .on(Actions.set, (state, { count }) => {
-          state.count = count;
-        })
-    );
+  useModule.epic().on(Actions.increase, () => {
+    return Actions.set(getState().count * 2);
+  });
+
+  useModule
+    .reducer({ count: 0 })
+    .on(Actions.increase, state => {
+      state.count++;
+    })
+    .on(Actions.set, (state, { count }) => {
+      state.count = count;
+    });
 
   let renderCount = 0;
   const values = [];
@@ -294,17 +287,15 @@ it('single module with epic', () => {
 });
 
 it('single module with selectors', () => {
-  const [handle, Actions, getState] = createModule(Symbol('sample'))
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: null,
     })
     .withState<{ count: number }>();
 
-  const useModule = handle.addReducer({ count: 0 }, reducer =>
-    reducer.on(Actions.increase, state => {
-      state.count++;
-    })
-  );
+  useModule.reducer({ count: 0 }).on(Actions.increase, state => {
+    state.count++;
+  });
 
   const selector1 = createSelector(
     [getState, state => state.count],
@@ -347,17 +338,17 @@ it('single module with selectors', () => {
 });
 
 it('single module with createDeps', () => {
-  const [handle, Actions, getState] = createModule(Symbol('sample'))
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
     .withActions({
       increase: (type: 'a' | 'b') => ({ payload: { type } }),
     })
     .withState<{ a: number; b: number }>();
 
-  const useModule = handle.addReducer({ a: 0, b: 1000 }, reducer =>
-    reducer.on(Actions.increase, (state, { type }) => {
+  useModule
+    .reducer({ a: 0, b: 1000 })
+    .on(Actions.increase, (state, { type }) => {
       state[type]++;
-    })
-  );
+    });
 
   const deps = createDeps({ x: getState });
 
