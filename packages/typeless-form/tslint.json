@@ -1,0 +1,23 @@
+{
+  "extends": ["tslint:latest"],
+  "rules": {
+    "member-access": false,
+    "no-submodule-imports": false,
+    "interface-name": false,
+    "no-implicit-dependencies": false,
+    "object-literal-sort-keys": false,
+    "variable-name": false,
+    "no-object-literal-type-assertion": false,
+    "no-console": [true, "log"],
+    "interface-over-type-literal": false,
+    "ordered-imports": false,
+    "quotemark": false,
+    "arrow-parens": false,
+    "max-classes-per-file": false,
+    "trailing-comma": false,
+    "curly": false,
+    "no-empty-interface": false,
+    "prefer-object-spread": false,
+    "max-line-length": false 
+  }
+}
