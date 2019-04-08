@@ -2,9 +2,11 @@ import { ChainedReducer } from './ChainedReducer';
 import { Epic } from './Epic';
 import React from 'react';
 import { getIsHmr } from './onHmr';
-import { registry } from './Registry';
 import { StateGetter } from './types';
 import { useMappedState } from './useMappedState';
+import { snakeCase } from './utils';
+import { useRegistry } from './useRegistry';
+import { Store } from './Store';
 
 export type Nullable<T> = T | null;
 
@@ -58,23 +60,28 @@ type ModuleWithActionsAndState<TState, TActions> = [
 ];
 
 export function createModule(name: symbol) {
-  const store = registry.getStore(name);
   let hasState = false;
   let actions: any = null;
   let epic: any = null;
   let reducer: any = null;
+  let store: any = null;
 
   const base = [createHandle()] as any;
   base.withActions = withActions;
   base.withState = withState;
 
-  getState._store = store;
+  getState._store = null as Store<any> | null;
   getState.useState = () => useMappedState([getState as any], state => state);
 
   return base as ModuleBase;
 
   function createHandle() {
     const handle: HandleWithState<any> = () => {
+      const registry = useRegistry();
+      if (!store) {
+        store = registry.getStore(name);
+        getState._store = store;
+      }
       React.useMemo(() => {
         store.enable({
           epic,
@@ -124,14 +131,14 @@ export function createModule(name: symbol) {
   function createActions(actionMap: any) {
     actions = Object.keys(actionMap).reduce(
       (acc, key) => {
-        const type = registry.getActionSymbol(name, key);
+        const type = snakeCase(key).toUpperCase();
         acc[key] = (...args: any[]) => {
           const ac = actionMap[key] || (() => ({}));
           const action = ac(...args) as any;
-          action.type = type;
+          action.type = [name, type];
           return action;
         };
-        acc[key].getSymbol = () => type;
+        acc[key].getType = () => [name, type];
         return acc;
       },
       {} as { [s: string]: any }
@@ -162,6 +169,6 @@ export function createModule(name: symbol) {
   }
 
   function getState() {
-    return store.state;
+    return store ? store.state : undefined;
   }
 }

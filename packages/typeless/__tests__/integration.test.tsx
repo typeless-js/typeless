@@ -7,6 +7,7 @@ import { useActions } from '../src/useActions';
 import { createSelector } from '../src/createSelector';
 import { useSelector } from '../src/useSelector';
 import { createDeps } from '../src/createDeps';
+import { DefaultTypelessProvider } from '../src/TypelessContext';
 
 let container: HTMLDivElement = null;
 
@@ -19,6 +20,15 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null;
 });
+
+function render(node: React.ReactChild) {
+  act(() => {
+    ReactDOM.render(
+      <DefaultTypelessProvider>{node}</DefaultTypelessProvider>,
+      container
+    );
+  });
+}
 
 function clickButton(element: Element) {
   act(() => {
@@ -53,9 +63,8 @@ it('single module', () => {
   }
 
   // initial render
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const button = container.querySelector('button');
   const label = container.querySelector('p');
   expect(label.textContent).toBe('0');
@@ -132,9 +141,8 @@ it('two modules', () => {
   }
 
   // initial render
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const incX = container.querySelector('#inc-x');
   const incY = container.querySelector('#inc-y');
   const resetBtn = container.querySelector('#reset');
@@ -199,9 +207,8 @@ it('single module with deps', () => {
     );
   }
   // initial
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const inc = container.querySelector('#inc');
   const toggle = container.querySelector('#toggle');
   const label = container.querySelector('#count');
@@ -270,9 +277,8 @@ it('single module with epic', () => {
   }
 
   // initial render
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const button = container.querySelector('button');
   const label = container.querySelector('p');
   expect(label.textContent).toBe('0');
@@ -322,9 +328,8 @@ it('single module with selectors', () => {
   }
 
   // initial render
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const button = container.querySelector('button');
 
   // click button x 2
@@ -372,9 +377,8 @@ it('single module with createDeps', () => {
     );
   }
   // initial
-  act(() => {
-    ReactDOM.render(<App />, container);
-  });
+  render(<App />);
+
   const inc = container.querySelector('#inc');
   const toggle = container.querySelector('#toggle');
 

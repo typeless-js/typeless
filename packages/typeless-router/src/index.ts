@@ -1,3 +1,1 @@
-export function placeholder() {
-  //
-}
+export * from './module';

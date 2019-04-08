@@ -17,12 +17,3 @@ describe('getDisplayName', () => {
     expect(registry.getDisplayName(Symbol('module'))).toEqual('module#2');
   });
 });
-
-describe('getActionSymbol', () => {
-  it('should action symbol', () => {
-    const name = Symbol('module');
-    expect(registry.getActionSymbol(name, 'foo').toString()).toEqual(
-      'Symbol(module/FOO)'
-    );
-  });
-});

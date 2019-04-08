@@ -1,6 +1,13 @@
 import { produce } from 'immer';
-import { AC, Flatten, ExtractPayload, Reducer, ActionLike } from './types';
-import { toArray, getACSymbol } from './utils';
+import {
+  AC,
+  Flatten,
+  ExtractPayload,
+  Reducer,
+  ActionLike,
+  ActionType,
+} from './types';
+import { toArray, getACType } from './utils';
 
 export type OnHandler<S, T extends AC> = (
   state: S,
@@ -39,7 +46,7 @@ const createNestedReducer = <S, P extends keyof S>(
 };
 
 export class ChainedReducer<S> {
-  private reducerMap: Map<symbol, Array<Reducer<S>>>;
+  private reducerMap: Map<symbol, Map<string, Array<Reducer<S>>>>;
   private defaultReducers: Array<Reducer<S>>;
   private reducer: ChainedReducer<S> & Reducer<S> | null;
 
@@ -134,7 +141,7 @@ export class ChainedReducer<S> {
       if (!action.type) {
         throw new Error('action.type must be defined');
       }
-      const reducers = (this.reducerMap.get(action.type) || []).concat(
+      const reducers = this.getReducers(action.type).concat(
         this.defaultReducers
       );
       if (!reducers.length) {
@@ -144,13 +151,22 @@ export class ChainedReducer<S> {
     };
   }
 
+  private getReducers(actionType: ActionType) {
+    const [symbol, type] = actionType!;
+    if (!this.reducerMap.has(symbol)) {
+      this.reducerMap.set(symbol, new Map());
+    }
+    const map = this.reducerMap.get(symbol)!;
+    if (!map.has(type)) {
+      map.set(type, []);
+    }
+    return map.get(type)!;
+  }
+
   private transform(actionCreators: AC | AC[], reducerFn: Reducer<S>) {
-    const actionTypes = toArray(actionCreators).map(ac => getACSymbol(ac));
+    const actionTypes = toArray(actionCreators).map(ac => getACType(ac));
     actionTypes.forEach(action => {
-      if (!this.reducerMap.has(action)) {
-        this.reducerMap.set(action, []);
-      }
-      this.reducerMap.get(action)!.push(reducerFn);
+      this.getReducers(action).push(reducerFn);
     });
   }
 }

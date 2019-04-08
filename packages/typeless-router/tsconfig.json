@@ -28,7 +28,11 @@
     "pretty": true,
     "removeComments": true,
     "sourceMap": true,
-    "rootDirs": ["node_modules"]
+    "rootDirs": ["node_modules"],
+    "paths": {
+      "typeless":["../../typeless/dist"],
+      "typeless/rx":["../../typeless/dist/rx"]
+    }
   },
   "include": ["src", "src2"]
 }

@@ -3,6 +3,8 @@ export * from './onHmr';
 export * from './types';
 export * from './useActions';
 export * from './useMappedState';
+export * from './useRegistry';
 export * from './createModule';
 export * from './Epic';
 export * from './Store';
+export * from './TypelessContext';
