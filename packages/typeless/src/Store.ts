@@ -15,7 +15,9 @@ export class Store<TState = any> {
 
   initState() {
     if (this.reducer) {
-      this.state = this.reducer(undefined, { type: Symbol('__INIT__') });
+      this.state = this.reducer(undefined, {
+        type: [Symbol('__INIT__'), 'init'],
+      });
     }
   }
 

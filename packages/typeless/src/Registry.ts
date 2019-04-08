@@ -1,6 +1,6 @@
 import { Subject, Observable } from 'rxjs';
 import { Store } from './Store';
-import { snakeCase, getDescription } from './utils';
+import { getDescription } from './utils';
 import { Action, ActionLike } from './types';
 import { Notify } from './Notify';
 import { createOutputStream } from './createOutputStream';
@@ -11,7 +11,6 @@ export class Registry {
   private displayNames: Map<symbol, string> = new Map();
   private storesMap: Map<symbol, Store> = new Map();
   private stores: Store[] = [];
-  private actionSymbols: Map<symbol, Map<string, symbol>> = new Map();
   private input$!: Subject<Action>;
   private output$!: Observable<Action>;
 
@@ -23,7 +22,6 @@ export class Registry {
     this.nameCount.clear();
     this.displayNames.clear();
     this.storesMap.clear();
-    this.actionSymbols.clear();
     this.stores = [];
     this.initStreams();
   }
@@ -71,19 +69,6 @@ export class Registry {
     this.input$.next(action as Action);
   }
 
-  getActionSymbol(name: symbol, action: string) {
-    if (!this.actionSymbols.has(name)) {
-      this.actionSymbols.set(name, new Map());
-    }
-    const actionMap = this.actionSymbols.get(name)!;
-    if (!actionMap.has(action)) {
-      const displayName = this.getDisplayName(name);
-      const fullName = displayName + '/' + snakeCase(action).toUpperCase();
-      actionMap.set(action, Symbol(fullName));
-    }
-    return actionMap.get(action);
-  }
-
   private initStreams() {
     this.input$ = new Subject();
     this.output$ = createOutputStream(this.input$, this.stores);
@@ -92,5 +77,3 @@ export class Registry {
     });
   }
 }
-
-export const registry = new Registry();

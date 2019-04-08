@@ -1,7 +1,15 @@
-import { ActionLike, AC, Action } from './types';
+import { ActionLike, AC, Action, ActionType } from './types';
 
 export const isAction = (action: any): action is ActionLike => {
-  return action && typeof (action as any).type === 'symbol';
+  if (!action) {
+    return false;
+  }
+  if (!Array.isArray(action.type) || action.type.length !== 2) {
+    return false;
+  }
+  return (
+    typeof action.type[0] === 'symbol' && typeof action.type[1] === 'string'
+  );
 };
 
 export const repeat = (str: string, times: number) =>
@@ -24,12 +32,17 @@ export function getDescription(s: symbol) {
   return match[1];
 }
 
+export const getActionDescription = (action: ActionType) => {
+  const [symbol, type] = action;
+  return getDescription(symbol) + '/' + type;
+};
+
 export const logAction = (epicName: string, action: Action) => {
   const gray = 'color: gray; font-weight: lighter;';
   const bold = 'font-weight: bold';
   const boldBlue = 'font-weight: bold; color: blue';
   const boldRed = 'font-weight: bold; color: red';
-  const actionType = getDescription(action.type);
+  const actionType = getActionDescription(action.type);
   const time = formatTime(new Date());
   if (!actionType.startsWith(epicName)) {
     // tslint:disable-next-line:no-console
@@ -87,11 +100,11 @@ export function memoize(fn: (...args: any[]) => any) {
   };
 }
 
-export function getACSymbol(ac: AC) {
-  if (!ac.getSymbol) {
+export function getACType(ac: AC) {
+  if (!ac.getType) {
     throw new Error(
-      'getSymbol() not defined in Action Creator: ' + ac.toString()
+      'getType() not defined in Action Creator: ' + ac.toString()
     );
   }
-  return ac.getSymbol();
+  return ac.getType();
 }

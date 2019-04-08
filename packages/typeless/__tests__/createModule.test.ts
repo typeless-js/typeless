@@ -1,9 +1,4 @@
 import { createModule } from '../src/createModule';
-import { registry } from '../src/Registry';
-
-beforeEach(() => {
-  registry.reset();
-});
 
 test('createModule with actions', () => {
   const [, Actions] = createModule(Symbol('foo')).withActions({
@@ -12,16 +7,22 @@ test('createModule with actions', () => {
   });
 
   expect(Actions.action1()).toMatchInlineSnapshot(`
-        Object {
-          "type": Symbol(foo/ACTION1),
-        }
-    `);
+    Object {
+      "type": Array [
+        Symbol(foo),
+        "ACTION1",
+      ],
+    }
+  `);
   expect(Actions.action2(1)).toMatchInlineSnapshot(`
     Object {
       "payload": Object {
         "n": 1,
       },
-      "type": Symbol(foo/ACTION2),
+      "type": Array [
+        Symbol(foo),
+        "ACTION2",
+      ],
     }
   `);
 });
@@ -40,9 +41,12 @@ test('createModule with actions and state', () => {
     .withState<any>();
 
   expect(Actions.action1()).toMatchInlineSnapshot(`
-        Object {
-          "type": Symbol(foo/ACTION1),
-        }
-    `);
+    Object {
+      "type": Array [
+        Symbol(foo),
+        "ACTION1",
+      ],
+    }
+  `);
   expect(getState()).toBe(undefined);
 });

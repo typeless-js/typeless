@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import { useRegistry } from './useRegistry';
 import { AC } from './types';
-import { registry } from './Registry';
 
 export function useActions<T extends { [x: string]: AC }>(
   actionCreators: T
 ): T {
+  const registry = useRegistry();
   const names = Object.keys(actionCreators);
   return useMemo(
     () =>

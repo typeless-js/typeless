@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { AC, Deps, ExtractPayload, ActionLike } from './types';
-import { getACSymbol } from './utils';
+import { AC, Deps, ExtractPayload, ActionLike, ActionType } from './types';
+import { getACType } from './utils';
 
 export type EpicResult = Observable<ActionLike> | ActionLike | ActionLike[];
 
@@ -11,12 +11,17 @@ export type EpicHandler<TAC extends AC> = (
 ) => EpicResult;
 
 export class Epic {
-  handlers: Map<symbol, Array<EpicHandler<any>>> = new Map();
+  handlers: Map<symbol, Map<string, Array<EpicHandler<any>>>> = new Map();
   attach(epic: Epic) {
     const subHandlers = epic.handlers;
-    for (const key of epic.handlers.keys()) {
-      this.createKey(key);
-      this.handlers.get(key)!.push(...subHandlers.get(key));
+    for (const symbol of epic.handlers.keys()) {
+      for (const type of epic.handlers.get(symbol)!.keys()) {
+        this.createKey([symbol, type]);
+        this.handlers
+          .get(symbol)!
+          .get(type)!
+          .push(...subHandlers.get(symbol)!.get(type));
+      }
     }
     return this;
   }
@@ -50,19 +55,27 @@ export class Epic {
     return this.add(ac, handler);
   }
 
-  private createKey(key: symbol) {
-    if (!this.handlers.has(key)) {
-      this.handlers.set(key, []);
+  private createKey(actionType: ActionType) {
+    const [symbol, type] = actionType;
+    if (!this.handlers.has(symbol)) {
+      this.handlers.set(symbol, new Map());
+    }
+    const map = this.handlers.get(symbol)!;
+    if (!map.has(type)) {
+      map.set(type, []);
     }
   }
 
   private add(ac: AC | AC[], handler: EpicHandler<AC>) {
     const keys = Array.isArray(ac)
-      ? ac.map(x => getACSymbol(x))
-      : [getACSymbol(ac)];
-    keys.forEach(key => {
-      this.createKey(key);
-      this.handlers.get(key)!.push(handler);
+      ? ac.map(x => getACType(x))
+      : [getACType(ac)];
+    keys.forEach(([symbol, type]) => {
+      this.createKey([symbol, type]);
+      this.handlers
+        .get(symbol)!
+        .get(type)!
+        .push(handler);
     });
     return this;
   }

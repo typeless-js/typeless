@@ -2,7 +2,7 @@
 
 import { Store } from './Store';
 import { ActionLike } from './types';
-import { getDescription, formatTime } from './utils';
+import { formatTime, getActionDescription } from './utils';
 
 export class StateLogger {
   private prevState: any = {};
@@ -38,7 +38,7 @@ export class StateLogger {
     const boldGray = 'font-weight: bold; color: gray';
     const boldGreen = 'font-weight: bold; color: green';
     const boldRed = 'font-weight: bold; color: red';
-    const actionType = getDescription(action.type!);
+    const actionType = getActionDescription(action.type!);
     const duration = (this.end - this.start).toFixed(2);
     const time = formatTime(new Date(this.start));
     const extraArgs = action.payload ? [action.payload] : [];
