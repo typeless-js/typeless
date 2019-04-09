@@ -1,6 +1,7 @@
 import * as Rx from 'rxjs/operators';
 import { OperatorFunction } from 'rxjs';
 import { AC, Action } from '../types';
+import { isAction, getACType } from '../utils';
 
 export type OfType = {
   <T extends AC>(ac: T): OperatorFunction<Action, ReturnType<T>>;
@@ -52,13 +53,19 @@ export type OfType = {
   >;
 };
 
-const getType = (ac: any) => ac.toString();
+function compare(ac: AC, action: Action) {
+  if (!isAction(action)) {
+    return false;
+  }
+  const [symbol, type] = getACType(ac);
+  return symbol === action.type[0] && type === action.type[1];
+}
 
 export const ofType: OfType = (ac: AC | AC[]) => {
   if (Array.isArray(ac)) {
     return Rx.filter((action: any) =>
-      ac.some(item => getType(item) === action.type)
+      ac.some(item => compare(item, action))
     ) as any;
   }
-  return Rx.filter((action: any) => action.type === getType(ac)) as any;
+  return Rx.filter((action: any) => compare(ac, action)) as any;
 };

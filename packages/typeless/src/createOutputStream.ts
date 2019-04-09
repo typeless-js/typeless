@@ -41,6 +41,8 @@ export function createOutputStream(
 ): Observable<Action> {
   const deps = { action$: action$ as Deps['action$'] };
   return action$.pipe(
+    subscribeOn(queueScheduler),
+    observeOn(queueScheduler),
     mergeMap(sourceAction => {
       const handlers = getHandlers(stores, sourceAction);
       if (!handlers.length) {
@@ -87,8 +89,6 @@ export function createOutputStream(
           );
         })
       );
-    }),
-    subscribeOn(queueScheduler),
-    observeOn(queueScheduler)
+    })
   );
 }
