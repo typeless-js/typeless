@@ -22,14 +22,14 @@ export type ConvertActions<T> = { [P in keyof T]: ConvertAC<T[P]> };
 
 export type ActionMap = { [name: string]: Nullable<(...args: any[]) => {}> };
 
-interface HandleWithState<TState> {
+export interface HandleWithState<TState> {
   (): void;
   epic(): Epic;
   reducer(initialState: TState): ChainedReducer<TState>;
   reset(): void;
 }
 
-interface Handle {
+export interface Handle {
   (): void;
   epic(): Epic;
 }
