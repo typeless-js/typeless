@@ -67,7 +67,7 @@ export class ChainedReducer<S> {
       });
       this.reducer = reducer;
     }
-    return this.reducer;
+    return this.reducer!;
   }
 
   attach<T extends keyof S>(fn: Reducer<S>): ChainedReducer<S> & Reducer<S>;
