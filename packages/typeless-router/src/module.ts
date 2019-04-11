@@ -11,16 +11,17 @@ import {
   getFullURL,
   getLocationChangeProps,
   getLocationProps,
+  redirectWithLeadingHash,
 } from './utils';
 
-const [withRouter, RouterActions, getRouterState] = createModule(
-  Symbol('router')
-)
+export const RouterSymbol = Symbol('router');
+
+const [useRouter, RouterActions, getRouterState] = createModule(RouterSymbol)
   .withActions({
     $mounted: null,
     $unmounted: null,
-    locationChange: (data: RouterLocation) => ({
-      payload: data,
+    locationChange: (location: RouterLocation) => ({
+      payload: { location },
     }),
     push: (location: LocationChange) => ({
       payload: { location },
@@ -38,20 +39,24 @@ const initialState: RouterState = {
   prevLocation: null,
 };
 
-export function createWithRouter(
-  options: HistoryOptions = { type: 'browser' }
-) {
+export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
   ensureHTML5History();
 
-  withRouter
+  useRouter.reset();
+
+  useRouter
     .epic()
     .on(RouterActions.$mounted, (_, { action$ }) => {
+      if (options.type === 'hash') {
+        redirectWithLeadingHash();
+      }
+
       return new Rx.Observable(subscriber => {
         const notify = () => {
           subscriber.next(
             RouterActions.locationChange({
               ...getLocationProps(options.type),
-              type: 'replace',
+              type: 'push',
             })
           );
         };
@@ -82,12 +87,12 @@ export function createWithRouter(
       });
     });
 
-  withRouter
+  useRouter
     .reducer(initialState)
-    .on(RouterActions.locationChange, (state, payload) => {
+    .on(RouterActions.locationChange, (state, { location }) => {
       state.prevLocation = state.location;
-      state.location = payload;
+      state.location = location;
     });
 
-  return withRouter;
+  return useRouter;
 }
