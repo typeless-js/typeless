@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "lerna run test",
-    "pub": "lerna publish"
+    "pub": "lerna publish --force-publish"
   },
   "workspaces": [
     "packages/*"
