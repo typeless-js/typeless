@@ -72,3 +72,21 @@ export function getLocationProps(historyType: HistoryType) {
       };
   }
 }
+
+export function redirectWithLeadingHash() {
+  if (window.location.hash[1] === '/') {
+    return;
+  }
+  let hash = window.location.hash;
+  if (hash[0] === '#') {
+    hash = hash.substr(1);
+  }
+  if (hash[0] !== '/') {
+    hash = '/' + hash;
+  }
+  history.replaceState(
+    null,
+    '',
+    window.location.pathname + window.location.search + '#' + hash
+  );
+}

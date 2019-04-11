@@ -26,6 +26,7 @@ interface HandleWithState<TState> {
   (): void;
   epic(): Epic;
   reducer(initialState: TState): ChainedReducer<TState>;
+  reset(): void;
 }
 
 interface Handle {
@@ -124,6 +125,11 @@ export function createModule(name: symbol) {
         reducer = chained.asReducer();
       }
       return reducer;
+    };
+    handle.reset = () => {
+      epic = null;
+      reducer = null;
+      store = null;
     };
     return handle;
   }
