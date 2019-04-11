@@ -1,68 +1,85 @@
 import { createModule } from 'typeless';
 import * as Rx from 'typeless/rx';
+import {
+  HistoryOptions,
+  RouterLocation,
+  LocationChange,
+  RouterState,
+} from './types';
+import {
+  ensureHTML5History,
+  getFullURL,
+  getLocationChangeProps,
+  getLocationProps,
+} from './utils';
 
 const [withRouter, RouterActions, getRouterState] = createModule(
   Symbol('router')
 )
   .withActions({
     $mounted: null,
+    $unmounted: null,
     locationChange: (data: RouterLocation) => ({
       payload: data,
     }),
-    push: (url: string) => ({
-      payload: { url },
+    push: (location: LocationChange) => ({
+      payload: { location },
     }),
-    replace: (url: string) => ({
-      payload: { url },
+    replace: (location: LocationChange) => ({
+      payload: { location },
     }),
   })
   .withState<RouterState>();
 
 export { RouterActions, getRouterState };
 
-export interface RouterLocation {
-  hash: string;
-  pathname: string;
-  search: string;
-  state?: object;
-}
-
-export interface RouterState {
-  location: RouterLocation | null;
-  prevLocation: RouterLocation | null;
-}
 const initialState: RouterState = {
   location: null,
   prevLocation: null,
 };
 
-export interface BaseHistory {
-  location: RouterLocation;
-  push(url: string): void;
-  replace(url: string): void;
-  listen(listener: (location: RouterLocation) => void): () => void;
-}
+export function createWithRouter(
+  options: HistoryOptions = { type: 'browser' }
+) {
+  ensureHTML5History();
 
-export function createWithRouter(history: BaseHistory) {
   withRouter
     .epic()
-    .on(
-      RouterActions.$mounted,
-      () =>
-        new Rx.Observable(subscriber => {
-          subscriber.next(RouterActions.locationChange(history.location));
-          return history.listen(location => {
-            subscriber.next(RouterActions.locationChange(location));
-          });
-        })
-    )
-    .on(RouterActions.push, location => {
-      history.push(location as any);
-      return Rx.empty();
+    .on(RouterActions.$mounted, (_, { action$ }) => {
+      return new Rx.Observable(subscriber => {
+        const notify = () => {
+          subscriber.next(
+            RouterActions.locationChange({
+              ...getLocationProps(options.type),
+              type: 'replace',
+            })
+          );
+        };
+        const onChange = () => {
+          notify();
+        };
+        notify();
+        window.addEventListener('popstate', onChange);
+        return () => {
+          window.removeEventListener('popstate', onChange);
+        };
+      }).pipe(
+        Rx.takeUntil(action$.pipe(Rx.waitForType(RouterActions.$unmounted)))
+      );
     })
-    .on(RouterActions.replace, location => {
-      history.replace(location as any);
-      return Rx.empty();
+    .on(RouterActions.push, ({ location }) => {
+      history.pushState(null, '', getFullURL(options.type, location));
+      return RouterActions.locationChange({
+        ...getLocationChangeProps(location),
+        type: 'push',
+      });
+    })
+    .on(RouterActions.replace, ({ location }) => {
+      history.replaceState(null, '', getFullURL(options.type, location));
+      return RouterActions.locationChange({
+        ...getLocationChangeProps(location),
+        type: 'replace',
+      });
     });
 
   withRouter

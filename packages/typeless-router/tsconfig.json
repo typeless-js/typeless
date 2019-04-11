@@ -34,5 +34,5 @@
       "typeless/rx":["../../typeless/dist/rx"]
     }
   },
-  "include": ["src", "src2"]
+  "include": ["src" ]
 }
