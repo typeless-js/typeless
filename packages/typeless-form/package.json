@@ -2,9 +2,9 @@
   "name": "typeless-form",
   "version": "0.1.6-alpha.0",
   "description": "",
-  "main": "index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
+  "main": "dist/index.js",
+  "module": "dist/es/index.js",
+  "jsnext:main": "dist/es/index.js",
   "sideEffects": false,
   "scripts": {
     "lint": "tslint -t codeFrame 'src/**/*.ts' '__tests__/**/*.ts'",

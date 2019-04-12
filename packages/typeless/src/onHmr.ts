@@ -24,7 +24,7 @@ export const stopHmr = () => {
   }
 };
 
-export function Hmr({ children }: { children: React.ReactChild }) {
+export function Hmr({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     setTimeout(() => {
       stopHmr();
