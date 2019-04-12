@@ -20,6 +20,7 @@ const [useRouter, RouterActions, getRouterState] = createModule(RouterSymbol)
   .withActions({
     $mounted: null,
     $unmounted: null,
+    dispose: null,
     locationChange: (location: RouterLocation) => ({
       payload: { location },
     }),
@@ -69,7 +70,7 @@ export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
           window.removeEventListener('popstate', onChange);
         };
       }).pipe(
-        Rx.takeUntil(action$.pipe(Rx.waitForType(RouterActions.$unmounted)))
+        Rx.takeUntil(action$.pipe(Rx.waitForType(RouterActions.dispose)))
       );
     })
     .on(RouterActions.push, ({ location }) => {
