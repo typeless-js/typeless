@@ -30,5 +30,5 @@ export function Hmr({ children }: { children: React.ReactNode }) {
       stopHmr();
     });
   }, []);
-  return children;
+  return <>{children}</>;
 }
