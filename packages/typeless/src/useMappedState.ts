@@ -9,7 +9,7 @@ export function useMappedState<T1, R>(
 ): R;
 export function useMappedState<T1, T2, R>(
   stateGetters: [StateGetter<T1>, StateGetter<T2>],
-  mapper: (state1: T1, state2: T1) => R,
+  mapper: (state1: T1, state2: T2) => R,
   deps?: any[]
 ): R;
 export function useMappedState<T1, T2, T3, R>(
