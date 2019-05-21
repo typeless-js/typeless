@@ -8,9 +8,9 @@ interface BaseLoaderOptions<TState> {
   children?: React.ReactChild;
   epic: Epic<TState>;
   actions?: {
-    mounted?: AC;
-    unmounted?: AC;
-    remounted?: AC;
+    $mounted?: AC;
+    $unmounted?: AC;
+    $remounted?: AC;
     [x: string]: AC;
   };
 }
