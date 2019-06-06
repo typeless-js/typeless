@@ -22,13 +22,13 @@ const [useRouter, RouterActions, getRouterState] = createModule(RouterSymbol)
     $unmounted: null,
     dispose: null,
     locationChange: (location: RouterLocation) => ({
-      payload: { location },
+      payload: location,
     }),
     push: (location: LocationChange) => ({
-      payload: { location },
+      payload: location,
     }),
     replace: (location: LocationChange) => ({
-      payload: { location },
+      payload: location,
     }),
   })
   .withState<RouterState>();
@@ -73,14 +73,14 @@ export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
         Rx.takeUntil(action$.pipe(Rx.waitForType(RouterActions.dispose)))
       );
     })
-    .on(RouterActions.push, ({ location }) => {
+    .on(RouterActions.push, location => {
       history.pushState(null, '', getFullURL(options.type, location));
       return RouterActions.locationChange({
         ...getLocationChangeProps(location),
         type: 'push',
       });
     })
-    .on(RouterActions.replace, ({ location }) => {
+    .on(RouterActions.replace, location => {
       history.replaceState(null, '', getFullURL(options.type, location));
       return RouterActions.locationChange({
         ...getLocationChangeProps(location),
@@ -90,7 +90,7 @@ export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
 
   useRouter
     .reducer(initialState)
-    .on(RouterActions.locationChange, (state, { location }) => {
+    .on(RouterActions.locationChange, (state, location) => {
       state.prevLocation = state.location;
       state.location = location;
     });

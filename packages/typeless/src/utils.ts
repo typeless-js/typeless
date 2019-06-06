@@ -1,5 +1,13 @@
 import { ActionLike, AC, Action, ActionType } from './types';
 
+function isSymbol(x: any): x is symbol {
+  return (
+    typeof x === 'symbol' ||
+    (typeof x === 'object' &&
+      Object.prototype.toString.call(x) === '[object Symbol]')
+  );
+}
+
 export const isAction = (action: any): action is ActionLike => {
   if (!action) {
     return false;
@@ -7,9 +15,7 @@ export const isAction = (action: any): action is ActionLike => {
   if (!Array.isArray(action.type) || action.type.length !== 2) {
     return false;
   }
-  return (
-    typeof action.type[0] === 'symbol' && typeof action.type[1] === 'string'
-  );
+  return isSymbol(action.type[0]) && typeof action.type[1] === 'string';
 };
 
 export const repeat = (str: string, times: number) =>

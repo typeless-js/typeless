@@ -5,6 +5,8 @@ export * from './useActions';
 export * from './useMappedState';
 export * from './useRegistry';
 export * from './createModule';
+export * from './createSelector';
+export * from './useSelector';
 export * from './Epic';
 export * from './Store';
 export * from './TypelessContext';

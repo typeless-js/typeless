@@ -16,19 +16,26 @@ import { logAction, isAction } from './utils';
 function getHandlers(stores: Store[], action: Action) {
   const [symbol, type] = action.type;
   return stores
-    .filter(
-      store =>
-        store.isEnabled &&
-        store.epic &&
-        store.epic.handlers.has(symbol) &&
-        store.epic.handlers.get(symbol)!.has(type)
-    )
-    .map(store =>
-      store
-        .epic!.handlers.get(symbol)!
-        .get(type)!
-        .map(handler => ({ store, handler }))
-    )
+    .filter(store => {
+      if (!store.isEnabled || !store.epic) {
+        return false;
+      }
+      const { handlers, moduleHandlers } = store.epic;
+
+      return (
+        moduleHandlers.has(symbol) ||
+        (handlers.has(symbol) && handlers.get(symbol)!.has(type))
+      );
+    })
+    .map(store => {
+      const { handlers, moduleHandlers } = store.epic;
+      return [
+        ...(handlers.has(symbol) && handlers.get(symbol).has(type)
+          ? handlers.get(symbol).get(type)
+          : []),
+        ...(moduleHandlers.has(symbol) ? moduleHandlers.get(symbol) : []),
+      ].map(handler => ({ store, handler }));
+    })
     .reduce((ret, arr) => {
       ret.push(...arr);
       return ret;

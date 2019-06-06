@@ -12,6 +12,8 @@ export type EpicHandler<TAC extends AC> = (
 
 export class Epic {
   handlers: Map<symbol, Map<string, Array<EpicHandler<any>>>> = new Map();
+  moduleHandlers: Map<symbol, Array<EpicHandler<any>>> = new Map();
+
   attach(epic: Epic) {
     const subHandlers = epic.handlers;
     for (const symbol of epic.handlers.keys()) {
@@ -53,6 +55,13 @@ export class Epic {
   ): this;
   onMany(ac: AC[], handler: EpicHandler<AC>) {
     return this.add(ac, handler);
+  }
+
+  onModule(moduleSymbol: symbol, handler: EpicHandler<AC>) {
+    if (!this.moduleHandlers.has(moduleSymbol)) {
+      this.moduleHandlers.set(moduleSymbol, []);
+    }
+    this.moduleHandlers.get(moduleSymbol!).push(handler);
   }
 
   private createKey(actionType: ActionType) {
