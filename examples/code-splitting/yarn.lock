@@ -8104,11 +8104,6 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-react-hook@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/redux-react-hook/-/redux-react-hook-3.2.0.tgz#a0793054aa6554007094cd6dc6f47082c089b0b9"
-  integrity sha512-GibqTO/Cgl2nRuhw2wacyfd2Nds8pYAPU/eYuTqXZ9v01CT7s7LSwDfPdtQua7TBqE8XNjrwKZqfDyEtfXt7vQ==
-
 redux@4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
@@ -9403,13 +9398,12 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeless@0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.0.17.tgz#2b64e02ae8b40bf5656deefe6a5e305cbefc08a5"
-  integrity sha512-9z6eIhrCry0GLykMW6xYo915YKiGWy+Pv1XwwH7bQ5ZeTBbQkA9NlpawBUVsGFUlftAlyIrnZWirtjAiiLQhgQ==
+typeless@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.1.10.tgz#357fa8aa5a4693250522fb64ba7f4d90cd015c13"
+  integrity sha512-tAxu8ifDM7pF0LsNVpfYIVfIz7NevcgajFslXmzajc2rGOg2+6YxwEzT1mpSxyQpkEevzAp4oT2XMLIU7JajFw==
   dependencies:
     immer "^1.8.0"
-    redux-react-hook "^3.1.0"
 
 uglify-js@3.4.x, uglify-js@^3.1.4:
   version "3.4.9"

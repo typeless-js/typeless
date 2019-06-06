@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Rx from 'typeless/rx';
-import { useModule, createEpic, createReducer } from 'typeless';
-import { CatActions, CatState, MODULE } from './interface';
+import { useModule, CatState, CatActions } from './interface';
 import { CatView } from './components/CatView';
 
 function fetchCatData() {
@@ -18,7 +17,7 @@ function fetchCatData() {
   );
 }
 
-const epic = createEpic(MODULE).on(CatActions.loadCat, (_, { action$ }) =>
+useModule.epic().on(CatActions.loadCat, (_, { action$ }) =>
   fetchCatData().pipe(
     Rx.map(cat => CatActions.catLoaded(cat)),
     Rx.catchError(err => {
@@ -35,7 +34,8 @@ const initialState: CatState = {
   error: '',
 };
 
-const reducer = createReducer(initialState)
+useModule
+  .reducer(initialState)
   .on(CatActions.loadCat, state => {
     state.viewType = 'loading';
   })
@@ -53,11 +53,7 @@ const reducer = createReducer(initialState)
   });
 
 export default function CatModule() {
-  useModule({
-    epic,
-    reducer,
-    reducerPath: ['cat'],
-  });
+  useModule();
 
   return <CatView />;
 }

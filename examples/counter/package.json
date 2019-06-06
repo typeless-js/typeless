@@ -8,9 +8,8 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-scripts": "2.1.8",
-    "redux": "4.0.1",
     "rxjs": "6.3.3",
-    "typeless": "0.0.14"
+    "typeless": "^0.1.10"
   },
   "devDependencies": {
     "@types/react": "16.8.7",

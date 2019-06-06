@@ -1,18 +1,13 @@
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
+import { SubBSymbol } from './symbol';
 
-export const MODULE = 'subB';
-
-export const SubBActions = createActions(MODULE, {
-  decrease: null,
-  $unmounting: null,
-});
+export const [useModule, SubBActions, getSubBState] = createModule(SubBSymbol)
+  .withActions({
+    decrease: null,
+    $unmounting: null,
+  })
+  .withState<SubBState>();
 
 export interface SubBState {
   counter: number;
-}
-
-declare module 'typeless/types' {
-  interface DefaultState {
-    subB: SubBState;
-  }
 }

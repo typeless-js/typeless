@@ -1,13 +1,19 @@
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
+import { CatSymbol } from './symbol';
 
-export const MODULE = 'cat';
+export const [useModule, CatActions, getCatState] = createModule(CatSymbol)
+  .withActions({
+    loadCat: null,
+    cancel: null,
+    catLoaded: (cat: Cat) => ({ payload: { cat } }),
+    errorOcurred: (error: string) => ({ payload: { error } }),
+  })
+  .withState<CatState>();
 
-export const CatActions = createActions(MODULE, {
-  loadCat: null,
-  cancel: null,
-  catLoaded: (cat: Cat) => ({ payload: { cat } }),
-  errorOcurred: (error: string) => ({ payload: { error } }),
-});
+export interface CounterState {
+  isLoading: boolean;
+  count: number;
+}
 
 type ViewType = 'loading' | 'details' | 'error';
 
@@ -19,10 +25,4 @@ export interface CatState {
   viewType: ViewType;
   cat: Cat | null;
   error: string;
-}
-
-declare module 'typeless/types' {
-  interface DefaultState {
-    cat: CatState;
-  }
 }

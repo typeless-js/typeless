@@ -8104,19 +8104,6 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-react-hook@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/redux-react-hook/-/redux-react-hook-3.2.0.tgz#a0793054aa6554007094cd6dc6f47082c089b0b9"
-  integrity sha512-GibqTO/Cgl2nRuhw2wacyfd2Nds8pYAPU/eYuTqXZ9v01CT7s7LSwDfPdtQua7TBqE8XNjrwKZqfDyEtfXt7vQ==
-
-redux@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
-  integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==
-  dependencies:
-    loose-envify "^1.4.0"
-    symbol-observable "^1.2.0"
-
 regenerate-unicode-properties@^8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-8.0.2.tgz#7b38faa296252376d363558cfbda90c9ce709662"
@@ -9128,11 +9115,6 @@ svgo@^1.0.0, svgo@^1.1.1:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-symbol-observable@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
-  integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
-
 symbol-tree@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
@@ -9403,13 +9385,12 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeless@0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.0.14.tgz#76ff35c6a62ba00fb9bfd86b9ed972ac074c5922"
-  integrity sha512-MTxzAMtd6qr6IuKFsHmYlkxMxQ87XiyZLLRG87zWGRh49GYvxLzx7/JB4YEpDnf4OgXoWiLvSwFH4vKYFx8WvA==
+typeless@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.1.10.tgz#357fa8aa5a4693250522fb64ba7f4d90cd015c13"
+  integrity sha512-tAxu8ifDM7pF0LsNVpfYIVfIz7NevcgajFslXmzajc2rGOg2+6YxwEzT1mpSxyQpkEevzAp4oT2XMLIU7JajFw==
   dependencies:
     immer "^1.8.0"
-    redux-react-hook "^3.1.0"
 
 typescript@^3.4.2:
   version "3.4.2"

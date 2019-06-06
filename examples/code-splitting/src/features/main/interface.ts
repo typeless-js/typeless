@@ -1,19 +1,14 @@
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
+import { MainSymbol } from './symbol';
 
-export const MODULE = 'main';
-
-export const MainActions = createActions(MODULE, {
-  show: (viewType: ViewType) => ({ payload: { viewType } }),
-});
+export const [useModule, MainActions, getMainState] = createModule(MainSymbol)
+  .withActions({
+    show: (viewType: ViewType) => ({ payload: { viewType } }),
+  })
+  .withState<MainState>();
 
 export type ViewType = 'subA' | 'subB' | 'subC';
 
 export interface MainState {
   viewType: ViewType | null;
-}
-
-declare module 'typeless/types' {
-  interface DefaultState {
-    main: MainState;
-  }
 }
