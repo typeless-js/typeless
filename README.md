@@ -32,5 +32,6 @@ Creating scalable React apps with Typescript can be painful. There are many smal
 
 
 
+
 ## License
 MIT
