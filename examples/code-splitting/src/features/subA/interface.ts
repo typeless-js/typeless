@@ -1,17 +1,12 @@
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
+import { SubASymbol } from './symbol';
 
-export const MODULE = 'subA';
-
-export const SubAActions = createActions(MODULE, {
-  increase: null,
-});
+export const [useModule, SubAActions, getSubAState] = createModule(SubASymbol)
+  .withActions({
+    increase: null,
+  })
+  .withState<SubAState>();
 
 export interface SubAState {
   counter: number;
-}
-
-declare module 'typeless/types' {
-  interface DefaultState {
-    subA: SubAState;
-  }
 }

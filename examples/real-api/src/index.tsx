@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { initialize } from 'typeless';
+import { DefaultTypelessProvider } from 'typeless';
 import CatModule from './features/cat/module';
 
-const { TypelessProvider } = initialize();
-
 ReactDOM.render(
-  <TypelessProvider>
+  <DefaultTypelessProvider>
     <CatModule />
-  </TypelessProvider>,
+  </DefaultTypelessProvider>,
   document.getElementById('app')
 );

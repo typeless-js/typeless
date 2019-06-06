@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActions, useMappedState } from 'typeless';
-import { SubCActions } from '../interface';
+import { useActions } from 'typeless';
+import { SubCActions, getSubCState } from '../interface';
 
 export function SubCView() {
   const { double } = useActions(SubCActions);
-  const { counter } = useMappedState(state => state.subC);
+  const { counter } = getSubCState.useState();
 
   return (
     <div>
