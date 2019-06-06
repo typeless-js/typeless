@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { StateGetter } from './types';
 import { Store } from './Store';
 
@@ -36,7 +36,16 @@ export function useMappedState(
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
 
   const stores = React.useMemo(
-    () => stateGetters.map((getter: any) => getter._store as Store),
+    () =>
+      stateGetters.map((getter: any) => {
+        if (!getter._store) {
+          throw new Error(
+            `_store not found in getter for module "${getter._module ||
+              'unknown'}". Make sure to load the module before using 'useState' or 'useMappedState'.`
+          );
+        }
+        return getter._store as Store;
+      }),
     []
   );
 
@@ -53,7 +62,9 @@ export function useMappedState(
   const stateRef = React.useRef(getMappedState());
   const subscribeRef = React.useRef(getSubscribeFn);
 
-  React.useEffect(() => {
+  // subscribe to stored immediately
+  // React.useEffect can sometimes miss updates
+  React.useLayoutEffect(() => {
     const subscriptions = stores.map(store =>
       store.subscribe(() => subscribeRef.current())
     );

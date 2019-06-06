@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Registry } from './Registry';
 
 export const TypelessContext = React.createContext(null as null | {

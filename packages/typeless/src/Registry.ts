@@ -1,3 +1,4 @@
+import * as ReactDom from 'react-dom';
 import { Subject, Observable } from 'rxjs';
 import { Store } from './Store';
 import { getDescription } from './utils';
@@ -48,25 +49,27 @@ export class Registry {
   }
 
   dispatch(action: ActionLike) {
-    const notify = new Notify();
-    let stateLogger: StateLogger | null = null;
-    if (process.env.NODE_ENV === 'development') {
-      stateLogger = new StateLogger(this.stores);
-    }
-    if (stateLogger) {
-      stateLogger.calcState('prev');
-    }
-    for (const store of this.stores) {
-      store.dispatch(action, notify);
-    }
-    if (stateLogger) {
-      stateLogger.calcState('next');
-      stateLogger.log(action);
-    }
-    for (const fn of notify.handlers) {
-      fn();
-    }
-    this.input$.next(action as Action);
+    ReactDom.unstable_batchedUpdates(() => {
+      const notify = new Notify();
+      let stateLogger: StateLogger | null = null;
+      if (process.env.NODE_ENV === 'development') {
+        stateLogger = new StateLogger(this.stores);
+      }
+      if (stateLogger) {
+        stateLogger.calcState('prev');
+      }
+      for (const store of this.stores) {
+        store.dispatch(action, notify);
+      }
+      if (stateLogger) {
+        stateLogger.calcState('next');
+        stateLogger.log(action);
+      }
+      for (const fn of notify.handlers) {
+        fn();
+      }
+      this.input$.next(action as Action);
+    });
   }
 
   private initStreams() {

@@ -10,7 +10,7 @@ export function useActions<T extends { [x: string]: AC }>(
   return useMemo(
     () =>
       names.reduce(
-        (mapped, key) => {
+        (mapped: any, key) => {
           mapped[key] = (...args: any[]) => {
             const action = actionCreators[key](...args);
             registry.dispatch(action);

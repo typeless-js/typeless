@@ -100,7 +100,7 @@ export function createForm<TData>(options: FormOptions<TData>) {
       state.values[field] = value;
     })
     .on(FormActions.changeMany, (state, { values }) => {
-      Object.assign({}, state.values, values);
+      Object.assign(state.values, values);
     })
     .on(FormActions.replace, (state, { values }) => {
       state.values = values;
@@ -126,7 +126,7 @@ export function createForm<TData>(options: FormOptions<TData>) {
 
   const useFormModule = () => handle();
 
-  const FormProvider = (props: { children: React.ReactChild }) => {
+  const FormProvider: React.SFC<{ children: React.ReactNode }> = props => {
     const { blur, change } = useActions(FormActions);
     const form = getFormState.useState();
     const { children } = props;

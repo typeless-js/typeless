@@ -1,6 +1,6 @@
 import { ChainedReducer } from './ChainedReducer';
 import { Epic } from './Epic';
-import React from 'react';
+import * as React from 'react';
 import { getIsHmr } from './onHmr';
 import { StateGetter } from './types';
 import { useMappedState } from './useMappedState';
@@ -71,6 +71,7 @@ export function createModule(name: symbol) {
   base.withActions = withActions;
   base.withState = withState;
 
+  getState._module = name.toString();
   getState._store = null as Store<any> | null;
   getState.useState = () => useMappedState([getState as any], state => state);
 
@@ -106,7 +107,9 @@ export function createModule(name: symbol) {
           if (actions && actions.$unmounting) {
             registry.dispatch(actions.$unmounting());
           }
-          store.disable();
+          if (store) {
+            store.disable();
+          }
           if (actions && actions.$unmounted) {
             registry.dispatch(actions.$unmounted());
           }
@@ -114,9 +117,7 @@ export function createModule(name: symbol) {
       }, []);
     };
     handle.epic = () => {
-      if (!epic) {
-        epic = new Epic();
-      }
+      epic = new Epic();
       return epic;
     };
     handle.reducer = initialState => {
