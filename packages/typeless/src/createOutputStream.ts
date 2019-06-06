@@ -28,10 +28,10 @@ function getHandlers(stores: Store[], action: Action) {
       );
     })
     .map(store => {
-      const { handlers, moduleHandlers } = store.epic;
+      const { handlers, moduleHandlers } = store.epic!;
       return [
-        ...(handlers.has(symbol) && handlers.get(symbol).has(type)
-          ? handlers.get(symbol).get(type)
+        ...(handlers.has(symbol) && handlers.get(symbol)!.has(type)
+          ? handlers.get(symbol)!.get(type)
           : []),
         ...(moduleHandlers.has(symbol) ? moduleHandlers.get(symbol) : []),
       ].map(handler => ({ store, handler }));
