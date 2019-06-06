@@ -17,7 +17,6 @@ yarn add typeless
 Creating scalable React apps with Typescript can be painful. There are many small libraries that can be combined, but none of them provide a complete solution for building complex applications.  
 `typeless` provide all building blocks: actions creators, reducers, epics with a minimal overhead of type annotation.  
 
-
 ## Features
 - Designed for Typescript and type safety. Only minimal type annotations are required, all types are inferred where possible.
 - Simple and developer friendly syntax with React hooks.
