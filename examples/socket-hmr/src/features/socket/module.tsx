@@ -42,17 +42,12 @@ useModule
   .onMany(
     [SocketActions.$mounted, SocketActions.$remounted],
     (_, { action$ }) => {
-      console.log('!!!@@@@@@@@@@@@@@@@@@@@@@@@@');
-      return new Rx.Observable(subscriber => {
-        const dispose = subscribe(text => {
+      return new Rx.Observable(subscriber =>
+        subscribe(text => {
           console.log('handler B:', text);
           subscriber.next(SocketActions.messageReceived('b', CHANGE_ME + text));
-        });
-        return () => {
-          console.log('######################');
-          dispose();
-        };
-      }).pipe(
+        })
+      ).pipe(
         Rx.takeUntil(
           action$.pipe(
             Rx.ofType([SocketActions.$unmounted, SocketActions.$remounted])
