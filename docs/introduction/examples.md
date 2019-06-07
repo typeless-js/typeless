@@ -31,7 +31,7 @@ A simple demo with code splitting for modules using React Suspense and React Laz
 
 ### Basic HMR
 A basic demo with HMR support.  
-<a href="https://codesandbox.io/s/oxz2rjr2kz" target="_blank">Live demo</a>  
+<a href="https://codesandbox.io/s/1q3jn" target="_blank">Live demo</a>  
 <a href="https://github.com/typeless-js/typeless/tree/master/examples/basic-hmr" target="_blank">Source code</a>  
 
 ----
