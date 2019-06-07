@@ -84,25 +84,30 @@ export function createModule(name: symbol) {
         store = registry.getStore(name);
         getState._store = store;
       }
+
       React.useMemo(() => {
         store.enable({
           epic,
           reducer,
         });
+        if (!getIsHmr()) {
+          store.initState();
+          if (actions && actions.$init) {
+            registry.dispatch(actions.$init());
+          }
+        }
+      }, []);
 
+      React.useLayoutEffect(() => {
         if (getIsHmr()) {
           if (actions && actions.$remounted) {
             registry.dispatch(actions.$remounted());
           }
         } else {
-          store.initState();
           if (actions && actions.$mounted) {
             registry.dispatch(actions.$mounted());
           }
         }
-      }, []);
-
-      React.useEffect(() => {
         return () => {
           if (actions && actions.$unmounting) {
             registry.dispatch(actions.$unmounting());
