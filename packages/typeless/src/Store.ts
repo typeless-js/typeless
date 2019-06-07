@@ -10,6 +10,7 @@ export class Store<TState = any> {
   public reducer: Reducer<TState> | null = null;
   public epic: Epic | null = null;
   private listeners: Listener[] = [];
+  private usageCount: number = 0;
 
   constructor(public name: symbol, public displayName: string) {}
 
@@ -22,15 +23,19 @@ export class Store<TState = any> {
   }
 
   enable({ epic, reducer }: { epic?: Epic; reducer?: Reducer<TState> }) {
+    this.usageCount++;
     this.epic = epic || null;
     this.reducer = reducer || null;
     this.isEnabled = true;
   }
 
   disable() {
-    this.epic = null;
-    this.reducer = null;
-    this.isEnabled = false;
+    this.usageCount--;
+    if (!this.usageCount) {
+      this.epic = null;
+      this.reducer = null;
+      this.isEnabled = false;
+    }
   }
 
   dispatch(action: ActionLike, notify?: Notify) {
