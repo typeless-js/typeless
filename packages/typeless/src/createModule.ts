@@ -126,10 +126,8 @@ export function createModule(name: symbol) {
       return epic;
     };
     handle.reducer = initialState => {
-      if (!reducer) {
-        const chained = new ChainedReducer(initialState);
-        reducer = chained.asReducer();
-      }
+      const chained = new ChainedReducer(initialState);
+      reducer = chained.asReducer();
       return reducer;
     };
     handle.reset = () => {
