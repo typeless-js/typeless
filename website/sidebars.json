@@ -9,10 +9,10 @@
     ],
     "Using typeless": [
       "using-typeless/hmr",
-      "using-typeless/code-splitting",
-      "using-typeless/custom-store"
+      "using-typeless/code-splitting"
     ],
     "API Reference": [
+      "api/createModule",
       "api/createActions",
       "api/createEpic",
       "api/createReducer",

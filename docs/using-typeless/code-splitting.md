@@ -13,20 +13,12 @@ Check [Code-Splitting](/introduction/examples#code-splitting) for full working e
 
 
 ```tsx
-// src/features/foo/module
+// src/features/foo/module.tsx
 
-const epic = createEpic(MODULE);
-
-const initialState: FooState = {};
-
-const reducer = createReducer(initialState);
+import { useModule } from './interface'
 
 export default function FooModule() {
-  useModule({
-    epic,
-    reducer,
-    reducerPath: ['foo'],
-  });
+  useModule();
 
   return <FooView />;
 }

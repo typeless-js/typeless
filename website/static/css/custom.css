@@ -10,6 +10,10 @@
 
 @media only screen and (min-width: 1500px) {}
 
+body {
+  overflow-y: scroll;
+}
+
 .button.hero {
   background: #2c3d50;
   color: #fff;
