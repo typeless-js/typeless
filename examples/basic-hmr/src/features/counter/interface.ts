@@ -1,17 +1,14 @@
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
+import { CounterSymbol } from './symbol';
 
-export const MODULE = 'counter';
-
-export const CounterActions = createActions(MODULE, {
-  increase: null,
-});
+export const [useModule, CounterActions, getCounterState] = createModule(
+  CounterSymbol
+)
+  .withActions({
+    increase: null,
+  })
+  .withState<CounterState>();
 
 export interface CounterState {
   count: number;
-}
-
-declare module 'typeless/types' {
-  interface DefaultState {
-    counter: CounterState;
-  }
 }
