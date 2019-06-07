@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActions, useMappedState } from 'typeless';
-import { CounterActions } from '../interface';
+import { useActions } from 'typeless';
+import { CounterActions, getCounterState } from '../interface';
 
 export function Counter() {
   const { increase } = useActions(CounterActions);
-  const { count } = useMappedState(state => state.counter);
+  const { count } = getCounterState.useState();
   return (
     <div>
       <button onClick={increase}>increase</button>

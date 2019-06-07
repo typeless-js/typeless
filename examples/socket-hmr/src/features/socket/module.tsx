@@ -1,7 +1,11 @@
 import React from 'react';
 import * as Rx from 'typeless/rx';
-import { useModule, createEpic, createReducer } from 'typeless';
-import { SocketActions, SocketState, MODULE } from './interface';
+import {
+  SocketActions,
+  SocketState,
+  useModule,
+  getSocketState,
+} from './interface';
 import { SocketView } from './components/SocketView';
 import { socket } from '../../socket';
 
@@ -15,7 +19,8 @@ const subscribe = (fn: (text: string) => void) => {
   };
 };
 
-const epic = createEpic(MODULE)
+useModule
+  .epic()
   // Handler A:
   // ignore HMR reloads
   // handler won't be updated once loaded to the root epic
@@ -36,19 +41,25 @@ const epic = createEpic(MODULE)
   // resubscribe on every HMR event
   .onMany(
     [SocketActions.$mounted, SocketActions.$remounted],
-    (_, { action$ }) =>
-      new Rx.Observable(subscriber => {
-        return subscribe(text => {
+    (_, { action$ }) => {
+      console.log('!!!@@@@@@@@@@@@@@@@@@@@@@@@@');
+      return new Rx.Observable(subscriber => {
+        const dispose = subscribe(text => {
           console.log('handler B:', text);
           subscriber.next(SocketActions.messageReceived('b', CHANGE_ME + text));
         });
+        return () => {
+          console.log('######################');
+          dispose();
+        };
       }).pipe(
         Rx.takeUntil(
           action$.pipe(
             Rx.ofType([SocketActions.$unmounted, SocketActions.$remounted])
           )
         )
-      )
+      );
+    }
   )
   // Handler C:
   // handle HMR reloads
@@ -57,8 +68,8 @@ const epic = createEpic(MODULE)
   // stopped only on action `stopC`
   .onMany(
     [SocketActions.startC, SocketActions.$remounted],
-    (_, { action$, getState }) => {
-      if (!getState().socket.isCRunning) {
+    (_, { action$ }) => {
+      if (!getSocketState().isCRunning) {
         return Rx.empty();
       }
       return new Rx.Observable(subscriber => {
@@ -87,7 +98,8 @@ const initialState: SocketState = {
   isCRunning: false,
 };
 
-const reducer = createReducer(initialState)
+useModule
+  .reducer(initialState)
   .on(SocketActions.messageReceived, (state, { container, text }) => {
     state[container].unshift(text);
   })
@@ -101,12 +113,7 @@ const reducer = createReducer(initialState)
   });
 
 export default function SocketModule() {
-  useModule({
-    epic,
-    reducer,
-    reducerPath: ['socket'],
-    actions: SocketActions,
-  });
+  useModule();
 
   return <SocketView />;
 }
