@@ -10,7 +10,7 @@
     "react-dom": "16.8.4",
     "react-scripts": "2.1.8",
     "rxjs": "6.3.3",
-    "typeless": "^0.1.10"
+    "typeless": "^0.1.11"
   },
   "devDependencies": {
     "@types/react": "16.8.7",

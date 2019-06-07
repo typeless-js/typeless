@@ -9385,10 +9385,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeless@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.1.10.tgz#357fa8aa5a4693250522fb64ba7f4d90cd015c13"
-  integrity sha512-tAxu8ifDM7pF0LsNVpfYIVfIz7NevcgajFslXmzajc2rGOg2+6YxwEzT1mpSxyQpkEevzAp4oT2XMLIU7JajFw==
+typeless@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/typeless/-/typeless-0.1.11.tgz#b817af9364bf10bbc20daef366afa10ee5e4e78c"
+  integrity sha512-btb2EAs8GLeQsyVTiFo+GcIGkCoHg+QfZR7fDYZ3fLDMTeicxtcuzfKpQQO2zM1Dt4q6dHmWelFPYJheYpa7OA==
   dependencies:
     immer "^1.8.0"
 
