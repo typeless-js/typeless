@@ -13,6 +13,10 @@
         "title": "createEpic",
         "sidebar_label": "createEpic"
       },
+      "api/createModule": {
+        "title": "createModule",
+        "sidebar_label": "createModule"
+      },
       "api/createReducer": {
         "title": "createReducer",
         "sidebar_label": "createReducer"
@@ -72,10 +76,6 @@
       "using-typeless/code-splitting": {
         "title": "Code-Splitting",
         "sidebar_label": "Code-Splitting"
-      },
-      "using-typeless/custom-store": {
-        "title": "Custom Store",
-        "sidebar_label": "Custom Store"
       },
       "using-typeless/hmr": {
         "title": "HMR",

@@ -37,32 +37,35 @@ import ReactDOM from 'react-dom';
 import { DefaultTypelessProvider } from 'typeless';
 import CounterModule from './features/counter/module';
 
-const { TypelessProvider } = initialize();
-
 ReactDOM.render(
-  <TypelessProvider>
+  <DefaultTypelessProvider>
     <CounterModule />
-  </TypelessProvider>,
+  </DefaultTypelessProvider>,
   document.getElementById('app')
 );
 ```
 
 ## `Feature`
 Each feature is split into 4 main parts:
-- **symbol.ts** - contains symbol definitions. Symbols must be declared in a separate file to work properly with HMR.
+- **symbol.ts** - contains symbol definitions.
 - **interface.ts** - contains action definitions and type information.
 - **module.tsx** - contains epic, reducer, any business logic, and entry point component.
 - **components/** - react components for this module.
 
 ### `Interface`
-Other modules should communicate only by referring to object/types defined in the interface file.  
-This file should be as small as possible. Avoid depending on external libraries.  
+ Symbols must be declared in a separate file to work properly with HMR.  
+ If you don't need HMR you can declare symbols in `interface.ts`.
 
 ```tsx
 // features/counter/symbol.ts
 
 export const CounterSymbol = Symbol('counter');
 ```
+
+### `Interface`
+Other modules should communicate only by referring to object/types defined in the interface file.  
+This file should be as small as possible. Avoid depending on external libraries.  
+
 
 ```tsx
 // features/counter/interface.ts
