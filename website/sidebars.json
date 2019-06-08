@@ -13,6 +13,9 @@
     ],
     "API Reference": [
       "api/createModule",
+      "api/Handle",
+      "api/Epic",
+      "api/ChainedReducer",
       "api/createActions",
       "api/createEpic",
       "api/createReducer",
