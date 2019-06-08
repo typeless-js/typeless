@@ -6,15 +6,17 @@ sidebar_label: createSelector
 ---
 
 # createSelector(selectors, resultFunc)
-Create a memoized selector.  It's very similar to [reselect](https://github.com/reduxjs/reselect/).
+Create a memoized selector from the state getters.
 
 #### Arguments
-1. `selectors: Array<(state: State) => any>`- an array of input selectors. Each value returned by the selected will be passed to `resultFunc` as an argument.
+1. `selectors: Array<Selector | [StateGetter, (state) => result]>`- an array of input selectors. Each element can be either:
+    - another selector created with `createSelector`
+    - a tuple with two elements: a state getter created by `createModule`, a selector function
 2. `resultFunc: (...args: any) => any` - the result function for computing input arguments.
 
 
 #### Returns
-`{(state: State) => object}` - the memoized function for mapping Redux state.
+`{() => object}` - the memoized function for returning computed state.
 
 
 #### Example

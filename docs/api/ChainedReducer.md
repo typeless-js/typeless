@@ -14,6 +14,8 @@ It utilizes [immer](https://github.com/mweststrate/immer) hence state mutations 
 
 ## Methods
 ### `constructor`
+In most cases, ChainedReducer will be provided by `handle.reducer`, hence you don't need to use constructor.
+
 #### Arguments
 1. `initialState: object`- the initial state.
 
