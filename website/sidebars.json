@@ -16,12 +16,8 @@
       "api/Handle",
       "api/Epic",
       "api/ChainedReducer",
-      "api/createActions",
-      "api/createEpic",
-      "api/createReducer",
       "api/createSelector",
       "api/useActions",
-      "api/useModule",
       "api/useMappedState",
       "api/initialize",
       "api/rx"

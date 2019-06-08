@@ -52,7 +52,7 @@ Each feature is split into 4 main parts:
 - **module.tsx** - contains epic, reducer, any business logic, and entry point component.
 - **components/** - react components for this module.
 
-### `Interface`
+### `Symbol`
  Symbols must be declared in a separate file to work properly with HMR.  
  If you don't need HMR you can declare symbols in `interface.ts`.
 
