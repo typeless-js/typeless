@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
+      "api/ChainedReducer": {
+        "title": "ChainedReducer",
+        "sidebar_label": "ChainedReducer"
+      },
       "api/createActions": {
         "title": "createActions",
         "sidebar_label": "createActions"
@@ -24,6 +28,14 @@
       "api/createSelector": {
         "title": "Create Selector",
         "sidebar_label": "createSelector"
+      },
+      "api/Epic": {
+        "title": "Epic",
+        "sidebar_label": "Epic"
+      },
+      "api/Handle": {
+        "title": "Handle",
+        "sidebar_label": "Handle"
       },
       "api/initialize": {
         "title": "initialize",

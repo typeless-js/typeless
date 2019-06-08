@@ -45,7 +45,7 @@ const [handle, Actions, getState] = createModule(symbol)
 
 
 #### Returned objects
-`handle: Handle` the module handle that allows attaching epic handlers and reducer.  
+[`handle: Handle`](/api/Handle) the module handle that allows attaching epic handlers and reducer.  
 
 `Actions:  {[name: string]: Function}` the action creators.
 
@@ -111,58 +111,3 @@ function MyApp() {
   );
 }
 ```
-
-
-### Best Practices
-1. Use lowercase string for `ns`.  
-**Why?** It's a common convention.
-```ts
-// BAD
-const UserActions = createActions('USER', { })
-
-// GOOD
-const UserActions = createActions('user', { })
-```
-
-2. If you create a library, prefix it with `@@`.  
-**Why?** Avoid name collisions.
-```ts
-// BAD
-const RouterActions = createActions('router', { })
-
-// GOOD
-const UserActions = createActions('@@router', { })
-```
-
-3. Always wrap arguments inside an object.  
-**Why?** Prefer using a destructing inside reducer and epic handlers. Refactoring and renaming are much more straightforward. 
-```ts
-// BAD
-const UserActions = createActions('user', {
-  fetchUser: (id: number) => ({ payload: id }), 
-});
-
-// GOOD
-const UserActions = createActions('user', {
-  fetchUser: (id: number) => ({ payload: { id }), 
-});
-```
-
-4. Don't depend on 3rd party libraries.  
-**Why?** Action creators should be lightweight. If you refer to other libraries, the initial chunk will have many KB.
-
-```ts
-// BAD
-import moment from 'moment';
-const UserActions = createActions('user', {
-  setNow: () => ({ payload: {date: moment() }), 
-});
-
-// GOOD
-const UserActions = createActions('user', {
-  setNow: () => ({ payload: {date: new Date() }), 
-});
-```
-
-5. Don't define lifecycle methods if you don't use them in epics or reducers.  
-**Why?** The log will be harder to read if there are too many actions.
