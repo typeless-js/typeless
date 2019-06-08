@@ -1,10 +1,11 @@
 import { createDeps } from '../src/createDeps';
+import { StateGetter } from '../src/types';
 
 let stateA = { n: 1 };
 let stateB = { n: 2 };
 
-const getStateA = () => stateA;
-const getStateB = () => stateB;
+const getStateA = (() => stateA) as StateGetter<typeof stateA>;
+const getStateB = (() => stateB) as StateGetter<typeof stateB>;
 
 beforeEach(() => {
   stateA = { n: 1 };
@@ -105,7 +106,7 @@ describe('createSelector', () => {
   test('3 selectors', () => {
     const stateC = { n: 3 };
 
-    const getStateC = () => stateC;
+    const getStateC = (() => stateC) as StateGetter<typeof stateC>;
     const deps = createDeps({ a: getStateA, b: getStateB, c: getStateC });
     const selector = deps.createSelector(
       state => state.a.n,
