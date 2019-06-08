@@ -7,7 +7,7 @@ import { useActions } from '../src/useActions';
 import { DefaultTypelessProvider } from '../src/TypelessContext';
 import { delay } from 'rxjs/operators';
 
-let container: HTMLDivElement = null;
+let container: HTMLDivElement = null!;
 let scheduler: VirtualTimeScheduler;
 
 beforeEach(() => {
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
+  container = null!;
 });
 
 function render(node: React.ReactChild) {
@@ -57,7 +57,7 @@ test('epic with delay', () => {
       state.count++;
     });
 
-  let values = [];
+  let values: any[] = [];
 
   function App() {
     useModule();
@@ -73,7 +73,7 @@ test('epic with delay', () => {
   // initial render
   render(<App />);
 
-  const button = container.querySelector('button');
+  const button = container.querySelector('button')!;
 
   clickButton(button);
 

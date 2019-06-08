@@ -5,9 +5,9 @@ import { createModule } from '../src/createModule';
 import { TypelessContext } from '../src/TypelessContext';
 import { Registry } from '../src/Registry';
 
-let container: HTMLDivElement = null;
+let container: HTMLDivElement = null!;
 let registry: Registry;
-let dispatch: jest.SpyInstance = null;
+let dispatch: jest.SpyInstance = null!;
 
 beforeEach(() => {
   container = document.createElement('div');
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
+  container = null!;
 });
 
 function render(node: React.ReactChild) {

@@ -1,15 +1,19 @@
 import { createSelector } from '../src/createSelector';
+import { StateGetter } from '../src/types';
 
 interface SampleState {
   n1?: number;
   n2?: number;
+}
+function createGetter<TState>(fn: () => TState) {
+  return fn as StateGetter<TState>;
 }
 
 test('cache function invocations', () => {
   let defaultState = { n1: 1 };
   const fn1 = jest.fn((state: SampleState) => state.n1);
   const resultFn = jest.fn((n1: number) => n1 * 10);
-  const getState = () => defaultState;
+  const getState = createGetter(() => defaultState);
   const selector = createSelector(
     [getState, fn1],
     resultFn
@@ -43,8 +47,9 @@ test('cache function invocations', () => {
 
 test('recomputations', () => {
   let defaultState = { n1: 1 };
+  const getState = createGetter(() => defaultState);
   const selector = createSelector(
-    [() => defaultState, state => state.n1],
+    [getState, state => state.n1],
     n1 => n1 * 10
   );
 
@@ -65,8 +70,9 @@ test('recomputations', () => {
 
 test('resultFunc', () => {
   const defaultState = { n1: 1 };
+  const getState = createGetter(() => defaultState);
   const selector = createSelector(
-    [() => defaultState, state => state.n1],
+    [getState, state => state.n1],
     n1 => n1 * 10
   );
 
@@ -78,8 +84,8 @@ test('resultFunc', () => {
 test('getStateGetters', () => {
   const state1 = { n1: 1 };
   const state2 = { n2: 1 };
-  const getState1 = () => state1;
-  const getState2 = () => state2;
+  const getState1 = createGetter(() => state1);
+  const getState2 = createGetter(() => state2);
   const selector = createSelector(
     [getState1, state => state.n1],
     [getState1, state => state.n1],
@@ -95,8 +101,8 @@ test('getStateGetters', () => {
 test('getStateGetters nested', () => {
   const state1 = { n1: 1 };
   const state2 = { n2: 1 };
-  const getState1 = () => state1;
-  const getState2 = () => state2;
+  const getState1 = createGetter(() => state1);
+  const getState2 = createGetter(() => state2);
   const selector1 = createSelector(
     [getState1, state => state.n1],
     [getState1, state => state.n1],
@@ -115,8 +121,9 @@ test('getStateGetters nested', () => {
 
 test('1 selector', () => {
   const defaultState = { n1: 1 };
+  const getState = createGetter(() => defaultState);
   const selector = createSelector(
-    [() => defaultState, state => state.n1],
+    [getState, state => state.n1],
     n1 => n1 * 10
   );
   const result = selector();
@@ -126,9 +133,11 @@ test('1 selector', () => {
 test('2 selectors', () => {
   const stateA = { n1: 1 };
   const stateB = { n2: 2 };
+  const getStateA = createGetter(() => stateA);
+  const getStateB = createGetter(() => stateB);
   const selector = createSelector(
-    [() => stateA, state => state.n1],
-    [() => stateB, state => state.n2],
+    [getStateA, state => state.n1],
+    [getStateB, state => state.n2],
     (n1, n2) => {
       return n1 * 10 + n2 * 100;
     }
@@ -142,10 +151,13 @@ test('3 selectors', () => {
   const stateA = { n1: 1 };
   const stateB = { n2: 2 };
   const stateC = { n1: 1, n2: 2 };
+  const getStateA = createGetter(() => stateA);
+  const getStateB = createGetter(() => stateB);
+  const getStateC = createGetter(() => stateC);
   const selector = createSelector(
-    [() => stateA, state => state.n1],
-    [() => stateB, state => state.n2],
-    [() => stateC, state => state.n1 + state.n2],
+    [getStateA, state => state.n1],
+    [getStateB, state => state.n2],
+    [getStateC, state => state.n1 + state.n2],
     (n1, n2, n3) => {
       return n1 * 10 + n2 * 100 + n3 * 1000;
     }
@@ -158,15 +170,17 @@ test('3 selectors', () => {
 test('composed', () => {
   let stateA = { n1: 1 };
   let stateB = { n2: 2 };
+  const getStateA = createGetter(() => stateA);
+  const getStateB = createGetter(() => stateB);
   const selectorA = createSelector(
-    [() => stateA, state => state.n1],
+    [getStateA, state => state.n1],
     n1 => {
       return n1 * 10;
     }
   );
   const selectorB = createSelector(
     selectorA,
-    [() => stateB, state => state.n2],
+    [getStateB, state => state.n2],
     (n1, n2) => {
       return n1 + n2 * 100;
     }

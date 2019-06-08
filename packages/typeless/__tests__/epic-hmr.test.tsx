@@ -7,9 +7,9 @@ import { TypelessContext } from '../src/TypelessContext';
 import { Registry } from '../src/Registry';
 import { startHmr, stopHmr } from '../src/onHmr';
 
-let container: HTMLDivElement = null;
-let ModuleSymbol: symbol = null;
-let registry: Registry = null;
+let container: HTMLDivElement = null!;
+let ModuleSymbol: symbol = null!;
+let registry: Registry = null!;
 let nextId = 1;
 
 beforeEach(() => {
@@ -22,7 +22,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
+  container = null!;
 });
 
 function render(node: React.ReactChild) {

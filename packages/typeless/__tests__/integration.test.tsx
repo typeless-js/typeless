@@ -9,7 +9,7 @@ import { useSelector } from '../src/useSelector';
 import { createDeps } from '../src/createDeps';
 import { DefaultTypelessProvider } from '../src/TypelessContext';
 
-let container: HTMLDivElement = null;
+let container: HTMLDivElement = null!;
 
 beforeEach(() => {
   container = document.createElement('div');
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
+  container = null!;
 });
 
 function render(node: React.ReactChild) {
@@ -65,8 +65,8 @@ it('single module', () => {
   // initial render
   render(<App />);
 
-  const button = container.querySelector('button');
-  const label = container.querySelector('p');
+  const button = container.querySelector('button')!;
+  const label = container.querySelector('p')!;
   expect(label.textContent).toBe('0');
   expect(renderCount).toEqual(1);
 
@@ -143,11 +143,11 @@ it('two modules', () => {
   // initial render
   render(<App />);
 
-  const incX = container.querySelector('#inc-x');
-  const incY = container.querySelector('#inc-y');
-  const resetBtn = container.querySelector('#reset');
-  const labelX = container.querySelector('#count-x');
-  const labelY = container.querySelector('#count-y');
+  const incX = container.querySelector('#inc-x')!;
+  const incY = container.querySelector('#inc-y')!;
+  const resetBtn = container.querySelector('#reset')!;
+  const labelX = container.querySelector('#count-x')!;
+  const labelY = container.querySelector('#count-y')!;
   expect(labelX.textContent).toBe('0');
   expect(labelY.textContent).toBe('0');
   expect(renderCount).toEqual(1);
@@ -185,7 +185,7 @@ it('single module with deps', () => {
     });
 
   let renderCount = 0;
-  const values = [];
+  const values: any[] = [];
 
   function App() {
     renderCount++;
@@ -209,9 +209,9 @@ it('single module with deps', () => {
   // initial
   render(<App />);
 
-  const inc = container.querySelector('#inc');
-  const toggle = container.querySelector('#toggle');
-  const label = container.querySelector('#count');
+  const inc = container.querySelector('#inc')!;
+  const toggle = container.querySelector('#toggle')!;
+  const label = container.querySelector('#count')!;
   expect(label.textContent).toBe('0');
   expect(renderCount).toEqual(1);
 
@@ -261,7 +261,7 @@ it('single module with epic', () => {
     });
 
   let renderCount = 0;
-  const values = [];
+  const values: any[] = [];
   function App() {
     renderCount++;
     useModule();
@@ -279,8 +279,8 @@ it('single module with epic', () => {
   // initial render
   render(<App />);
 
-  const button = container.querySelector('button');
-  const label = container.querySelector('p');
+  const button = container.querySelector('button')!;
+  const label = container.querySelector('p')!;
   expect(label.textContent).toBe('0');
   expect(renderCount).toEqual(1);
 
@@ -311,7 +311,7 @@ it('single module with selectors', () => {
     selector1,
     count => count + 1
   );
-  const values = [];
+  const values: any[] = [];
 
   function App() {
     useModule();
@@ -330,7 +330,7 @@ it('single module with selectors', () => {
   // initial render
   render(<App />);
 
-  const button = container.querySelector('button');
+  const button = container.querySelector('button')!;
 
   // click button x 2
   clickButton(button);
@@ -357,7 +357,7 @@ it('single module with createDeps', () => {
 
   const deps = createDeps({ x: getState });
 
-  const values = [];
+  const values: any[] = [];
 
   function App() {
     const [type, setType] = React.useState('a' as 'a' | 'b');
@@ -379,8 +379,8 @@ it('single module with createDeps', () => {
   // initial
   render(<App />);
 
-  const inc = container.querySelector('#inc');
-  const toggle = container.querySelector('#toggle');
+  const inc = container.querySelector('#inc')!;
+  const toggle = container.querySelector('#toggle')!;
 
   // increase 'a'
   clickButton(inc);
