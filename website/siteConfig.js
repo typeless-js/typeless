@@ -28,7 +28,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     { doc: 'introduction/quick-start', label: 'Docs' },
-    { doc: 'api/provider', label: 'API' },
+    { doc: 'api/createModule', label: 'API' },
     { href: 'https://www.github.com/typeless-js/typeless', label: 'Github' },
   ],
 

@@ -13,13 +13,12 @@
     ],
     "API Reference": [
       "api/createModule",
-      "api/Handle",
-      "api/Epic",
-      "api/ChainedReducer",
       "api/createSelector",
       "api/useActions",
       "api/useMappedState",
-      "api/initialize",
+      "api/ChainedReducer",
+      "api/Epic",
+      "api/Handle",
       "api/rx"
     ]
   }

@@ -55,10 +55,10 @@ const [handle, Actions, getState] = createModule(symbol)
 #### Example
 
 ```tsx
-// interface.ts
+// symbol.ts
 export const UserSymbol = Symbol('user');
 
-// module.ts
+// interface.ts
 import { createModule } from 'typeless';
 import { UserSymbol } from './interface';
 

@@ -11,7 +11,7 @@ sidebar_label: useActions
 React Hook for binding actions creators with `dispatch`.  
 
 #### Arguments
-1. `actionCreators: {[action: string]: ActionCreator}` - the action creators created by [`createActions`](createActions).
+1. `actionCreators: {[action: string]: ActionCreator}` - the action creators created by [`createModule`](createModule).
 
 #### Returns
 `{[action: string]: Function}` - the mapped actions.
@@ -20,17 +20,23 @@ React Hook for binding actions creators with `dispatch`.
 #### Example
 
 ```tsx
-import { createActions, useActions } from 'typeless';
+// symbol.ts
+export const CounterSymbol = Symbol('counter');
 
-export const MODULE = 'counter';
-export const CounterActions = createActions(MODULE, {
-  increase: null,
-});
+// interface.ts
+import { createModule } from 'typeless';
+import { CounterSymbol } from './symbol';
+
+export const [handle, CounterActions] = createModule(CounterSymbol)
+  .withActions({
+    increase: null,
+  });
+
+// module.tsx
+import { CounterActions } from './interface';
 
 export function Counter() {
   const { increase } = useActions(CounterActions);
-  // calling `increase()` is the same as:
-  // dispatch({type: 'counter/INCREASE'})
   return <button onClick={increase}>increase</button>
 }
 ```
