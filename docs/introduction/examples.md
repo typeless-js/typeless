@@ -41,3 +41,10 @@ Subscribe to the socket with developer-friendly HMR support.
 Create epic handlers that are reloadable or non-reloadable.  
 <a href="https://codesandbox.io/s/nunwn" target="_blank">Live demo</a>  
 <a href="https://github.com/typeless-js/typeless/tree/master/examples/socket-hmr" target="_blank">Source code</a>  
+
+----
+
+### Routing
+A simple example of routing with `typeless-router`
+<a href="https://codesandbox.io/s/typeless-basic-routing-q93fl" target="_blank">Live demo</a>  
+<a href="https://github.com/typeless-js/typeless/tree/master/examples/basic-routing" target="_blank">Source code</a>  
