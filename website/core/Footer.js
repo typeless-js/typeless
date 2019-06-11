@@ -45,7 +45,7 @@ class Footer extends React.Component {
             >
               Getting Started
             </a>
-            <a href={this.docUrl('api/provider', this.props.language)}>
+            <a href={this.docUrl('api/createModule', this.props.language)}>
               API Reference
             </a>
           </div>

@@ -16,31 +16,41 @@ Create a memoized selector from the state getters.
 
 
 #### Returns
-`{() => object}` - the memoized function for returning computed state.
+`() => object` - the memoized function for returning computed state.
 
 
 #### Example
 
-```ts
-// features/todos/interface.ts
-declare module 'typeless/types' {
-  interface DefaultState {
+```tsx
+// symbol.ts
+export const TodoSymbol = Symbol('todo');
+
+// interface.ts
+import { createModule } from 'typeless';
+import { TodoSymbol } from './interface';
+
+export const [handle, TodoActions, getTodoState] = createModule(TodoSymbol)
+  .withActions({ })
+  .withState<TodoState>;
+
+export interface TodoState {
     filter: 'all' | 'not-deleted';
     todos: Array<{
       id: number;
       text: string;
       isDeleted: boolean;
-    }>;
-  }
+    }>
 }
-```
 
-```ts
-// features/todos/selectors.ts
+// selectors.ts
 import { createSelector } from 'typeless';
+import { getTodoState } from './interface';
 
 const getTodos = createSelector(
-  [state => state.filter, state => state.todos],
+  [
+    [getTodoState, state => state.filter],
+    [getTodoState, state => state.todos],
+  ]
   (filter, todos) => {
     if (filter === 'all') {
       return todos;
@@ -49,14 +59,13 @@ const getTodos = createSelector(
   }
 );
 
-```
-```tsx
-// features/todos/selectors.ts
+// components/TodoList.tsx
+import { useSelector } from 'typeless';
+import { getTodos } from '../selectors';
+
 function TodoList() {
-  // use your selector with useMappedState
-  const { todos } = useMappedState(state => ({
-    todos: getTodos(todos),
-  }));
+  // use your selector with useSelector
+  const todos = useSelector(getTodos);
   return (
     <div>
       {todos.map(todo => (
@@ -64,56 +73,5 @@ function TodoList() {
       ))}
     </div>
   );
-}
-```
-
-
-### Best Practices
-1. Input selectors must be immutable.  
-**Why?** Input selectors are not memoized. If you return a new object, it will break the caching functionality, and you will lose all benefits of using `createSelector`.
-```ts
-// VERY BAD
-createSelector(
-  [
-    // it creates a new instance of Array
-    state => state.todos.filter(x => x.deleted)
-  ],
-  (todos) => {
-    // code
-  }
-)
-
-// GOOD
-createSelector(
-  [
-    // always return the original object or array
-    state => state.todos
-  ],
-  (todos) => {
-    // code
-  }
-)
-```
-
-2. Don't use `createSelector` for simple and immutable operations.  
-**Why?** Such selectors don't improve performance, and only add extra complexity.
-
-```ts
-// BAD
-const getFirstTodo = createSelector(
-  [
-    state => state.todos
-  ],
-  (todos) => todos[0]
-)
-
-// GOOD
-function TodoList() {
-  // directly pick `firstTodo` in `useMappedState`
-  // there is no different in performance
-  const { firstTodo } = useMappedState(state => ({
-    firstTodo: state.todos[0],
-  }));
-  // code
 }
 ```

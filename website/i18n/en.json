@@ -25,14 +25,6 @@
         "title": "Handle",
         "sidebar_label": "Handle"
       },
-      "api/initialize": {
-        "title": "initialize",
-        "sidebar_label": "initialize"
-      },
-      "api/provider": {
-        "title": "Provider",
-        "sidebar_label": "Provider"
-      },
       "api/rx": {
         "title": "Rx",
         "sidebar_label": "Rx"
