@@ -13,6 +13,10 @@
         "title": "getRouterState",
         "sidebar_label": "getRouterState"
       },
+      "api-router/Link": {
+        "title": "Link",
+        "sidebar_label": "Link"
+      },
       "api-router/RouterActions": {
         "title": "RouterActions",
         "sidebar_label": "RouterActions"

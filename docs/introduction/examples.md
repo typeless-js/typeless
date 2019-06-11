@@ -45,6 +45,6 @@ Create epic handlers that are reloadable or non-reloadable.
 ----
 
 ### Routing
-A simple example of routing with `typeless-router`
+A simple example of routing with `typeless-router`  
 <a href="https://codesandbox.io/s/typeless-basic-routing-q93fl" target="_blank">Live demo</a>  
 <a href="https://github.com/typeless-js/typeless/tree/master/examples/basic-routing" target="_blank">Source code</a>  

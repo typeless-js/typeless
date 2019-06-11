@@ -24,7 +24,8 @@
     "API Reference (router)": [
       "api-router/createUseRouter",
       "api-router/RouterActions",
-      "api-router/getRouterState"
+      "api-router/getRouterState",
+      "api-router/Link"
     ]
   }
 }
