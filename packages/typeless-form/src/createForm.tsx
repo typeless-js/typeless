@@ -25,7 +25,6 @@ export function createForm<TData>(options: FormOptions<TData>) {
   const [handle, FormActions, getFormState] = createModule(symbol)
     .withActions({
       blur: (field: keyof TData) => ({ payload: { field } }),
-      focus: (field: keyof TData) => ({ payload: { field } }),
       change: (field: keyof TData, value: TData[typeof field]) => ({
         payload: { field, value },
       }),

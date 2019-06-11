@@ -5,6 +5,14 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
+      "api-form/createForm": {
+        "title": "createForm",
+        "sidebar_label": "createForm"
+      },
+      "api-form/FormActions": {
+        "title": "FormActions",
+        "sidebar_label": "FormActions"
+      },
       "api-router/createUseRouter": {
         "title": "createUseRouter",
         "sidebar_label": "createUseRouter"
@@ -95,7 +103,8 @@
       "Introduction": "Introduction",
       "Using typeless": "Using typeless",
       "API Reference": "API Reference",
-      "API Reference (router)": "API Reference (router)"
+      "API Reference (router)": "API Reference (router)",
+      "API Reference (form)": "API Reference (form)"
     }
   },
   "pages-strings": {

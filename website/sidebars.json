@@ -26,6 +26,10 @@
       "api-router/RouterActions",
       "api-router/getRouterState",
       "api-router/Link"
+    ],
+    "API Reference (form)": [
+      "api-form/createForm",
+      "api-form/FormActions"
     ]
   }
 }
