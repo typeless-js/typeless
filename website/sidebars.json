@@ -20,6 +20,11 @@
       "api/Epic",
       "api/Handle",
       "api/rx"
+    ],
+    "API Reference (router)": [
+      "api-router/createUseRouter",
+      "api-router/RouterActions",
+      "api-router/getRouterState"
     ]
   }
 }

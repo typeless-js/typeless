@@ -5,6 +5,18 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
+      "api-router/createUseRouter": {
+        "title": "createUseRouter",
+        "sidebar_label": "createUseRouter"
+      },
+      "api-router/getRouterState": {
+        "title": "getRouterState",
+        "sidebar_label": "getRouterState"
+      },
+      "api-router/RouterActions": {
+        "title": "RouterActions",
+        "sidebar_label": "RouterActions"
+      },
       "api/ChainedReducer": {
         "title": "ChainedReducer",
         "sidebar_label": "ChainedReducer"
@@ -78,7 +90,8 @@
     "categories": {
       "Introduction": "Introduction",
       "Using typeless": "Using typeless",
-      "API Reference": "API Reference"
+      "API Reference": "API Reference",
+      "API Reference (router)": "API Reference (router)"
     }
   },
   "pages-strings": {
