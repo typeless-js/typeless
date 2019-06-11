@@ -18,7 +18,7 @@ export const RouterSymbol = Symbol('router');
 
 const [useRouter, RouterActions, getRouterState] = createModule(RouterSymbol)
   .withActions({
-    $mounted: null,
+    $init: null,
     $unmounted: null,
     dispose: null,
     locationChange: (location: RouterLocation) => ({
@@ -47,7 +47,7 @@ export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
 
   useRouter
     .epic()
-    .on(RouterActions.$mounted, (_, { action$ }) => {
+    .on(RouterActions.$init, (_, { action$ }) => {
       if (options.type === 'hash') {
         redirectWithLeadingHash();
       }
