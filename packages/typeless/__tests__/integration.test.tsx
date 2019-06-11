@@ -398,3 +398,36 @@ it('single module with createDeps', () => {
     { count: 1001, type: 'b' },
   ]);
 });
+
+it('modify state in $mounted should cause re-render', () => {
+  // bug from typeless 1.0.0
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
+    .withActions({
+      $mounted: null,
+    })
+    .withState<{ count: number }>();
+
+  useModule.reducer({ count: 0 }).on(Actions.$mounted, state => {
+    state.count = 1;
+  });
+
+  let renderCount = 0;
+
+  function App() {
+    renderCount++;
+    useModule();
+    const count = useMappedState([getState], state => state.count);
+    return (
+      <div>
+        <p>{count}</p>
+      </div>
+    );
+  }
+
+  // initial render
+  render(<App />);
+
+  const label = container.querySelector('p')!;
+  expect(label.textContent).toBe('1');
+  expect(renderCount).toEqual(2);
+});

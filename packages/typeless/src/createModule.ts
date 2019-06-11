@@ -98,7 +98,9 @@ export function createModule(name: symbol) {
         }
       }, []);
 
-      React.useLayoutEffect(() => {
+      // cannot use React.useLayoutEffect here
+      // if a $mounted action modifies a store, it won't cause re-render
+      React.useEffect(() => {
         if (getIsHmr()) {
           if (actions && actions.$remounted) {
             registry.dispatch(actions.$remounted());
