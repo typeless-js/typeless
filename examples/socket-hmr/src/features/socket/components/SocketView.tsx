@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActions, useMappedState } from 'typeless';
-import { SocketActions } from '../interface';
+import { useActions } from 'typeless';
+import { SocketActions, getSocketState } from '../interface';
 
 export function SocketView() {
   const { stopC, startC } = useActions(SocketActions);
-  const { a, b, c, isCRunning } = useMappedState(state => state.socket);
+  const { a, b, c, isCRunning } = getSocketState.useState();
   const textAreaStyles: React.CSSProperties = { width: '100%', height: 100 };
   return (
     <div>

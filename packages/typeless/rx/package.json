@@ -1,0 +1,9 @@
+{
+  "name": "typeless/rx",
+  "version": "0.0.1",
+  "description": "",
+  "main": "../dist/rx/rx.js",
+  "module": "../dist/es/rx/rx.js",
+  "jsnext:main": "../dist/es/rx/rx.js",
+  "sideEffects": false
+}

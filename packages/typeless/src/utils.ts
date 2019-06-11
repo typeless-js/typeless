@@ -1,7 +1,21 @@
-import { ActionLike } from './types';
+import { ActionLike, AC, Action, ActionType } from './types';
+
+function isSymbol(x: any): x is symbol {
+  return (
+    typeof x === 'symbol' ||
+    (typeof x === 'object' &&
+      Object.prototype.toString.call(x) === '[object Symbol]')
+  );
+}
 
 export const isAction = (action: any): action is ActionLike => {
-  return action && typeof (action as any).type === 'string';
+  if (!action) {
+    return false;
+  }
+  if (!Array.isArray(action.type) || action.type.length !== 2) {
+    return false;
+  }
+  return isSymbol(action.type[0]) && typeof action.type[1] === 'string';
 };
 
 export const repeat = (str: string, times: number) =>
@@ -16,17 +30,30 @@ export const formatTime = (time: Date) =>
     2
   )}.${pad(time.getMilliseconds(), 3)}`;
 
-export const logAction = (epicName: string, action: any) => {
+export function getDescription(s: symbol) {
+  const match = /Symbol\((.+)\)/.exec(s.toString());
+  if (!match) {
+    throw new Error('Empty symbol: ' + s.toString());
+  }
+  return match[1];
+}
+
+export const getActionDescription = (action: ActionType) => {
+  const [symbol, type] = action;
+  return getDescription(symbol) + '/' + type;
+};
+
+export const logAction = (epicName: string, action: Action) => {
   const gray = 'color: gray; font-weight: lighter;';
   const bold = 'font-weight: bold';
   const boldBlue = 'font-weight: bold; color: blue';
   const boldRed = 'font-weight: bold; color: red';
-  const actionType = action.type as string;
+  const actionType = getActionDescription(action.type);
   const time = formatTime(new Date());
   if (!actionType.startsWith(epicName)) {
     // tslint:disable-next-line:no-console
     console.log(
-      `%c epic%c ${epicName}%c:%c${action.type} %c@ ${time}`,
+      `%c epic%c ${epicName}%c:%c${actionType} %c@ ${time}`,
       gray,
       boldBlue,
       gray,
@@ -35,7 +62,7 @@ export const logAction = (epicName: string, action: any) => {
     );
   } else {
     // tslint:disable-next-line:no-console
-    console.log(`%c epic%c ${action.type} %c@ ${time}`, gray, bold, gray);
+    console.log(`%c epic%c ${actionType} %c@ ${time}`, gray, bold, gray);
   }
 };
 
@@ -53,3 +80,37 @@ export const snakeCase = (str: string) => {
 
 export const toArray = <T>(input: T | T[]): T[] =>
   Array.isArray(input) ? input : [input];
+
+export function shallowEqual(a: any[] | null, b: any[] | null) {
+  if (!a || !b || a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function memoize(fn: (...args: any[]) => any) {
+  let lastArgs: any[] | null = null;
+  let lastResult: any[];
+
+  return (...args: any[]) => {
+    if (!shallowEqual(args, lastArgs)) {
+      lastResult = fn(...args);
+    }
+    lastArgs = args;
+    return lastResult;
+  };
+}
+
+export function getACType(ac: AC) {
+  if (!ac.getType) {
+    throw new Error(
+      'getType() not defined in Action Creator: ' + ac.toString()
+    );
+  }
+  return ac.getType();
+}

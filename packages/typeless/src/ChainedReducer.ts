@@ -4,10 +4,10 @@ import {
   Flatten,
   ExtractPayload,
   Reducer,
-  ReducerMap,
   ActionLike,
+  ActionType,
 } from './types';
-import { toArray } from './utils';
+import { toArray, getACType } from './utils';
 
 export type OnHandler<S, T extends AC> = (
   state: S,
@@ -30,6 +30,11 @@ const createNestedReducer = <S, P extends keyof S>(
   prop: P,
   reducer: Reducer<S[P]>
 ): Reducer<S> => (state, action) => {
+  if (typeof state === 'undefined') {
+    throw new Error(
+      'tried to create createNestedReducer with undefined parent state'
+    );
+  }
   const subState = reducer(state[prop], action);
   if (state[prop] !== subState) {
     return {
@@ -41,12 +46,12 @@ const createNestedReducer = <S, P extends keyof S>(
 };
 
 export class ChainedReducer<S> {
-  private reducerMap: ReducerMap<S>;
+  private reducerMap: Map<symbol, Map<string, Array<Reducer<S>>>>;
   private defaultReducers: Array<Reducer<S>>;
-  private reducer: ChainedReducer<S> & Reducer<S>;
+  private reducer: ChainedReducer<S> & Reducer<S> | null;
 
   constructor(private initial: S) {
-    this.reducerMap = {};
+    this.reducerMap = new Map();
     this.defaultReducers = [];
     this.reducer = null;
   }
@@ -62,21 +67,34 @@ export class ChainedReducer<S> {
       });
       this.reducer = reducer;
     }
-    return this.reducer;
+    return this.reducer!;
   }
 
+  attach<T extends keyof S>(fn: Reducer<S>): ChainedReducer<S> & Reducer<S>;
+  attach<T extends keyof S>(
+    prop: T,
+    fn: Reducer<S[T]>
+  ): ChainedReducer<S> & Reducer<S>;
   attach<T extends keyof S>(prop: T | Reducer<S>, fn?: Reducer<S[T]>) {
-    if (typeof prop === 'function') {
-      this.defaultReducers.push(prop);
-    } else {
+    if (typeof prop === 'string') {
+      if (typeof fn !== 'function') {
+        throw new Error('fn must be a function');
+      }
       this.defaultReducers.push(createNestedReducer(prop, fn));
+    } else {
+      if (typeof prop !== 'function') {
+        throw new Error('fn must be a function');
+      }
+      this.defaultReducers.push(prop);
     }
     return this.asReducer();
   }
 
   replace<T extends AC>(actionCreator: T, fn: ReplaceHandler<S, T>) {
-    this.transform(actionCreator, (state, action: any) =>
-      produce(state, draft => fn(draft as S, action.payload, action))
+    this.transform(
+      actionCreator,
+      (state, action: any) =>
+        produce(state, draft => fn(draft as S, action.payload, action))!
     );
     return this.asReducer();
   }
@@ -98,8 +116,10 @@ export class ChainedReducer<S> {
   }
 
   on<T extends AC>(actionCreator: T, fn: OnHandler<S, T>) {
-    this.transform(actionCreator, (state, action: any) =>
-      produce(state, draft => fn(draft as S, action.payload, action))
+    this.transform(
+      actionCreator,
+      (state, action: any) =>
+        produce(state, draft => fn(draft as S, action.payload, action))!
     );
     return this.asReducer();
   }
@@ -118,7 +138,10 @@ export class ChainedReducer<S> {
 
   private getReducer() {
     return (state: S = this.initial, action: ActionLike) => {
-      const reducers = (this.reducerMap[action.type] || []).concat(
+      if (!action.type) {
+        throw new Error('action.type must be defined');
+      }
+      const reducers = this.getReducers(action.type).concat(
         this.defaultReducers
       );
       if (!reducers.length) {
@@ -128,16 +151,22 @@ export class ChainedReducer<S> {
     };
   }
 
-  private transform(
-    actionCreators: AC | AC[],
-    reducerFn: (state: S, action: ActionLike) => S
-  ) {
-    const actionTypes = toArray(actionCreators).map(ac => ac.toString());
+  private getReducers(actionType: ActionType) {
+    const [symbol, type] = actionType!;
+    if (!this.reducerMap.has(symbol)) {
+      this.reducerMap.set(symbol, new Map());
+    }
+    const map = this.reducerMap.get(symbol)!;
+    if (!map.has(type)) {
+      map.set(type, []);
+    }
+    return map.get(type)!;
+  }
+
+  private transform(actionCreators: AC | AC[], reducerFn: Reducer<S>) {
+    const actionTypes = toArray(actionCreators).map(ac => getACType(ac));
     actionTypes.forEach(action => {
-      if (!this.reducerMap[action]) {
-        this.reducerMap[action] = [];
-      }
-      this.reducerMap[action].push(reducerFn);
+      this.getReducers(action).push(reducerFn);
     });
   }
 }

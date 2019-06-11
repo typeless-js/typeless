@@ -31,16 +31,25 @@ Filter actions based on the provided action creator or action creators.
 
 #### Example
 ```ts
+// symbol.ts
+export const MySymbol = Symbol('my');
+
+// interface.ts
+import { createModule } from 'typeless';
+import { MySymbol } from './symbol';
+
+export const [handle, MyActions] = createModule(MySymbol)
+  .withActions({
+    loadUser: null,
+    userLoaded: (user: User) => ({ payload: { user } }),
+    cancel: null,
+  });
+
+// module.ts
 import * as Rx from 'typeless/rx';
-import { createEpic, createActions } from 'typeless';
+import { handle, MyActions } from 'typeless';
 
-const MyActions = createActions('module', {
-  loadUser: null,
-  userLoaded: (user: User) => ({ payload: { user } }),
-  cancel: null,
-});
-
-const epic = createEpic('module')
+handle.epic()
   .on(MyActions.loadUser, (_, { action$ }) =>
     API.loadUser().pipe(
       Rx.map(user => MyActions.userLoader(user)),
@@ -49,8 +58,6 @@ const epic = createEpic('module')
     )
   );
 ```
- 
-
 
 ### waitForType(actionCreator)
 Wait for a single action creator.
@@ -61,17 +68,26 @@ Wait for a single action creator.
 
 #### Example
 ```ts
+// symbol.ts
+export const MySymbol = Symbol('my');
+
+// interface.ts
+import { createModule } from 'typeless';
+import { MySymbol } from './symbol';
+
+export const [handle, MyActions] = createModule(MySymbol)
+  .withActions({
+    deleteUser: null,
+    userDeleted: null,
+    errorOccurred: null,
+    confirmDelete: (confirm: boolean) => ({ payload: { confirm } }),
+  });
+
+// module.ts
 import * as Rx from 'typeless/rx';
-import { createEpic, createActions } from 'typeless';
+import { handle, MyActions } from 'typeless';
 
-const MyActions = createActions('module', {
-  deleteUser: null,
-  userDeleted: null,
-  errorOccurred: null,
-  confirmDelete: (confirm: boolean) => ({ payload: { confirm } }),
-});
-
-const epic = createEpic('module')
+handle.epic()
   // show a confirmation dialog and wait for Yes/No click
   .on(MyActions.deleteUser, (_, { action$ }) =>
     action$.pipe(

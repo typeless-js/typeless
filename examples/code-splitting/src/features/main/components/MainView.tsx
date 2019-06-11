@@ -1,14 +1,20 @@
 import React, { Suspense } from 'react';
-import { useActions, useMappedState } from 'typeless';
-import { MainActions, ViewType } from '../interface';
+import { useActions } from 'typeless';
+import { MainActions, ViewType, getMainState } from '../interface';
 
-const SubA = React.lazy(() => import('../../subA/module'));
-const SubB = React.lazy(() => import('../../subB/module'));
-const SubC = React.lazy(() => import('../../subC/module'));
+const SubA = React.lazy(() =>
+  import(/* webpackChunkName: "subA" */ '../../subA/module')
+);
+const SubB = React.lazy(() =>
+  import(/* webpackChunkName: "subB" */ '../../subB/module')
+);
+const SubC = React.lazy(() =>
+  import(/* webpackChunkName: "subC" */ '../../subC/module')
+);
 
 export function MainView() {
   const { show } = useActions(MainActions);
-  const { viewType } = useMappedState(state => state.main);
+  const { viewType } = getMainState.useState();
 
   const renderContent = () => {
     switch (viewType) {

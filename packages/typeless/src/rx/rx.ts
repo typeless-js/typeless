@@ -1,8 +1,5 @@
 import { fromPromise } from 'rxjs/internal-compatibility';
 
-export interface Action {
-  type: any;
-}
 export {
   Subject,
   forkJoin,

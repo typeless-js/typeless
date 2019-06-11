@@ -1,9 +1,0 @@
-{
-  "name": "typeless/rx",
-  "version": "0.0.1",
-  "description": "",
-  "main": "rx.js",
-  "module": "../es/rx/rx.js",
-  "jsnext:main": "../es/rx/rx.js",
-  "sideEffects": false
-}

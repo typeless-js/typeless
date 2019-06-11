@@ -1,27 +1,28 @@
 import { Observable } from 'rxjs';
-import { AnyAction } from 'redux';
-import { StateObservable } from './StateObservable';
 
-export type ActionLike = { type?: string; payload?: any; meta?: any };
-
-export type AC = (...args: any[]) => any;
-
-export type ExtractPayload<T> = T extends { payload: infer P } ? P : null;
-
-export interface Deps<TState> {
-  getState: () => TState;
-  action$: Observable<AnyAction>;
-  state$: StateObservable<TState>;
+export interface AC {
+  (...args: any[]): any;
+  getType?(): ActionType;
 }
+
+export type ActionType = [symbol, string];
 
 export type Flatten<T> = { [K in keyof T]: T[K] };
 
+export type ActionLike = { type?: ActionType; payload?: any; meta?: any };
+export type Action = { type: ActionType; payload?: any; meta?: any };
+
 export type Reducer<S = any> = (state: S | undefined, action: ActionLike) => S;
 
-export type ReducerMap<S> = {
-  [action: string]: Array<Reducer<S>>;
-};
+export type ExtractPayload<T> = T extends { payload: infer P } ? P : null;
 
-export interface DefaultState {
-  //
+export interface Deps {
+  action$: Observable<{ type: ActionType; payload?: any; meta?: any }>;
+}
+
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+export interface StateGetter<T> {
+  (): T;
+  useState(): T;
 }

@@ -6,12 +6,12 @@ sidebar_label: Quick Start
 ---
 
 # Quick Start
-[typeless](https://github.com/typeless-js/typeless) is a toolkit for building React apps using Typescript, Redux, and RxJS.
+[typeless](https://github.com/typeless-js/typeless) is a toolkit for building React apps using Typescript, and RxJS.
 
 
 ## Installation
 
-Required peer dependencies: `react@^16.8`, `redux@^4` and `rxjs^@6`
+Required peer dependencies: `react@^16.8`, `react-dom@^16.8` and `rxjs^@6`
 
 ```bash
 npm install typeless
@@ -34,57 +34,58 @@ Wrap your application with a provider.
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { initialize } from 'typeless';
+import { DefaultTypelessProvider } from 'typeless';
 import CounterModule from './features/counter/module';
 
-const { TypelessProvider } = initialize();
-
 ReactDOM.render(
-  <TypelessProvider>
+  <DefaultTypelessProvider>
     <CounterModule />
-  </TypelessProvider>,
+  </DefaultTypelessProvider>,
   document.getElementById('app')
 );
 ```
 
 ## `Feature`
-Each feature is split into 3 main parts:
+Each feature is split into 4 main parts:
+- **symbol.ts** - contains symbol definitions.
 - **interface.ts** - contains action definitions and type information.
-- **module.tsx** - contains epic, reducer, any business logic and entry point component.
+- **module.tsx** - contains epic, reducer, any business logic, and entry point component.
 - **components/** - react components for this module.
+
+### `Symbol`
+ Symbols must be declared in a separate file to work properly with HMR.  
+ If you don't need HMR you can declare symbols in `interface.ts`.
+
+```tsx
+// features/counter/symbol.ts
+
+export const CounterSymbol = Symbol('counter');
+```
 
 ### `Interface`
 Other modules should communicate only by referring to object/types defined in the interface file.  
 This file should be as small as possible. Avoid depending on external libraries.  
 
+
 ```tsx
 // features/counter/interface.ts
 
 import { createActions } from 'typeless';
+import { CounterSymbol } from './symbol';
 
-// Module name must be unique
-// It's used as a prefix in actions and for logging in epics
-export const MODULE = 'counter';
+// initialize the module
+export const [useModule, CounterActions, getCounterState] = createModule(CounterSymbol)
+  // Create Actions Creators
+  .withActions({
+    startCount: null, // null means no args
+    countDone: (count: number) => ({ payload: { count } }),
+  })
+  //
+  .withState<CounterState>();
 
-// Create Actions Creators
-// `type` property is generated automatically
-export const CounterActions = createActions(MODULE, {
-  startCount: null, // null means no args
-  countDone: (count: number) => ({ payload: { count } }),
-});
-
-// Redux state for this module
 export interface CounterState {
   isLoading: boolean;
   count: number;
-}
-
-// Extend default state
-// This is a global redux state
-declare module 'typeless/types' {
-  interface DefaultState {
-    counter: CounterState;
-  }
 }
 ```
 
@@ -95,12 +96,12 @@ declare module 'typeless/types' {
 
 import React from 'react';
 import * as Rx from 'typeless/rx';
-import { useModule, createEpic, createReducer } from 'typeless';
-import { CounterActions, CounterState, MODULE } from './interface';
+import { CounterActions, CounterState } from './interface';
 import { Counter } from './components/Counter';
 
 // Create Epic for side effects
-const epic = createEpic(MODULE)
+useModule
+  .epic()
   // Listen for `count` and dispatch `countDone` with 500ms delay
   .on(CounterActions.startCount, () =>
     Rx.of(CounterActions.countDone(1)).pipe(Rx.delay(500))
@@ -114,7 +115,8 @@ const initialState: CounterState = {
 // Create a reducer
 // It's compatible with a standard reducer `(state, action) => state`
 // Under the hood it uses `immer` and state mutations are allowed
-const reducer = createReducer(initialState)
+useModule
+  .reducer(initialState)
   .on(CounterActions.startCount, state => {
     state.isLoading = true;
   })
@@ -125,12 +127,8 @@ const reducer = createReducer(initialState)
 
 // Entry point component for this module
 export default function CounterModule() {
-  // load epic and reducer to the store
-  useModule({
-    epic,
-    reducer,
-    reducerPath: ['counter'],
-  });
+  // load epic and reducer
+  useModule();
 
   return <Counter />;
 }
@@ -142,7 +140,7 @@ export default function CounterModule() {
 // features/counter/components/Counter.tsx
 
 import React from 'react';
-import { useActions, useMappedState } from 'typeless';
+import { useActions } from 'typeless';
 import { CounterActions } from '../interface';
 
 // Create a stateless component with hooks
@@ -150,8 +148,8 @@ import { CounterActions } from '../interface';
 export function Counter() {
   // wrap actions with `dispatch`
   const { startCount } = useActions(CounterActions);
-  // get state from redux store
-  const { isLoading, count } = useMappedState(state => state.counter);
+  // get state from store
+  const { isLoading, count } = getCounterState.useState();
 
   return (
     <div>

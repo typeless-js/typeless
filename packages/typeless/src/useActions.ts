@@ -1,22 +1,19 @@
-import {
-  useDispatch,
-  useMappedState as _useMappedState,
-} from 'redux-react-hook';
 import { useMemo } from 'react';
+import { useRegistry } from './useRegistry';
 import { AC } from './types';
 
 export function useActions<T extends { [x: string]: AC }>(
   actionCreators: T
 ): T {
-  const dispatch = useDispatch();
+  const registry = useRegistry();
   const names = Object.keys(actionCreators);
   return useMemo(
     () =>
       names.reduce(
-        (mapped, key) => {
+        (mapped: any, key) => {
           mapped[key] = (...args: any[]) => {
             const action = actionCreators[key](...args);
-            dispatch(action);
+            registry.dispatch(action);
             return action;
           };
           return mapped;

@@ -9,10 +9,8 @@
     "react": "16.8.4",
     "react-dom": "16.8.4",
     "react-scripts": "2.1.8",
-    "redbox-react": "1.6.0",
-    "redux": "4.0.1",
     "rxjs": "6.3.3",
-    "typeless": "0.0.17"
+    "typeless": "^0.1.13"
   },
   "devDependencies": {
     "@types/react": "16.8.7",

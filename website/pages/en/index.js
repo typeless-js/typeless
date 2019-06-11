@@ -103,7 +103,7 @@ const Features = ({ baseUrl }) => (
         title: 'Modern React',
       },
       {
-        content: 'Dispatch and react on actions.  \nBased on Redux and RxJS.',
+        content: 'Dispatch and react on actions.  \nBased on RxJS.',
         image: `${baseUrl}img/dev/018-launch.svg`,
         imageAlign: 'top',
         title: 'Event-driven architecture',

@@ -9,19 +9,27 @@
     ],
     "Using typeless": [
       "using-typeless/hmr",
-      "using-typeless/code-splitting",
-      "using-typeless/custom-store"
+      "using-typeless/code-splitting"
     ],
     "API Reference": [
-      "api/createActions",
-      "api/createEpic",
-      "api/createReducer",
+      "api/createModule",
       "api/createSelector",
       "api/useActions",
-      "api/useModule",
       "api/useMappedState",
-      "api/initialize",
+      "api/ChainedReducer",
+      "api/Epic",
+      "api/Handle",
       "api/rx"
+    ],
+    "API Reference (router)": [
+      "api-router/createUseRouter",
+      "api-router/RouterActions",
+      "api-router/getRouterState",
+      "api-router/Link"
+    ],
+    "API Reference (form)": [
+      "api-form/createForm",
+      "api-form/FormActions"
     ]
   }
 }

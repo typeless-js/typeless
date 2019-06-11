@@ -1,6 +1,7 @@
 import { nothing } from 'immer';
-import { createReducer } from '../src/createReducer';
-import { createActions } from '../src/createActions';
+import { ChainedReducer } from '../src/ChainedReducer';
+import { createModule } from '../src/createModule';
+import { AC, ActionLike } from '../src/types';
 
 const getInitialState = () => ({
   str: 'foo',
@@ -11,19 +12,21 @@ const getInitialState = () => ({
   },
 });
 
-const { textAction, textAction2, textAction3, strAction } = createActions(
-  'ns',
-  {
-    textAction: (text: string) => ({ payload: { text } }),
-    textAction2: (text: string) => ({ payload: { text } }),
-    textAction3: (text: string) => ({ payload: { text } }),
-    strAction: (str: string) => ({ payload: { str } }),
-  }
-);
+const createReducer = <T>(initialState: T) =>
+  new ChainedReducer(initialState).asReducer();
+
+const [, { textAction, textAction2, textAction3, strAction }] = createModule(
+  Symbol('ns')
+).withActions({
+  textAction: (text: string) => ({ payload: { text } }),
+  textAction2: (text: string) => ({ payload: { text } }),
+  textAction3: (text: string) => ({ payload: { text } }),
+  strAction: (str: string) => ({ payload: { str } }),
+});
 
 it('no actions', () => {
   const reducer = createReducer(getInitialState());
-  const state = reducer(undefined, { type: 'some-action' });
+  const state = reducer(undefined, { type: [Symbol('module'), 'some-action'] });
   expect(state).toEqual(getInitialState());
 });
 
@@ -168,10 +171,18 @@ describe('nested', () => {
   });
 });
 
+function actionEqual(action: ActionLike, ac: AC) {
+  if (!action.type) {
+    return false;
+  }
+  const [symbol, type] = ac.getType();
+  return action.type[0] === symbol && action.type[1] === type;
+}
+
 describe('attach', () => {
   function getReducer() {
     return createReducer(getInitialState()).attach((state, action) => {
-      if (action.type === textAction.toString()) {
+      if (actionEqual(action, textAction as AC)) {
         return {
           ...state,
           str: action.payload.text,
@@ -183,7 +194,7 @@ describe('attach', () => {
 
   function getInnerReducer() {
     return createReducer(getInitialState()).attach('inner', (state, action) => {
-      if (action.type === textAction.toString()) {
+      if (actionEqual(action, textAction as AC)) {
         return {
           ...state,
           prop: action.payload.text,

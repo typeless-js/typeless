@@ -5,29 +5,49 @@
     "previous": "Previous",
     "tagline": "Build scalable React apps with Typescript",
     "docs": {
-      "api/createActions": {
-        "title": "createActions",
-        "sidebar_label": "createActions"
+      "api-form/createForm": {
+        "title": "createForm",
+        "sidebar_label": "createForm"
       },
-      "api/createEpic": {
-        "title": "createEpic",
-        "sidebar_label": "createEpic"
+      "api-form/FormActions": {
+        "title": "FormActions",
+        "sidebar_label": "FormActions"
       },
-      "api/createReducer": {
-        "title": "createReducer",
-        "sidebar_label": "createReducer"
+      "api-router/createUseRouter": {
+        "title": "createUseRouter",
+        "sidebar_label": "createUseRouter"
+      },
+      "api-router/getRouterState": {
+        "title": "getRouterState",
+        "sidebar_label": "getRouterState"
+      },
+      "api-router/Link": {
+        "title": "Link",
+        "sidebar_label": "Link"
+      },
+      "api-router/RouterActions": {
+        "title": "RouterActions",
+        "sidebar_label": "RouterActions"
+      },
+      "api/ChainedReducer": {
+        "title": "ChainedReducer",
+        "sidebar_label": "ChainedReducer"
+      },
+      "api/createModule": {
+        "title": "createModule",
+        "sidebar_label": "createModule"
       },
       "api/createSelector": {
         "title": "Create Selector",
         "sidebar_label": "createSelector"
       },
-      "api/initialize": {
-        "title": "initialize",
-        "sidebar_label": "initialize"
+      "api/Epic": {
+        "title": "Epic",
+        "sidebar_label": "Epic"
       },
-      "api/provider": {
-        "title": "Provider",
-        "sidebar_label": "Provider"
+      "api/Handle": {
+        "title": "Handle",
+        "sidebar_label": "Handle"
       },
       "api/rx": {
         "title": "Rx",
@@ -40,10 +60,6 @@
       "api/useMappedState": {
         "title": "useMappedState",
         "sidebar_label": "useMappedState"
-      },
-      "api/useModule": {
-        "title": "useModule",
-        "sidebar_label": "useModule"
       },
       "introduction/examples": {
         "title": "Examples",
@@ -73,10 +89,6 @@
         "title": "Code-Splitting",
         "sidebar_label": "Code-Splitting"
       },
-      "using-typeless/custom-store": {
-        "title": "Custom Store",
-        "sidebar_label": "Custom Store"
-      },
       "using-typeless/hmr": {
         "title": "HMR",
         "sidebar_label": "HMR"
@@ -90,7 +102,9 @@
     "categories": {
       "Introduction": "Introduction",
       "Using typeless": "Using typeless",
-      "API Reference": "API Reference"
+      "API Reference": "API Reference",
+      "API Reference (router)": "API Reference (router)",
+      "API Reference (form)": "API Reference (form)"
     }
   },
   "pages-strings": {

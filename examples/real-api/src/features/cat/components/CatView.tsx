@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActions, useMappedState } from 'typeless';
-import { CatActions } from '../interface';
+import { useActions } from 'typeless';
+import { CatActions, getCatState } from '../interface';
 
 export function CatView() {
   const { loadCat, cancel } = useActions(CatActions);
-  const { viewType, cat, error } = useMappedState(state => state.cat);
+  const { viewType, cat, error } = getCatState.useState();
 
   const boxStyle: React.CSSProperties = {
     height: 200,
