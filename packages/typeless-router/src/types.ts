@@ -1,7 +1,6 @@
 export type HistoryType = 'browser' | 'hash';
 
 export interface HistoryOptions {
-  basePath?: string;
   type: HistoryType;
 }
 
