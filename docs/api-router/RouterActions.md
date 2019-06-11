@@ -11,7 +11,7 @@ sidebar_label: RouterActions
 The actions creators for router module.
 
 ## Actions
-1. `$mounted` typeless lifecycle method
+1. `$init` typeless lifecycle method
 2. `$unmounted` typeless lifecycle method
 3. `dispose` dispatch this action to stop listening for history API changes. Can be useful in unit testing.
 4. `locationChange: (location: RouterLocation)` dispatched by router module after location changed.
