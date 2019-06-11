@@ -1,6 +1,6 @@
 # typeless
 
-Typescript + React Hooks + Redux + RxJS = 😻
+Typescript + React Hooks + RxJS = 😻
 
 
 [![Build Status](https://travis-ci.org/typeless-js/typeless.svg?branch=master)](https://travis-ci.org/typeless-js/typeless) [![npm module](https://badge.fury.io/js/typeless.svg)](https://www.npmjs.org/package/typeless)
