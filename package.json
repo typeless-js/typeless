@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "lerna run test",
-    "pub": "lerna publish --force-publish"
+    "pub": "lerna publish --force-publish",
+    "prepare": "lerna run --scope typeless prepare && lerna run --ignore typeless prepare"
   },
   "workspaces": [
     "packages/*"
