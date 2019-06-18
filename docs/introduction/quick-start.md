@@ -70,7 +70,7 @@ This file should be as small as possible. Avoid depending on external libraries.
 ```tsx
 // features/counter/interface.ts
 
-import { createActions } from 'typeless';
+import { createModule } from 'typeless';
 import { CounterSymbol } from './symbol';
 
 // initialize the module
