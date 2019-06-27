@@ -5,7 +5,7 @@ import { FormContext } from './FormContext';
 
 type Validator<T> = (
   errors: { [x in keyof T]?: string },
-  data: T
+  data: Partial<T>
 ) => { [x in keyof T]?: string } | void;
 
 interface FormOptions<T> {
