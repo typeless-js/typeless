@@ -5,11 +5,11 @@ hide_title: true
 sidebar_label: createSelector
 ---
 
-# createSelector(selectors, resultFunc)
+# createSelector(...selectors, resultFunc)
 Create a memoized selector from the state getters.
 
 #### Arguments
-1. `selectors: Array<Selector | [StateGetter, (state) => result]>`- an array of input selectors. Each element can be either:
+1. `selectors: ...(Selector | [StateGetter, (state) => result])`- an arguments of input selector. Each element can be either:
     - another selector created with `createSelector`
     - a tuple with two elements: a state getter created by `createModule`, a selector function
 2. `resultFunc: (...args: any) => any` - the result function for computing input arguments.
@@ -46,11 +46,9 @@ export interface TodoState {
 import { createSelector } from 'typeless';
 import { getTodoState } from './interface';
 
-const getTodos = createSelector(
-  [
-    [getTodoState, state => state.filter],
-    [getTodoState, state => state.todos],
-  ]
+export const getTodos = createSelector(
+  [getTodoState, state => state.filter],
+  [getTodoState, state => state.todos],
   (filter, todos) => {
     if (filter === 'all') {
       return todos;
