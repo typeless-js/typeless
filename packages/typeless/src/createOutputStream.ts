@@ -76,7 +76,11 @@ export function createOutputStream(
             return result;
           }).pipe(
             mergeMap((action: Action) => {
-              if (action == null) {
+              if (action === null) {
+                // ignore if action is null
+                return empty();
+              }
+              if (action === undefined) {
                 console.error('Undefined action returned in epic.', {
                   action,
                   store: name,

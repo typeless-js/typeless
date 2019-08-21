@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { AC, Deps, ExtractPayload, ActionLike, ActionType } from './types';
 import { getACType } from './utils';
 
-export type EpicResult = Observable<ActionLike> | ActionLike | ActionLike[];
+export type EpicResult = Observable<ActionLike | null> | Promise<ActionLike | null> | ActionLike | ActionLike[] | null;
 
 export type EpicHandler<TAC extends AC> = (
   payload: ExtractPayload<ReturnType<TAC>>,

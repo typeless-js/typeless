@@ -6,7 +6,7 @@ sidebar_label: Epic
 ---
 
 # Epic
-Epics are used for handling asynchronous side effects using RxJS.
+Epics are used for handling asynchronous side effects using RxJS or Promise.
 
 ## Methods
 ### `attach(epic)` 
@@ -38,10 +38,15 @@ Attach a handler for the specific action creator. The action creator is a functi
       - `action$: Observable<Action>` the Rx Observable with all actions.
    - `action: object` - the original action.  
 
-    The handler is allowed to return 3 types:
-    - `Observable<Action>` - the Rx stream.
+  The handler is allowed to return 5 types:
+    - `Observable<Action | null>` - the Rx stream which contain `Action` or `null`.
+    - `Promise<Action | null>` - the Promise which contain `Action` or `null`.
     - `Action` - the action object.
     - `Action[]` - an array of actions.
+    - null - a null value.
+  
+  If handler returned `null` or `Observable<null>` or `Promise<null>`, nothing to do after execute.
+  Else, dispatch actions which returned by handler.
 #### Returns
 `{Epic}` - this epic
 #### Example
@@ -66,7 +71,7 @@ handle
   .on(UserActions.loadUser, ({ id }, { getState }) => {
     if (getState().user.isLoaded) {
       // already loaded, ignore
-      return Rx.empty();
+      return null;
     }
     return API.loadUser(id).pipe(Rx.map(user => UserActions.userLoaded(user)));
   });
