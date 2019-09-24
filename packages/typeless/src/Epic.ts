@@ -4,15 +4,16 @@ import { getACType } from './utils';
 
 export type EpicResult = Observable<ActionLike | null> | Promise<ActionLike | null> | ActionLike | ActionLike[] | null;
 
-export type EpicHandler<TAC extends AC> = (
+export type EpicHandler<TAC extends AC, TState> = (
   payload: ExtractPayload<ReturnType<TAC>>,
   deps: Deps,
-  action: ReturnType<TAC> & { type: symbol }
+  action: ReturnType<TAC> & { type: symbol },
+  state: TState
 ) => EpicResult;
 
 export class Epic {
-  handlers: Map<symbol, Map<string, Array<EpicHandler<any>>>> = new Map();
-  moduleHandlers: Map<symbol, Array<EpicHandler<any>>> = new Map();
+  handlers: Map<symbol, Map<string, Array<EpicHandler<any, any>>>> = new Map();
+  moduleHandlers: Map<symbol, Array<EpicHandler<any, any>>> = new Map();
 
   attach(epic: Epic) {
     const subHandlers = epic.handlers;
@@ -28,36 +29,37 @@ export class Epic {
     return this;
   }
 
-  on<TAC extends AC>(ac: TAC, handler: EpicHandler<TAC>) {
+  on<TAC extends AC, TState>(ac: TAC, handler: EpicHandler<TAC, TState>) {
     return this.add(ac, handler);
   }
-  onMany<TAC extends AC, TAC2 extends AC>(
+  onMany<TAC extends AC, TAC2 extends AC, TState>(
     ac: [TAC, TAC2],
-    handler: EpicHandler<TAC | TAC2>
+    handler: EpicHandler<TAC | TAC2, TState>
   ): this;
-  onMany<TAC extends AC, TAC2 extends AC, TAC3 extends AC>(
+  onMany<TAC extends AC, TAC2 extends AC, TAC3 extends AC, TState>(
     ac: [TAC, TAC2, TAC3],
-    handler: EpicHandler<TAC | TAC2 | TAC3>
+    handler: EpicHandler<TAC | TAC2 | TAC3, TState>
   ): this;
-  onMany<TAC extends AC, TAC2 extends AC, TAC3 extends AC, TAC4 extends AC>(
+  onMany<TAC extends AC, TAC2 extends AC, TAC3 extends AC, TAC4 extends AC, TState>(
     ac: [TAC, TAC2, TAC3, TAC4],
-    handler: EpicHandler<TAC | TAC2 | TAC3 | TAC4>
+    handler: EpicHandler<TAC | TAC2 | TAC3 | TAC4, TState>
   ): this;
   onMany<
     TAC extends AC,
     TAC2 extends AC,
     TAC3 extends AC,
     TAC4 extends AC,
-    TAC5 extends AC
+    TAC5 extends AC,
+    TState
   >(
     ac: [TAC, TAC2, TAC3, TAC4, TAC5],
-    handler: EpicHandler<TAC | TAC2 | TAC3 | TAC4 | TAC5>
+    handler: EpicHandler<TAC | TAC2 | TAC3 | TAC4 | TAC5, TState>
   ): this;
-  onMany(ac: AC[], handler: EpicHandler<AC>) {
+  onMany<TState>(ac: AC[], handler: EpicHandler<AC, TState>) {
     return this.add(ac, handler);
   }
 
-  onModule(moduleSymbol: symbol, handler: EpicHandler<AC>) {
+  onModule<TState>(moduleSymbol: symbol, handler: EpicHandler<AC, TState>) {
     if (!this.moduleHandlers.has(moduleSymbol)) {
       this.moduleHandlers.set(moduleSymbol, []);
     }
@@ -75,7 +77,7 @@ export class Epic {
     }
   }
 
-  private add(ac: AC | AC[], handler: EpicHandler<AC>) {
+  private add<TState>(ac: AC | AC[], handler: EpicHandler<AC, TState>) {
     const keys = Array.isArray(ac)
       ? ac.map(x => getACType(x))
       : [getACType(ac)];

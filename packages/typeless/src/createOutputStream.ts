@@ -65,7 +65,8 @@ export function createOutputStream(
             const result = handler(
               sourceAction.payload,
               deps,
-              sourceAction
+              sourceAction,
+              store.state
             ) as (Observable<Action> | Action | Action[]);
             if (Array.isArray(result)) {
               return from(result);
