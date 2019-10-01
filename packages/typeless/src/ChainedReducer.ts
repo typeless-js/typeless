@@ -94,7 +94,7 @@ export class ChainedReducer<S> {
     this.transform(
       actionCreator,
       (state, action: any) =>
-        produce(state, draft => fn(draft as S, action.payload, action))!
+        produce(state, draft => fn(draft as S, action.payload, action))! as S
     );
     return this.asReducer();
   }
