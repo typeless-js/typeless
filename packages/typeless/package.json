@@ -69,6 +69,6 @@
     "rxjs": "^6.3.3"
   },
   "dependencies": {
-    "immer": "^1.8.0"
+    "immer": "^4.0.0"
   }
 }
