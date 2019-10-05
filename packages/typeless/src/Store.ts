@@ -22,7 +22,7 @@ export class Store<TState = any> {
     }
   }
 
-  enable({ epic, reducer }: { epic?: Epic; reducer?: Reducer<TState> }) {
+  enable({ epic, reducer }: { epic: Epic | null; reducer: Reducer<TState> | null }) {
     this.usageCount++;
     this.epic = epic || null;
     this.reducer = reducer || null;

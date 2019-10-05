@@ -2,7 +2,7 @@ import { ChainedReducer } from './ChainedReducer';
 import { Epic } from './Epic';
 import * as React from 'react';
 import { getIsHmr } from './onHmr';
-import { StateGetter } from './types';
+import { StateGetter, Reducer } from './types';
 import { useMappedState } from './useMappedState';
 import { snakeCase } from './utils';
 import { useRegistry } from './useRegistry';
@@ -62,10 +62,10 @@ type ModuleWithActionsAndState<TState, TActions> = [
 
 export function createModule(name: symbol) {
   let hasState = false;
-  let actions: any = null;
-  let epic: any = null;
-  let reducer: any = null;
-  let store: any = null;
+  let actions: ActionMap | null = null;
+  let epic: Epic | null = null;
+  let reducer: (Reducer<any> & ChainedReducer<any>) | null = null;
+  let store: Store | null = null;
 
   const base = [createHandle()] as any;
   base.withActions = withActions;
@@ -86,12 +86,12 @@ export function createModule(name: symbol) {
       }
 
       React.useMemo(() => {
-        store.enable({
+        store!.enable({
           epic,
           reducer,
         });
         if (!getIsHmr()) {
-          store.initState();
+          store!.initState();
           if (actions && actions.$init) {
             registry.dispatch(actions.$init());
           }
