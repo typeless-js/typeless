@@ -62,6 +62,7 @@ export class Epic {
       this.moduleHandlers.set(moduleSymbol, []);
     }
     this.moduleHandlers.get(moduleSymbol!)!.push(handler);
+    return this;
   }
 
   private createKey(actionType: ActionType) {
