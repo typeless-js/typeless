@@ -12,17 +12,14 @@ export class StateLogger {
 
   constructor(private stores: Array<Store<any>>) {}
 
-  calcState(type: 'prev' | 'next') {
-    const state = type === 'prev' ? this.prevState : this.nextState;
-    if (type === 'next') {
+  setState(type: 'prevState' | 'nextState', state: any) {
+    if (type === 'nextState') {
       this.end = Date.now();
     }
-    for (const store of this.stores) {
-      if (store.state !== undefined) {
-        state[store.displayName] = store.state;
-      }
-    }
-    if (type === 'prev') {
+
+    this[type] = state;
+
+    if (type === 'prevState') {
       this.start = Date.now();
     }
   }
