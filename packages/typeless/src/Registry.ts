@@ -56,13 +56,13 @@ export class Registry {
         stateLogger = new StateLogger(this.stores);
       }
       if (stateLogger) {
-        stateLogger.calcState('prev');
+        stateLogger.setState('prevState', this.getState());
       }
       for (const store of this.stores) {
         store.dispatch(action, notify);
       }
       if (stateLogger) {
-        stateLogger.calcState('next');
+        stateLogger.setState('nextState', this.getState());
         stateLogger.log(action);
       }
       for (const fn of notify.handlers) {
@@ -70,6 +70,16 @@ export class Registry {
       }
       this.input$.next(action as Action);
     });
+  }
+
+  getState() {
+    const state: Record<string, any> = {};
+    for (const store of this.stores) {
+      if (store.state !== undefined) {
+        state[store.displayName] = store.state;
+      }
+    }
+    return state;
   }
 
   private initStreams() {
