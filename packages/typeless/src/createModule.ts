@@ -80,10 +80,8 @@ export function createModule(name: symbol) {
   function createHandle() {
     const handle: HandleWithState<any> = () => {
       const registry = useRegistry();
-      if (!store) {
-        store = registry.getStore(name);
-        getState._store = store;
-      }
+      store = registry.getStore(name);
+      getState._store = store;
 
       React.useMemo(() => {
         store!.enable({
