@@ -39,9 +39,9 @@ export class Registry {
     return this.displayNames.get(name)!;
   }
 
-  getStore(name: symbol) {
+  getStore<TState = any>(name: symbol): Store<TState> {
     if (!this.storesMap.has(name)) {
-      const store = new Store(name, this.getDisplayName(name));
+      const store = new Store<TState>(name, this.getDisplayName(name));
       this.storesMap.set(name, store);
       this.stores.push(store);
     }
