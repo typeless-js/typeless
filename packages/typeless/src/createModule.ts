@@ -17,7 +17,7 @@ export type ConvertAC<T> = T extends null
   : T extends AnyFn
   ? T
   : never;
-export type ConvertActions<T> = { [P in keyof T]: ConvertAC<T[P]> };
+export type ActionCreators<T> = { [P in keyof T]: ConvertAC<T[P]> };
 
 export type ActionMap = { [name: string]: Nullable<(...args: any[]) => {}> };
 
@@ -36,7 +36,7 @@ export interface Handle {
 type ModuleBase = [Handle] & {
   withActions<T extends ActionMap>(
     actionMap: T
-  ): ModuleWithActions<ConvertActions<T>>;
+  ): ModuleWithActions<ActionCreators<T>>;
   withState<TState>(): ModuleWithState<TState>;
 };
 
@@ -50,7 +50,7 @@ type ModuleWithState<TState> = [
 ] & {
   withActions<T extends ActionMap>(
     actionMap: T
-  ): ModuleWithActionsAndState<TState, ConvertActions<T>>;
+  ): ModuleWithActionsAndState<TState, ActionCreators<T>>;
 };
 
 type ModuleWithActionsAndState<TState, TActions> = [
