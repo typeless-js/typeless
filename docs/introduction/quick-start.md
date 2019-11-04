@@ -56,7 +56,7 @@ Each feature is split into 4 main parts:
  Symbols must be declared in a separate file to work properly with HMR.  
  If you don't need HMR you can declare symbols in `interface.ts`.
 
-```tsx
+```ts
 // features/counter/symbol.ts
 
 export const CounterSymbol = Symbol('counter');
@@ -67,7 +67,7 @@ Other modules should communicate only by referring to object/types defined in th
 This file should be as small as possible. Avoid depending on external libraries.  
 
 
-```tsx
+```ts
 // features/counter/interface.ts
 
 import { createModule } from 'typeless';
@@ -91,12 +91,12 @@ export interface CounterState {
 
 ### `Module`
 
-```js
-// features/counter/module.ts
+```tsx
+// features/counter/module.tsx
 
 import React from 'react';
 import * as Rx from 'typeless/rx';
-import { CounterActions, CounterState } from './interface';
+import { CounterActions, CounterState, useModule } from './interface';
 import { Counter } from './components/Counter';
 
 // Create Epic for side effects
@@ -136,12 +136,12 @@ export default function CounterModule() {
 
 ### `Component`
 
-```js
+```tsx
 // features/counter/components/Counter.tsx
 
 import React from 'react';
 import { useActions } from 'typeless';
-import { CounterActions } from '../interface';
+import { CounterActions, getCounterState } from '../interface';
 
 // Create a stateless component with hooks
 // NOTE: there are no type annotations, and the below code is 100% type-safe!
