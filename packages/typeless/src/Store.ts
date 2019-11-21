@@ -11,18 +11,29 @@ export class Store<TState = any> {
   public epic: Epic | null = null;
   private listeners: Listener[] = [];
   private usageCount: number = 0;
+  private isStateInited = false;
 
   constructor(public name: symbol, public displayName: string) {}
 
   initState() {
-    if (this.reducer) {
+    if (this.reducer && !this.isStateInited) {
       this.state = this.reducer(undefined, {
         type: [Symbol('__INIT__'), 'init'],
       });
+      // don't reset state if the module is remounted
+      // for example when navigating from PageA -> PageB -> PageA
+      // PageA should reset its state manually
+      this.isStateInited = true;
     }
   }
 
-  enable({ epic, reducer }: { epic: Epic | null; reducer: Reducer<TState> | null }) {
+  enable({
+    epic,
+    reducer,
+  }: {
+    epic: Epic | null;
+    reducer: Reducer<TState> | null;
+  }) {
     this.usageCount++;
     this.epic = epic || null;
     this.reducer = reducer || null;
