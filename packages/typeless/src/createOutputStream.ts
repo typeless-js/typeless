@@ -8,7 +8,7 @@ import {
   of,
   Observable,
 } from 'rxjs';
-import { mergeMap, observeOn, subscribeOn } from 'rxjs/operators';
+import { mergeMap, observeOn, subscribeOn, catchError } from 'rxjs/operators';
 import { Deps, Action } from './types';
 import { Store } from './Store';
 import { logAction, isAction } from './utils';
@@ -96,6 +96,17 @@ export function createOutputStream(
                 return empty();
               }
               return of(action);
+            }),
+            catchError(err => {
+              console.error(
+                'An unhandled error occurred in epic.',
+                {
+                  sourceAction,
+                  store: name,
+                },
+                err
+              );
+              return empty();
             })
           );
         })
