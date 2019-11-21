@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface FormContextValue {
+export interface FormContextValue {
   actions: {
     blur: (field: string) => any;
     change: (field: string, value: any) => any;

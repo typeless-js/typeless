@@ -3,17 +3,17 @@ import { createModule, useActions } from 'typeless';
 import * as Rx from 'typeless/rx';
 import { FormContext } from './FormContext';
 
-type Validator<T> = (
+export type Validator<T> = (
   errors: { [x in keyof T]?: string },
   data: Partial<T>
 ) => { [x in keyof T]?: string } | void;
 
-interface FormOptions<T> {
+export interface FormOptions<T> {
   symbol: symbol;
   validator?: Validator<T>;
 }
 
-interface FormState<T> {
+export interface FormState<T> {
   values: T;
   errors: { [x in keyof T]?: string };
   touched: { [x in keyof T]?: boolean };
