@@ -18,7 +18,7 @@ const render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept('./components/App', () => {
+  module.hot.accept(() => {
     startHmr();
     render();
   });
