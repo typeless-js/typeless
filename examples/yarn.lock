@@ -4905,6 +4905,11 @@ typeless-form@^1.3.0:
   resolved "https://registry.yarnpkg.com/typeless-form/-/typeless-form-1.3.0.tgz#27a97a0b5d3f955f2723f66956be95afd1c837e9"
   integrity sha512-FC4wo1FME607qjtsHbihsUQQqqeCWkuOARhm3Xp1EQb259EeSoq+qhLM8MWL8MkoLtQtEfgYszqT0indKNOZ4g==
 
+typeless-router@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/typeless-router/-/typeless-router-1.3.0.tgz#9bc93b47551f0530f5f73653a90a8900c47b8c53"
+  integrity sha512-1CsfmLRoEbA+VdLcqfYcfr6GvI1Dr5HG2DGmu3cn128jWV5T64QlcB9K+PNza4JU9KlMf58atnT0TABRC0ME0A==
+
 typeless@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/typeless/-/typeless-1.3.0.tgz#a895e776236abc4a0f33a9fb581af2c0772fdc34"
