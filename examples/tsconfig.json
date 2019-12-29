@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "module": "esnext",
+    "target": "es2018",
+    "noEmit": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src"
+  ]
+}
