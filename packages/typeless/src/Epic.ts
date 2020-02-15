@@ -1,8 +1,21 @@
-import { Observable } from 'rxjs';
-import { AC, Deps, ExtractPayload, ActionLike, ActionType } from './types';
-import { getACType } from './utils';
+import { Observable, defer, from, of, empty } from 'rxjs';
+import {
+  AC,
+  Deps,
+  ExtractPayload,
+  ActionLike,
+  ActionType,
+  Action,
+} from './types';
+import { getACType, isAction } from './utils';
+import { mergeMap, catchError } from 'rxjs/operators';
 
-export type EpicResult = Observable<ActionLike | null> | Promise<ActionLike | null> | ActionLike | ActionLike[] | null;
+export type EpicResult =
+  | Observable<ActionLike | null>
+  | Promise<ActionLike | null>
+  | ActionLike
+  | ActionLike[]
+  | null;
 
 export type EpicHandler<TAC extends AC> = (
   payload: ExtractPayload<ReturnType<TAC>>,
@@ -65,6 +78,60 @@ export class Epic {
     return this;
   }
 
+  // tslint:disable-next-line:no-empty
+  toStream(sourceAction: Action, deps: Deps, log: () => void = () => {}) {
+    return this.getHandlers(sourceAction).map(handler => {
+      return defer(() => {
+        log();
+        const result = handler(sourceAction.payload, deps, sourceAction) as (
+          | Observable<Action>
+          | Action
+          | Action[]);
+        if (Array.isArray(result)) {
+          return from(result);
+        }
+        if (isAction(result)) {
+          return of(result);
+        }
+        return result;
+      }).pipe(
+        mergeMap((action: Action) => {
+          if (action === null) {
+            // ignore if action is null
+            return empty();
+          }
+          if (action === undefined) {
+            console.error('Undefined action returned in epic.', {
+              action,
+              store: name,
+            });
+            return empty();
+          }
+          if (!isAction(action)) {
+            console.error('Invalid action returned in epic.', {
+              sourceAction,
+              action,
+              store: name,
+            });
+            return empty();
+          }
+          return of(action);
+        }),
+        catchError(err => {
+          console.error(
+            'An unhandled error occurred in epic.',
+            {
+              sourceAction,
+              store: name,
+            },
+            err
+          );
+          return empty();
+        })
+      );
+    });
+  }
+
   private createKey(actionType: ActionType) {
     const [symbol, type] = actionType;
     if (!this.handlers.has(symbol)) {
@@ -88,5 +155,17 @@ export class Epic {
         .push(handler);
     });
     return this;
+  }
+
+  private getHandlers(action: Action) {
+    const [symbol, type] = action.type;
+    return [
+      ...(this.handlers.has(symbol) && this.handlers.get(symbol)!.has(type)
+        ? this.handlers.get(symbol)!.get(type)
+        : []),
+      ...(this.moduleHandlers.has(symbol)
+        ? this.moduleHandlers.get(symbol)
+        : []),
+    ];
   }
 }

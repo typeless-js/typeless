@@ -1,6 +1,7 @@
-import { Reducer, ActionLike } from './types';
+import { Reducer, ActionLike, Action, Deps } from './types';
 import { Epic } from './Epic';
 import { Notify } from './Notify';
+import { logAction } from './utils';
 
 type Listener = () => void;
 
@@ -68,6 +69,18 @@ export class Store<TState = any> {
           notifyFn();
         }
       }
+    }
+  }
+
+  getOutputStream(action: Action, deps: Deps) {
+    if (this.isEnabled && this.epic != null) {
+      return this.epic.toStream(action, deps, () => {
+        if (process.env.NODE_ENV === 'development') {
+          logAction(this.displayName, action);
+        }
+      });
+    } else {
+      return null;
     }
   }
 
