@@ -7,15 +7,11 @@ export const TypelessContext = React.createContext(null as null | {
 
 export const defaultRegistry = new Registry();
 
-export function DefaultTypelessProvider({
-  children,
-}: {
-  children: React.ReactChild;
-}) {
+export const DefaultTypelessProvider: React.FC = ({ children }) => {
   const value = React.useMemo(() => ({ registry: defaultRegistry }), []);
   return (
     <TypelessContext.Provider value={value}>
       {children}
     </TypelessContext.Provider>
   );
-}
+};
