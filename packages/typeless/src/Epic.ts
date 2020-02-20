@@ -10,12 +10,11 @@ import {
 import { getACType, isAction } from './utils';
 import { mergeMap, catchError } from 'rxjs/operators';
 
+type AllowedAction = ActionLike | ActionLike[] | null;
 export type EpicResult =
-  | Observable<ActionLike | null>
-  | Promise<ActionLike | null>
-  | ActionLike
-  | ActionLike[]
-  | null;
+  | Observable<AllowedAction>
+  | Promise<AllowedAction>
+  | AllowedAction;
 
 export type EpicHandler<TAC extends AC> = (
   payload: ExtractPayload<ReturnType<TAC>>,
@@ -108,15 +107,18 @@ export class Epic {
             });
             return empty();
           }
-          if (!isAction(action)) {
-            console.error('Invalid action returned in epic.', {
-              sourceAction,
-              action,
-              store: name,
-            });
-            return empty();
+          if (isAction(action)) {
+            return of(action);
           }
-          return of(action);
+          if (Array.isArray(action) && action.every(a => isAction(a))) {
+            return action;
+          }
+          console.error('Invalid action returned in epic.', {
+            sourceAction,
+            action,
+            store: name,
+          });
+          return empty();
         }),
         catchError(err => {
           console.error(

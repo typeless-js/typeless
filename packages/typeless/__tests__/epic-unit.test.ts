@@ -5,22 +5,47 @@ import { Epic } from '../src/Epic';
 import { Deps } from '../src/types';
 
 describe('Epic#toStream', () => {
-  it('should return next Action from sourceAction', async () => {
+  describe('normally', () => {
     const Actions = createModule(Symbol('sample')).withActions({
       a: null,
       b: null,
       c: null,
     })[1];
+    it('should return next Action from sourceAction', async () => {
+      const epic = new Epic()
+        .on(Actions.a, () => Promise.resolve(Actions.b()))
+        .on(Actions.a, () => of(Actions.c()));
 
-    const epic = new Epic()
-      .on(Actions.a, () => Promise.resolve(Actions.b()))
-      .on(Actions.a, () => of(Actions.c()));
+      const results = [];
+      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
+        results.push(action)
+      );
+      expect(results).toMatchObject([Actions.c(), Actions.b()]);
+    });
 
-    const results = [];
-    await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
-      results.push(action)
-    );
-    expect(results).toMatchObject([Actions.c(), Actions.b()]);
+    it('should return next Acton from Action array Promise', async () => {
+      const epic = new Epic().on(Actions.a, () =>
+        Promise.resolve([Actions.b(), Actions.c()])
+      );
+
+      const results = [];
+      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
+        results.push(action)
+      );
+      expect(results).toMatchObject([Actions.b(), Actions.c()]);
+    });
+
+    it('should return next Acton from Action array Observable', async () => {
+      const epic = new Epic().on(Actions.a, () =>
+        of([Actions.b(), Actions.c()])
+      );
+
+      const results = [];
+      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
+        results.push(action)
+      );
+      expect(results).toMatchObject([Actions.b(), Actions.c()]);
+    });
   });
 
   describe('with delay', () => {
