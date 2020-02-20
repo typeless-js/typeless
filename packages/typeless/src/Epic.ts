@@ -86,19 +86,17 @@ export class Epic {
     return this.getHandlers(sourceAction).map(handler => {
       return defer(() => {
         log();
-        const result = handler(sourceAction.payload, deps, sourceAction) as (
-          | Observable<Action>
-          | Action
-          | Action[]);
+        const result = handler(sourceAction.payload, deps, sourceAction);
         if (Array.isArray(result)) {
           return from(result);
         }
-        if (isAction(result)) {
+        if (isAction(result) || result === null) {
           return of(result);
         }
+
         return result;
       }).pipe(
-        mergeMap((action: Action) => {
+        mergeMap((action: unknown) => {
           if (action === null) {
             // ignore if action is null
             return empty();
