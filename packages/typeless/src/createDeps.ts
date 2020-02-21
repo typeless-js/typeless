@@ -17,7 +17,7 @@ export type OutputSelector<R, C> = (() => R) & {
 };
 
 function createDepsSelector(...args: any[]) {
-  const selectors: Array<DepsSelector<any, any>> = args.slice(
+  const selectors: DepsSelector<any, any>[] = args.slice(
     0,
     args.length - 1
   );

@@ -10,7 +10,7 @@ export class StateLogger {
   private start: number | null = null;
   private end: number | null = null;
 
-  constructor(private stores: Array<Store<any>>) {}
+  constructor(private stores: Store<any>[]) {}
 
   setState(type: 'prevState' | 'nextState', state: any) {
     if (type === 'nextState') {

@@ -1,4 +1,4 @@
-import { createModule } from 'typeless';
+import { createModule, ActionLike } from 'typeless';
 import * as Rx from 'typeless/rx';
 import {
   HistoryOptions,
@@ -52,7 +52,7 @@ export function createUseRouter(options: HistoryOptions = { type: 'browser' }) {
         redirectWithLeadingHash();
       }
 
-      return new Rx.Observable(subscriber => {
+      return new Rx.Observable<ActionLike>(subscriber => {
         const notify = () => {
           subscriber.next(
             RouterActions.locationChange({

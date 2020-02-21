@@ -1,5 +1,5 @@
 export class Notify {
-  handlers: Array<() => void> = [];
+  handlers: (() => void)[] = [];
   add(handler: () => void) {
     this.handlers.push(handler);
   }
