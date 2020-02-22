@@ -39,8 +39,8 @@ Attach a handler for the specific action creator. The action creator is a functi
    - `action: object` - the original action.  
   
     The handler is allowed to return 5 types:
-   - `Observable<Action | null>` - the Rx stream which contain `Action` or `null`.
-   - `Promise<Action | null>` - the Promise which contain `Action` or `null`.
+   - `Observable<Action | Action[] | null>` - the Rx stream which contain `Action` or `Action[]` or `null`.
+   - `Promise<Action | Action[] | null>` - the Promise which contain `Action` or `Action[]` or `null`.
    - `Action` - the action object.
    - `Action[]` - an array of actions.
    - null - a null value.
