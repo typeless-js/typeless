@@ -421,7 +421,10 @@ export function createSelector<
 /* END AUTOMATICALLY GENERATED */
 
 export function createSelector(...args: any[]) {
-  const selectors: (Selector<any, any> | InputSelector<any, any>)[] = args.slice(0, args.length - 1);
+  const selectors: (
+    | Selector<any, any>
+    | InputSelector<any, any>
+  )[] = args.slice(0, args.length - 1);
   const resultFunc: (...args: any[]) => any = args[args.length - 1];
   let recomputations = 0;
   const memoizedFn = memoize((...fnArgs: any[]) => {

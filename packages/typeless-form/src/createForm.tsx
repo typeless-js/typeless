@@ -108,13 +108,10 @@ export function createForm<TData>(options: FormOptions<TData>) {
       state.errors = errors;
     })
     .on(FormActions.touchAll, state => {
-      state.touched = Object.keys(state.errors).reduce(
-        (ret, key) => {
-          ret[key] = true;
-          return ret;
-        },
-        {} as any
-      );
+      state.touched = Object.keys(state.errors).reduce((ret, key) => {
+        ret[key] = true;
+        return ret;
+      }, {} as any);
     })
     .on(FormActions.resetTouched, state => {
       state.touched = {};

@@ -18,12 +18,5 @@ module.exports = {
    * If true, puts the > of a multi-line jsx element at the end of the last line instead of being
    * alone on the next line
    */
-  jsxBracketSameLine: false,
-  /**
-   * Specify which parse to use.
-   * Valid options:
-   *   - "flow"
-   *   - "babylon"
-   */
-  parser: 'typescript',
+  jsxBracketSameLine: false
 };

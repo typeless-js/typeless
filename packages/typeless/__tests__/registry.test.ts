@@ -22,7 +22,7 @@ describe('getDisplayName', () => {
 describe('getState', () => {
   it("sholud return all of store's state", () => {
     const expected = {
-      'module': { foo: 'fooState' },
+      module: { foo: 'fooState' },
       'module#2': { baz: 'bazState' },
     };
     const store = registry.getStore(Symbol('module'));

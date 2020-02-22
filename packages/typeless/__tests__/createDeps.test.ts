@@ -25,13 +25,10 @@ describe('createSelector', () => {
     const deps = createDeps({ a: getStateA, b: getStateB });
     const fn1 = jest.fn();
     const resultFn = jest.fn((a: number) => a * 10);
-    const selector = deps.createSelector(
-      state => {
-        fn1();
-        return state.a.n;
-      },
-      resultFn
-    );
+    const selector = deps.createSelector(state => {
+      fn1();
+      return state.a.n;
+    }, resultFn);
     let result = selector();
     expect(result).toEqual(10);
     expect(fn1).toHaveBeenCalledTimes(1);

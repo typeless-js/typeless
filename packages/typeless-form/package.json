@@ -8,8 +8,11 @@
   "sideEffects": false,
   "scripts": {
     "lint": "tslint -t codeFrame 'src/**/*.ts' '__tests__/**/*.ts'",
+    "_format-base": "prettier \"./**/*.{ts,tsx,json}\"",
+    "check-format": "yarn _format-base --list-different",
+    "fix-format": "yarn _format-base --write",
     "jest": "jest",
-    "test": "yarn run lint && tsc --noEmit && yarn run jest --coverage --no-cache",
+    "test": "yarn run check-format && yarn run lint && tsc --noEmit && yarn run jest --coverage --no-cache",
     "prepare": "./scripts/build.sh"
   },
   "author": "Łukasz Sentkiewicz <lukasz@sentkiewicz.pl>",

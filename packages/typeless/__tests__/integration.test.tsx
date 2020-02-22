@@ -307,10 +307,7 @@ it('single module with selectors', () => {
     [getState, state => state.count],
     count => count + 1
   );
-  const selector2 = createSelector(
-    selector1,
-    count => count + 1
-  );
+  const selector2 = createSelector(selector1, count => count + 1);
   const values: any[] = [];
 
   function App() {

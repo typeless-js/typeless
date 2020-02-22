@@ -48,7 +48,7 @@ const createNestedReducer = <S, P extends keyof S>(
 export class ChainedReducer<S> {
   private reducerMap: Map<symbol, Map<string, Reducer<S>[]>>;
   private defaultReducers: Reducer<S>[];
-  private reducer: ChainedReducer<S> & Reducer<S> | null;
+  private reducer: (ChainedReducer<S> & Reducer<S>) | null;
 
   constructor(private initial: S) {
     this.reducerMap = new Map();
