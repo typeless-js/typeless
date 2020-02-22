@@ -11,5 +11,7 @@ notifications:
   email: false
 node_js:
   - "10.19.0"
+before_install:
+  - npm i -g yarn@1.22.0
 after_success:
   - bash <(curl -s https://codecov.io/bash)
