@@ -10,7 +10,6 @@ cache:
 notifications:
   email: false
 node_js:
-  - "10"
-  
+  - "10.19.0"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
