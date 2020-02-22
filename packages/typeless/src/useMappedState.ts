@@ -28,7 +28,7 @@ export function useMappedState<T1, T2, T3, T4, R>(
   deps?: any[]
 ): R;
 export function useMappedState(
-  stateGetters: Array<StateGetter<any>>,
+  stateGetters: StateGetter<any>[],
   mapper: (...args: any[]) => any,
   deps: any[] = []
 ) {

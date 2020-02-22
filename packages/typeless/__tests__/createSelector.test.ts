@@ -14,10 +14,7 @@ test('cache function invocations', () => {
   const fn1 = jest.fn((state: SampleState) => state.n1);
   const resultFn = jest.fn((n1: number) => n1 * 10);
   const getState = createGetter(() => defaultState);
-  const selector = createSelector(
-    [getState, fn1],
-    resultFn
-  );
+  const selector = createSelector([getState, fn1], resultFn);
   let result = selector();
   expect(result).toEqual(10);
   expect(fn1).toHaveBeenCalledTimes(1);
@@ -48,10 +45,7 @@ test('cache function invocations', () => {
 test('recomputations', () => {
   let defaultState = { n1: 1 };
   const getState = createGetter(() => defaultState);
-  const selector = createSelector(
-    [getState, state => state.n1],
-    n1 => n1 * 10
-  );
+  const selector = createSelector([getState, state => state.n1], n1 => n1 * 10);
 
   expect(selector.recomputations()).toEqual(0);
   defaultState = { n1: 1 };
@@ -71,10 +65,7 @@ test('recomputations', () => {
 test('resultFunc', () => {
   const defaultState = { n1: 1 };
   const getState = createGetter(() => defaultState);
-  const selector = createSelector(
-    [getState, state => state.n1],
-    n1 => n1 * 10
-  );
+  const selector = createSelector([getState, state => state.n1], n1 => n1 * 10);
 
   expect(selector.recomputations()).toEqual(0);
   expect(selector.resultFunc(1)).toEqual(10);
@@ -122,10 +113,7 @@ test('getStateGetters nested', () => {
 test('1 selector', () => {
   const defaultState = { n1: 1 };
   const getState = createGetter(() => defaultState);
-  const selector = createSelector(
-    [getState, state => state.n1],
-    n1 => n1 * 10
-  );
+  const selector = createSelector([getState, state => state.n1], n1 => n1 * 10);
   const result = selector();
   expect(result).toEqual(10);
 });
@@ -172,12 +160,9 @@ test('composed', () => {
   let stateB = { n2: 2 };
   const getStateA = createGetter(() => stateA);
   const getStateB = createGetter(() => stateB);
-  const selectorA = createSelector(
-    [getStateA, state => state.n1],
-    n1 => {
-      return n1 * 10;
-    }
-  );
+  const selectorA = createSelector([getStateA, state => state.n1], n1 => {
+    return n1 * 10;
+  });
   const selectorB = createSelector(
     selectorA,
     [getStateB, state => state.n2],

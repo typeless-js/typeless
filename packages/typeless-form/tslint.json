@@ -18,6 +18,6 @@
     "curly": false,
     "no-empty-interface": false,
     "prefer-object-spread": false,
-    "max-line-length": false 
+    "max-line-length": false
   }
 }

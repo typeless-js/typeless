@@ -8,7 +8,7 @@ export interface Selector<R, C> {
   resultFunc: C;
   recomputations: () => number;
   resetRecomputations: () => number;
-  getStateGetters: () => Array<StateGetter<any>>;
+  getStateGetters: () => StateGetter<any>[];
 }
 
 /* START AUTOMATICALLY GENERATED */
@@ -421,9 +421,10 @@ export function createSelector<
 /* END AUTOMATICALLY GENERATED */
 
 export function createSelector(...args: any[]) {
-  const selectors: Array<
-    Selector<any, any> | InputSelector<any, any>
-  > = args.slice(0, args.length - 1);
+  const selectors: (
+    | Selector<any, any>
+    | InputSelector<any, any>
+  )[] = args.slice(0, args.length - 1);
   const resultFunc: (...args: any[]) => any = args[args.length - 1];
   let recomputations = 0;
   const memoizedFn = memoize((...fnArgs: any[]) => {
@@ -431,7 +432,7 @@ export function createSelector(...args: any[]) {
     return resultFunc(...fnArgs);
   });
 
-  const memoizedSelectors: Array<(...args: any[]) => any> = [];
+  const memoizedSelectors: ((...args: any[]) => any)[] = [];
 
   const ret = () => {
     const params: any[] = [];
@@ -460,10 +461,10 @@ export function createSelector(...args: any[]) {
 }
 
 function extractStateGetters(
-  selectors: Array<Selector<any, any> | InputSelector<any, any>>
+  selectors: (Selector<any, any> | InputSelector<any, any>)[]
 ) {
   const gettersSet = new Set();
-  const stateGetters: Array<StateGetter<any>> = [];
+  const stateGetters: StateGetter<any>[] = [];
   const checkAdd = (stateGetter: StateGetter<any>) => {
     if (!gettersSet.has(stateGetter)) {
       stateGetters.push(stateGetter);

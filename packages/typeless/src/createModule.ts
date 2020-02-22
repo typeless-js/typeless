@@ -138,20 +138,17 @@ export function createModule(name: symbol) {
   }
 
   function createActions(actionMap: any) {
-    actions = Object.keys(actionMap).reduce(
-      (acc, key) => {
-        const type = snakeCase(key).toUpperCase();
-        acc[key] = (...args: any[]) => {
-          const ac = actionMap[key] || (() => ({}));
-          const action = ac(...args) as any;
-          action.type = [name, type];
-          return action;
-        };
-        acc[key].getType = () => [name, type];
-        return acc;
-      },
-      {} as { [s: string]: any }
-    ) as any;
+    actions = Object.keys(actionMap).reduce((acc, key) => {
+      const type = snakeCase(key).toUpperCase();
+      acc[key] = (...args: any[]) => {
+        const ac = actionMap[key] || (() => ({}));
+        const action = ac(...args) as any;
+        action.type = [name, type];
+        return action;
+      };
+      acc[key].getType = () => [name, type];
+      return acc;
+    }, {} as { [s: string]: any }) as any;
   }
 
   function withActions(newActionMap: object) {

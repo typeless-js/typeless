@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Registry } from './Registry';
 
-export const TypelessContext = React.createContext(null as null | {
-  registry: Registry;
-});
+export const TypelessContext = React.createContext(
+  null as null | {
+    registry: Registry;
+  }
+);
 
 export const defaultRegistry = new Registry();
 

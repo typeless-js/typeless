@@ -17,10 +17,7 @@ export type OutputSelector<R, C> = (() => R) & {
 };
 
 function createDepsSelector(...args: any[]) {
-  const selectors: Array<DepsSelector<any, any>> = args.slice(
-    0,
-    args.length - 1
-  );
+  const selectors: DepsSelector<any, any>[] = args.slice(0, args.length - 1);
   const resultFunc: (...args: any[]) => any = args[args.length - 1];
   let recomputations = 0;
   const memoizedFn = memoize((...fnArgs: any[]) => {
@@ -44,7 +41,7 @@ function createDepsSelector(...args: any[]) {
 }
 
 type ExtractState<T> = {
-  [x in keyof T]: T[x] extends StateGetter<infer S> ? S : any
+  [x in keyof T]: T[x] extends StateGetter<infer S> ? S : any;
 };
 
 interface DepsResult<TState> {
