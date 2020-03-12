@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
-import { createModule } from '../src/createModule';
-import { createSelector } from '../src/createSelector';
-import { defaultRegistry } from '../src/TypelessContext';
-import { useActions } from '../src/useActions';
-import { useMappedState } from '../src/useMappedState';
-import { useSelector } from '../src/useSelector';
+import { createModule } from '../../src/createModule';
+import { createSelector } from '../../src/createSelector';
+import { defaultRegistry } from '../../src/TypelessContext';
+import { useActions } from '../../src/useActions';
+import { useMappedState } from '../../src/useMappedState';
+import { useSelector } from '../../src/useSelector';
 import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;

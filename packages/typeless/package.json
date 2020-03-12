@@ -11,7 +11,7 @@
     "_format-base": "prettier \"./**/*.{ts,tsx,json}\"",
     "check-format": "yarn _format-base --list-different",
     "fix-format": "yarn _format-base --write",
-    "check-tsc": "tsc --noEmit -p . && tsc --noEmit -p ./__tests__",
+    "check-tsc": "tsc --noEmit -p . && tsc --noEmit -p ./__tests__/unit",
     "jest": "jest",
     "test": "yarn run check-format && yarn run lint && yarn run check-tsc && yarn run jest --coverage --no-cache",
     "clean": "rimraf dist",

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { of } from 'rxjs';
-import { createModule } from '../src/createModule';
-import { Registry } from '../src/Registry';
+import { createModule } from '../../src/createModule';
+import { Registry } from '../../src/Registry';
 import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;

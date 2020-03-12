@@ -1,10 +1,10 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { shallowEqualObjects } from 'shallow-equal';
-import { createModule } from '../src/createModule';
-import { Registry } from '../src/Registry';
-import { useActions } from '../src/useActions';
-import { useMappedState } from '../src/useMappedState';
+import { createModule } from '../../src/createModule';
+import { Registry } from '../../src/Registry';
+import { useActions } from '../../src/useActions';
+import { useMappedState } from '../../src/useMappedState';
 import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;

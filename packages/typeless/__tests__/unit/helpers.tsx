@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { TypelessContext } from '../src/TypelessContext';
-import { Registry } from '../src/Registry';
+import { TypelessContext } from '../../src/TypelessContext';
+import { Registry } from '../../src/Registry';
 
 export function renderWithProvider(
   node: React.ReactChild,

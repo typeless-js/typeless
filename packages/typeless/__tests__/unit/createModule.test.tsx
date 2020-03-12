@@ -1,6 +1,6 @@
 import React from 'react';
-import { createModule } from '../src/createModule';
-import { Registry } from '../src/Registry';
+import { createModule } from '../../src/createModule';
+import { Registry } from '../../src/Registry';
 import { renderWithProvider } from './helpers';
 
 test('createModule with actions', () => {

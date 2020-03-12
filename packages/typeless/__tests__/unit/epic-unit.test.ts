@@ -1,8 +1,8 @@
 import { asyncScheduler, merge, of, VirtualTimeScheduler } from 'rxjs';
 import { delay, observeOn, subscribeOn } from 'rxjs/operators';
-import { createModule } from '../src/createModule';
-import { Epic } from '../src/Epic';
-import { Deps } from '../src/types';
+import { createModule } from '../../src/createModule';
+import { Epic } from '../../src/Epic';
+import { Deps } from '../../src/types';
 
 describe('Epic#toStream', () => {
   describe('normally', () => {

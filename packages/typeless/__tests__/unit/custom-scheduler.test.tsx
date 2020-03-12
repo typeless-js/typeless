@@ -2,9 +2,9 @@ import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { asyncScheduler, of, VirtualTimeScheduler } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { createModule } from '../src/createModule';
-import { defaultRegistry } from '../src/TypelessContext';
-import { useActions } from '../src/useActions';
+import { createModule } from '../../src/createModule';
+import { defaultRegistry } from '../../src/TypelessContext';
+import { useActions } from '../../src/useActions';
 import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;

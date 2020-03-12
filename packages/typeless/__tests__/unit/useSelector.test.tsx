@@ -1,9 +1,9 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { createModule } from '../src/createModule';
-import { createSelector } from '../src/createSelector';
-import { Registry } from '../src/Registry';
-import { useSelector } from '../src/useSelector';
+import { createModule } from '../../src/createModule';
+import { createSelector } from '../../src/createSelector';
+import { Registry } from '../../src/Registry';
+import { useSelector } from '../../src/useSelector';
 import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
