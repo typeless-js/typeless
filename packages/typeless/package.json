@@ -29,7 +29,7 @@
   "homepage": "https://github.com/typeless-js/typeless#readme",
   "jest": {
     "testURL": "http://localhost",
-    "testRegex": "(/__tests__/.*\\.(test|spec))\\.(ts|tsx|js)$",
+    "testRegex": "(/__tests__/unit/.*\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
