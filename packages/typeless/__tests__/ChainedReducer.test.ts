@@ -107,7 +107,7 @@ describe('replace', () => {
   });
   it('should set nothing', () => {
     const reducer = createReducer(getInitialState()).replace(textAction, () => {
-      return nothing;
+      return (nothing as unknown) as ReturnType<typeof getInitialState>;
     });
     const state = reducer(undefined, textAction('text'));
     expect(state).toEqual(undefined);

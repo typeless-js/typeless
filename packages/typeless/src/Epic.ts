@@ -86,8 +86,12 @@ export class Epic {
         if (Array.isArray(result)) {
           return from(result);
         }
-        if (isAction(result) || result === null) {
+        if (isAction(result)) {
           return of(result);
+        }
+
+        if (result === null) {
+          return of(null);
         }
 
         return result;

@@ -44,7 +44,7 @@ test('epic should ignore action when returned null value', () => {
     .on(Actions.a, () => Promise.resolve(null))
     .on(Actions.a, () => of(null));
 
-  function App() {
+  function App(): ReturnType<React.FC> {
     useModule();
     return null;
   }
