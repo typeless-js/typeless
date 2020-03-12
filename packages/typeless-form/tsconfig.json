@@ -27,8 +27,7 @@
     "strict": true,
     "pretty": true,
     "removeComments": true,
-    "sourceMap": true,
-    "rootDirs": ["node_modules"]
+    "sourceMap": true
   },
-  "include": ["src", "src2"]
+  "include": ["src"]
 }
