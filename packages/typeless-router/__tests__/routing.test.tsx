@@ -8,7 +8,6 @@ let container: HTMLDivElement = null;
 let registry: Registry;
 let dispatch: jest.SpyInstance = null;
 let pushState: jest.SpyInstance = null;
-let replaceState: jest.SpyInstance = null;
 
 beforeEach(() => {
   container = document.createElement('div');
@@ -16,7 +15,6 @@ beforeEach(() => {
   registry = new Registry();
   dispatch = jest.spyOn(registry, 'dispatch');
   pushState = jest.spyOn(history, 'pushState');
-  replaceState = jest.spyOn(history, 'replaceState');
 });
 
 function render(node: React.ReactChild) {
@@ -45,7 +43,7 @@ describe('browser', () => {
     const useRouter = createUseRouter({
       type: 'browser',
     });
-    function App() {
+    function App(): ReturnType<React.FC> {
       useRouter();
       return null;
     }
@@ -120,7 +118,7 @@ describe('hash', () => {
     const useRouter = createUseRouter({
       type: 'hash',
     });
-    function App() {
+    function App(): ReturnType<React.FC> {
       useRouter();
       return null;
     }
