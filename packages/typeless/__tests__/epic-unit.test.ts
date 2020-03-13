@@ -16,7 +16,7 @@ describe('Epic#toStream', () => {
         .on(Actions.a, () => Promise.resolve(Actions.b()))
         .on(Actions.a, () => of(Actions.c()));
 
-      const results = [];
+      const results: any[] = [];
       await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
         results.push(action)
       );
@@ -28,7 +28,7 @@ describe('Epic#toStream', () => {
         Promise.resolve([Actions.b(), Actions.c()])
       );
 
-      const results = [];
+      const results: any[] = [];
       await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
         results.push(action)
       );
@@ -40,7 +40,7 @@ describe('Epic#toStream', () => {
         of([Actions.b(), Actions.c()])
       );
 
-      const results = [];
+      const results: any[] = [];
       await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
         results.push(action)
       );
@@ -66,7 +66,7 @@ describe('Epic#toStream', () => {
       const epic = new Epic().on(Actions.ping, () =>
         of(Actions.pong()).pipe(delay(500))
       );
-      const results = [];
+      const results: any[] = [];
       const o = merge(...epic.toStream(Actions.ping(), {} as Deps)).pipe(
         observeOn(scheduler),
         subscribeOn(scheduler)

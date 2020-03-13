@@ -1,3 +1,1 @@
-it('todo', () => {
-  //
-});
+it.todo('todo');

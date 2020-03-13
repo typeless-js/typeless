@@ -48,7 +48,7 @@ test('epic should be in correct sync order', () => {
     .on(Actions.a, () => [Actions.b(), Actions.c()])
     .on(Actions.b, () => Actions.d());
 
-  function App() {
+  function App(): ReturnType<React.FC> {
     useModule();
     return null;
   }
