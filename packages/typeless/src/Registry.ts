@@ -1,11 +1,11 @@
 import * as ReactDom from 'react-dom';
-import { Subject, Observable } from 'rxjs';
-import { Store } from './Store';
-import { getDescription } from './utils';
-import { Action, ActionLike } from './types';
+import { empty, merge, Observable, queueScheduler, Subject } from 'rxjs';
+import { mergeMap, observeOn, subscribeOn } from 'rxjs/operators';
 import { Notify } from './Notify';
-import { createOutputStream } from './createOutputStream';
 import { StateLogger } from './StateLogger';
+import { Store } from './Store';
+import { Action, ActionLike, Deps } from './types';
+import { getDescription } from './utils';
 
 export class Registry {
   private nameCount: Map<string, number> = new Map();
@@ -84,9 +84,29 @@ export class Registry {
 
   private initStreams() {
     this.input$ = new Subject();
-    this.output$ = createOutputStream(this.input$, this.stores);
+    this.output$ = this.createOutputStream(this.input$);
     this.output$.subscribe(action => {
       this.dispatch(action);
     });
+  }
+
+  private createOutputStream(action$: Subject<Action>): Observable<Action> {
+    const deps = { action$: action$ as Deps['action$'] };
+    return action$.pipe(
+      subscribeOn(queueScheduler),
+      observeOn(queueScheduler),
+      mergeMap(sourceAction => {
+        const handlers = this.stores
+          .map(store => store.getOutputStream(sourceAction, deps))
+          .filter(handler => handler !== null)
+          .reduce((ret, arr) => [...ret, ...arr], [])!;
+
+        if (handlers.length === 0) {
+          return empty();
+        } else {
+          return merge(...handlers);
+        }
+      })
+    );
   }
 }
