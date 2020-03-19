@@ -14,7 +14,8 @@
     "check-tsc": "tsc --noEmit -p . && tsc --noEmit -p ./__tests__",
     "jest": "jest",
     "test": "yarn run check-format && yarn run lint && yarn run check-tsc && yarn run jest --coverage --no-cache",
-    "prepare": "./scripts/build.sh"
+    "clean": "rimraf dist",
+    "prepare": "yarn run clean && tsc --build tsconfig.esm.json tsconfig.cjs.json"
   },
   "author": "Łukasz Sentkiewicz <lukasz@sentkiewicz.pl>",
   "license": "MIT",
