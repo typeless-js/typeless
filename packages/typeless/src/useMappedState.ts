@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StateGetter } from './types';
 import { Store } from './Store';
+import { objectIs } from './utils';
 
 export function useMappedState<T1, R>(
   stateGetters: [StateGetter<T1>],
@@ -55,8 +56,11 @@ export function useMappedState(
   };
 
   const getSubscribeFn = () => {
-    stateRef.current = getMappedState();
-    forceUpdate({});
+    const newState = getMappedState();
+    if (!objectIs(newState, stateRef.current)) {
+      stateRef.current = newState;
+      forceUpdate({});
+    }
   };
 
   const stateRef = React.useRef(getMappedState());
