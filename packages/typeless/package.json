@@ -65,6 +65,7 @@
     "react-dom": "^16.8.2",
     "rimraf": "^3.0.2",
     "rxjs": "^6.3.3",
+    "shallow-equal": "^1.2.1",
     "tslint": "6.0.0",
     "typescript": "3.8.2"
   },

@@ -3,36 +3,44 @@ import { StateGetter } from './types';
 import { Store } from './Store';
 import { objectIs } from './utils';
 
-export function useMappedState<T1, R>(
-  stateGetters: [StateGetter<T1>],
-  mapper: (state1: T1) => R,
+type TupleOfStateGetter = [] | [StateGetter<any>, ...StateGetter<any>[]];
+type ExtractState<T> = T extends StateGetter<any>[]
+  ? { [P in keyof T]: T[P] extends StateGetter<infer S> ? S : never }
+  : never;
+
+type EqualityFn = (a: unknown, b: unknown) => boolean;
+const defaultEquality = objectIs;
+
+export function useMappedState<T extends TupleOfStateGetter, R>(
+  stateGetters: T,
+  mapper: (...args: ExtractState<T>) => R,
   deps?: any[]
 ): R;
-export function useMappedState<T1, T2, R>(
-  stateGetters: [StateGetter<T1>, StateGetter<T2>],
-  mapper: (state1: T1, state2: T2) => R,
+export function useMappedState<T extends TupleOfStateGetter, R>(
+  stateGetters: T,
+  mapper: (...args: ExtractState<T>) => R,
+  equalityFn: EqualityFn,
   deps?: any[]
 ): R;
-export function useMappedState<T1, T2, T3, R>(
-  stateGetters: [StateGetter<T1>, StateGetter<T2>, StateGetter<T3>],
-  mapper: (state1: T1, state2: T2, state3: T3) => R,
-  deps?: any[]
-): R;
-export function useMappedState<T1, T2, T3, T4, R>(
-  stateGetters: [
-    StateGetter<T1>,
-    StateGetter<T2>,
-    StateGetter<T3>,
-    StateGetter<T4>
-  ],
-  mapper: (state1: T1, state2: T2, state3: T3, state4: T4) => R,
-  deps?: any[]
-): R;
+
 export function useMappedState(
   stateGetters: StateGetter<any>[],
   mapper: (...args: any[]) => any,
-  deps: any[] = []
+  equalityFnOrDeps?: EqualityFn | unknown[],
+  mayBeDeps: unknown[] = []
 ) {
+  const parseArgs = (): [unknown[], EqualityFn] => {
+    if (equalityFnOrDeps === undefined) {
+      return [[], defaultEquality];
+    }
+    if (Array.isArray(equalityFnOrDeps)) {
+      return [equalityFnOrDeps, defaultEquality];
+    }
+
+    return [mayBeDeps, equalityFnOrDeps];
+  };
+
+  const [deps, equalityFn] = parseArgs();
   const mapperCached = React.useCallback(mapper, deps);
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
 
@@ -57,7 +65,7 @@ export function useMappedState(
 
   const getSubscribeFn = () => {
     const newState = getMappedState();
-    if (!objectIs(newState, stateRef.current)) {
+    if (!equalityFn(newState, stateRef.current)) {
       stateRef.current = newState;
       forceUpdate({});
     }
