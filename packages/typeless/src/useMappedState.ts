@@ -13,19 +13,19 @@ const defaultEquality = objectIs;
 
 export function useMappedState<T extends TupleOfStateGetter, R>(
   stateGetters: T,
-  mapper: (...args: ExtractState<T>) => R,
+  mapperFn: (...args: ExtractState<T>) => R,
   deps?: any[]
 ): R;
 export function useMappedState<T extends TupleOfStateGetter, R>(
   stateGetters: T,
-  mapper: (...args: ExtractState<T>) => R,
+  mapperFn: (...args: ExtractState<T>) => R,
   equalityFn: EqualityFn,
   deps?: any[]
 ): R;
 
 export function useMappedState(
   stateGetters: StateGetter<any>[],
-  mapper: (...args: any[]) => any,
+  mapperFn: (...args: any[]) => any,
   equalityFnOrDeps?: EqualityFn | unknown[],
   mayBeDeps: unknown[] = []
 ) {
@@ -41,7 +41,7 @@ export function useMappedState(
   };
 
   const [deps, equalityFn] = parseArgs();
-  const mapperCached = React.useCallback(mapper, deps);
+  const mapperCached = React.useCallback(mapperFn, deps);
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
 
   const stores = React.useMemo(
