@@ -6,6 +6,7 @@ import { TypelessContext } from '../src/TypelessContext';
 import { Registry } from '../src/Registry';
 import ReactDOM from 'react-dom';
 import { shallowEqualObjects } from 'shallow-equal';
+import { useActions } from '../src/useActions';
 
 let container: HTMLDivElement = null!;
 let registry: Registry = null!;
@@ -29,6 +30,11 @@ function render(node: React.ReactChild) {
       </TypelessContext.Provider>,
       container
     );
+  });
+}
+function clickButton(element: Element) {
+  act(() => {
+    element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
 }
 
@@ -191,5 +197,75 @@ describe('re-render prevention', () => {
         renderCount: 1,
       });
     });
+  });
+});
+
+describe('re-render with deps', () => {
+  const [useModule, Actions, getState] = createModule(Symbol('sample'))
+    .withActions({
+      increase: (type: 'a' | 'b') => ({ payload: { type } }),
+    })
+    .withState<{ a: number; b: number }>();
+
+  useModule
+    .reducer({ a: 0, b: 1000 })
+    .on(Actions.increase, (state, { type }) => {
+      state[type]++;
+    });
+
+  it('should update mapped values which is related deps', () => {
+    let renderCount = 0;
+    const values: any[] = [];
+
+    function App() {
+      renderCount++;
+      const [type, setType] = React.useState('a' as 'a' | 'b');
+      useModule();
+      const { increase } = useActions(Actions);
+      const count = useMappedState([getState], state => state[type], [type]);
+      values.push({ type, count });
+      return (
+        <div>
+          <p id="count">{count}</p>
+          <button id="inc" onClick={() => increase(type)}>
+            increase
+          </button>
+          <button id="toggle" onClick={() => setType(type === 'a' ? 'b' : 'a')}>
+            increase
+          </button>
+        </div>
+      );
+    }
+    // initial
+    render(<App />);
+
+    const inc = container.querySelector('#inc')!;
+    const toggle = container.querySelector('#toggle')!;
+    const label = container.querySelector('#count')!;
+    expect(label.textContent).toBe('0');
+    expect(renderCount).toEqual(1);
+
+    // increase 'a'
+    clickButton(inc);
+    expect(label.textContent).toBe('1');
+    expect(renderCount).toEqual(2);
+
+    // switch to 'b'
+    clickButton(toggle);
+    expect(label.textContent).toBe('1000');
+    expect(renderCount).toEqual(3);
+
+    // increase 'b'
+    clickButton(inc);
+    expect(label.textContent).toBe('1001');
+    expect(renderCount).toEqual(4);
+
+    // ensure no renders with stale props
+    expect(values).toEqual([
+      { count: 0, type: 'a' },
+      { count: 1, type: 'a' },
+      { count: 1000, type: 'b' },
+      { count: 1001, type: 'b' },
+    ]);
   });
 });
