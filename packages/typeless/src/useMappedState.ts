@@ -8,7 +8,7 @@ type ExtractState<T> = T extends StateGetter<any>[]
   ? { [P in keyof T]: T[P] extends StateGetter<infer S> ? S : never }
   : never;
 
-type EqualityFn = (a: unknown, b: unknown) => boolean;
+type EqualityFn<T> = (a: T, b: T) => boolean;
 const defaultEquality = objectIs;
 
 export function useMappedState<T extends TupleOfStateGetter, R>(
@@ -19,17 +19,17 @@ export function useMappedState<T extends TupleOfStateGetter, R>(
 export function useMappedState<T extends TupleOfStateGetter, R>(
   stateGetters: T,
   mapperFn: (...args: ExtractState<T>) => R,
-  equalityFn: EqualityFn,
+  equalityFn: EqualityFn<R>,
   deps?: any[]
 ): R;
 
 export function useMappedState(
   stateGetters: StateGetter<any>[],
   mapperFn: (...args: any[]) => any,
-  equalityFnOrDeps?: EqualityFn | unknown[],
+  equalityFnOrDeps?: EqualityFn<any> | unknown[],
   mayBeDeps: unknown[] = []
 ) {
-  const parseArgs = (): [unknown[], EqualityFn] => {
+  const parseArgs = (): [unknown[], EqualityFn<any>] => {
     if (equalityFnOrDeps === undefined) {
       return [[], defaultEquality];
     }
