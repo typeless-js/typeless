@@ -81,6 +81,13 @@ export const snakeCase = (str: string) => {
 export const toArray = <T>(input: T | T[]): T[] =>
   Array.isArray(input) ? input : [input];
 
+export function objectIs(a: unknown, b: unknown) {
+  if (a === b) {
+    return a !== 0 || 1 / a === 1 / (b as number);
+  } else {
+    return a !== a && b !== b;
+  }
+}
 export function shallowEqual(a: any[] | null, b: any[] | null) {
   if (!a || !b || a.length !== b.length) {
     return false;
