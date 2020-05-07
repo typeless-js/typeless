@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { StateGetter } from './types';
+import { StateGetter, EqualityFn, TupleOfStateGetter } from './types';
 import { Store } from './Store';
 import { objectIs } from './utils';
 
-type TupleOfStateGetter = [] | [StateGetter<any>, ...StateGetter<any>[]];
 type ExtractState<T> = T extends StateGetter<any>[]
   ? { [P in keyof T]: T[P] extends StateGetter<infer S> ? S : never }
   : never;
 
-type EqualityFn<T> = (a: T, b: T) => boolean;
 const defaultEquality = objectIs;
 
 export function useMappedState<T extends TupleOfStateGetter, R>(
@@ -24,12 +22,12 @@ export function useMappedState<T extends TupleOfStateGetter, R>(
 ): R;
 
 export function useMappedState(
-  stateGetters: StateGetter<any>[],
+  stateGetters: StateGetter<unknown>[],
   mapperFn: (...args: any[]) => any,
-  equalityFnOrDeps?: EqualityFn<any> | unknown[],
+  equalityFnOrDeps?: EqualityFn<unknown> | unknown[],
   mayBeDeps: unknown[] = []
 ) {
-  const parseArgs = (): [unknown[], EqualityFn<any>] => {
+  const parseArgs = (): [unknown[], EqualityFn<unknown>] => {
     if (equalityFnOrDeps === undefined) {
       return [[], defaultEquality];
     }

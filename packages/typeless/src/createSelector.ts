@@ -1,4 +1,4 @@
-import { StateGetter } from './types';
+import { StateGetter, TupleOfStateGetter } from './types';
 import { memoize } from './utils';
 
 export type InputSelector<S, R> = [StateGetter<S>, (state: S) => R];
@@ -8,7 +8,7 @@ export interface Selector<R, C> {
   resultFunc: C;
   recomputations: () => number;
   resetRecomputations: () => number;
-  getStateGetters: () => StateGetter<any>[];
+  getStateGetters: () => TupleOfStateGetter;
 }
 
 /* START AUTOMATICALLY GENERATED */

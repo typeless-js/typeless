@@ -49,7 +49,9 @@ const [handle, Actions, getState] = createModule(symbol)
 
 `Actions:  {[name: string]: Function}` the action creators.
 
-`getState: () => State` the state getter.
+`getState: {StateGetter}` the state getter. `StateGetter` has two public APIs.
+  - `getState(): State` - get the module's state.
+  - `getState.useState(): State` get the module's state in React Component.
 
 
 #### Example
