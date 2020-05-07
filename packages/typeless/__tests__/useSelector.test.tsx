@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { createModule } from '../src/createModule';
-import { Registry } from '../src/Registry';
-import { TypelessContext } from '../src/TypelessContext';
 import { createSelector } from '../src/createSelector';
+import { Registry } from '../src/Registry';
 import { useSelector } from '../src/useSelector';
+import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
 let registry: Registry = null!;
@@ -20,17 +19,6 @@ afterEach(() => {
   container = null!;
   registry = null;
 });
-
-function render(node: React.ReactChild) {
-  act(() => {
-    ReactDOM.render(
-      <TypelessContext.Provider value={{ registry }}>
-        {node}
-      </TypelessContext.Provider>,
-      container
-    );
-  });
-}
 
 const [useModule, Actions, getState] = createModule(Symbol('sample'))
   .withActions({ increment: null })
@@ -47,7 +35,7 @@ describe('useSelector', () => {
   let renderCount: number = null!;
   beforeEach(() => {
     renderCount = 0;
-    render(<App />);
+    renderWithProvider(<App />, container, registry);
   });
   function App() {
     renderCount++;

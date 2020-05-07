@@ -1,12 +1,12 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { createModule } from '../src/createModule';
-import { useMappedState } from '../src/useMappedState';
-import { useActions } from '../src/useActions';
 import { createSelector } from '../src/createSelector';
+import { defaultRegistry } from '../src/TypelessContext';
+import { useActions } from '../src/useActions';
+import { useMappedState } from '../src/useMappedState';
 import { useSelector } from '../src/useSelector';
-import { DefaultTypelessProvider } from '../src/TypelessContext';
+import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
 
@@ -19,15 +19,6 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null!;
 });
-
-function render(node: React.ReactChild) {
-  act(() => {
-    ReactDOM.render(
-      <DefaultTypelessProvider>{node}</DefaultTypelessProvider>,
-      container
-    );
-  });
-}
 
 function clickButton(element: Element) {
   act(() => {
@@ -62,7 +53,7 @@ it('single module', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const button = container.querySelector('button')!;
   const label = container.querySelector('p')!;
@@ -140,7 +131,7 @@ it('two modules', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const incX = container.querySelector('#inc-x')!;
   const incY = container.querySelector('#inc-y')!;
@@ -208,7 +199,7 @@ it('single module with epic', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const button = container.querySelector('button')!;
   const label = container.querySelector('p')!;
@@ -256,7 +247,7 @@ it('single module with selectors', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const button = container.querySelector('button')!;
 
@@ -296,7 +287,7 @@ it('modify state in $mounted should cause re-render', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const label = container.querySelector('p')!;
   expect(label.textContent).toBe('1');

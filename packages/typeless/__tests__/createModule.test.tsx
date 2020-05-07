@@ -1,9 +1,7 @@
-import React, { createElement } from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
+import React from 'react';
 import { createModule } from '../src/createModule';
 import { Registry } from '../src/Registry';
-import { TypelessContext } from '../src/TypelessContext';
+import { renderWithProvider } from './helpers';
 
 test('createModule with actions', () => {
   const [, Actions] = createModule(Symbol('foo')).withActions({
@@ -69,32 +67,22 @@ describe('use module at multiple registries', () => {
     container = null!;
   });
 
-  function render(registry: Registry, factory: () => JSX.Element) {
-    act(() => {
-      ReactDOM.render(
-        <TypelessContext.Provider value={{ registry }}>
-          {createElement(factory)}
-        </TypelessContext.Provider>,
-        container
-      );
-    });
-  }
-
   it('should be initialized', () => {
     const [handle] = createModule(Symbol('foo')).withState<number>();
     handle.reducer(1);
-
+    function App1(): JSX.Element {
+      handle();
+      return null;
+    }
     const registry1 = new Registry();
-    render(registry1, () => {
-      handle();
-      return null;
-    });
+    renderWithProvider(<App1 />, container, registry1);
 
-    const registry2 = new Registry();
-    render(registry2, () => {
+    function App2(): JSX.Element {
       handle();
       return null;
-    });
+    }
+    const registry2 = new Registry();
+    renderWithProvider(<App2 />, container, registry2);
 
     expect(registry1.getState()).toStrictEqual({ foo: 1 });
     expect(registry2.getState()).toStrictEqual({ foo: 1 });
