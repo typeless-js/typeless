@@ -3,7 +3,8 @@
 Typescript + React Hooks + RxJS = 😻
 
 
-[![Build Status](https://travis-ci.org/typeless-js/typeless.svg?branch=master)](https://travis-ci.org/typeless-js/typeless) [![npm module](https://badge.fury.io/js/typeless.svg)](https://www.npmjs.org/package/typeless)
+![Build Status](https://github.com/actions/typeless-js/typeless/workflows/ci/badge.svg)
+[![npm module](https://badge.fury.io/js/typeless.svg)](https://www.npmjs.org/package/typeless)
 
 ## Installation
 Required peer dependencies: `react@^16.8` and `rxjs^@6`
