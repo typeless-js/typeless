@@ -1,0 +1,13 @@
+// tsconfig for production. this references only source files for publish
+{
+  "exclude": ["examples"],
+  "files": [],
+  "references": [
+    { "path": "./packages/typeless" },
+    { "path": "./packages/typeless/tsconfig.cjs.json" },
+    { "path": "./packages/typeless-form" },
+    { "path": "./packages/typeless-form/tsconfig.cjs.json" },
+    { "path": "./packages/typeless-router" },
+    { "path": "./packages/typeless-router/tsconfig.cjs.json" }
+  ]
+}
