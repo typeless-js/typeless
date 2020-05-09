@@ -6,8 +6,8 @@ sidebar_label: Quick Start
 ---
 
 # Quick Start
-[typeless](https://github.com/typeless-js/typeless) is a toolkit for building React apps using Typescript, and RxJS.
 
+[typeless](https://github.com/typeless-js/typeless) is a toolkit for building React apps using TypeScript, and RxJS.
 
 ## Installation
 
@@ -25,8 +25,8 @@ yarn add typeless
 
 👉 [Check here full code of the below example.](https://codesandbox.io/s/x3qwol55xq)
 
-
 ## `Setup`
+
 Wrap your application with a provider.
 
 ```tsx
@@ -46,14 +46,17 @@ ReactDOM.render(
 ```
 
 ## `Feature`
+
 Each feature is split into 4 main parts:
+
 - **symbol.ts** - contains symbol definitions.
 - **interface.ts** - contains action definitions and type information.
 - **module.tsx** - contains epic, reducer, any business logic, and entry point component.
 - **components/** - react components for this module.
 
 ### `Symbol`
- Symbols must be declared in a separate file to work properly with HMR.  
+
+Symbols must be declared in a separate file to work properly with HMR.  
  If you don't need HMR you can declare symbols in `interface.ts`.
 
 ```tsx
@@ -63,9 +66,9 @@ export const CounterSymbol = Symbol('counter');
 ```
 
 ### `Interface`
-Other modules should communicate only by referring to object/types defined in the interface file.  
-This file should be as small as possible. Avoid depending on external libraries.  
 
+Other modules should communicate only by referring to object/types defined in the interface file.  
+This file should be as small as possible. Avoid depending on external libraries.
 
 ```tsx
 // features/counter/interface.ts
@@ -74,7 +77,9 @@ import { createModule } from 'typeless';
 import { CounterSymbol } from './symbol';
 
 // initialize the module
-export const [useModule, CounterActions, getCounterState] = createModule(CounterSymbol)
+export const [useModule, CounterActions, getCounterState] = createModule(
+  CounterSymbol
+)
   // Create Actions Creators
   .withActions({
     startCount: null, // null means no args
