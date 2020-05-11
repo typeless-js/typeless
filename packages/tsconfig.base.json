@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es5", // "es2015" for ES6+ engines
+    "module": "ESNext", // "es2015" for tree-shaking
+    "lib": ["DOM", "ESNext"],
+    "allowJs": false, // include js files
+    "checkJs": false, // typecheck js files
+    "jsx": "react", // process JSX
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "importHelpers": true, // importing helper functions from tslib
+    "downlevelIteration": true,
+    "pretty": true,
+    "noEmitOnError": true,
+    "noEmitHelpers": true, // disable emitting inline helper functions
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true, // no errors on commonjs default import
+    "esModuleInterop": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true,
+    "composite": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strictNullChecks": false,
+    "rootDir": "../../"
+  },
+  "include": ["../../src", "."],
+  "references": [{ "path": "../../" }]
+}

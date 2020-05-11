@@ -1,11 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "outDir": "dist/es",
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
       "typeless": ["../typeless"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../typeless" }]
 }

@@ -1,5 +1,5 @@
-import { createSelector } from '../src/createSelector';
-import { StateGetter } from '../src/types';
+import { createSelector } from '../../src/createSelector';
+import { StateGetter } from '../../src/types';
 
 interface SampleState {
   n1?: number;

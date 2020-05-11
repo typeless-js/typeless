@@ -11,11 +11,9 @@
     "_format-base": "prettier \"./**/*.{ts,tsx,json}\"",
     "check-format": "yarn _format-base --list-different",
     "fix-format": "yarn _format-base --write",
-    "check-tsc": "tsc --noEmit -p . && tsc --noEmit -p ./__tests__",
     "jest": "jest",
-    "test": "yarn run check-format && yarn run lint && yarn run check-tsc && yarn run jest --coverage --no-cache",
-    "clean": "rimraf dist",
-    "prepare": "yarn run clean && tsc --build tsconfig.esm.json tsconfig.cjs.json"
+    "test": "yarn run check-format && yarn run lint && yarn run jest --coverage --no-cache",
+    "clean": "rimraf dist *.tsbuildinfo"
   },
   "author": "Łukasz Sentkiewicz <lukasz@sentkiewicz.pl>",
   "license": "MIT",
@@ -30,6 +28,10 @@
   "jest": {
     "testURL": "http://localhost",
     "testRegex": "(/__tests__/.*\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "dist"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

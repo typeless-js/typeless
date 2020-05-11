@@ -1,5 +1,5 @@
-import { Registry } from '../src/Registry';
-import { ChainedReducer } from '../src/ChainedReducer';
+import { Registry } from '../../src/Registry';
+import { ChainedReducer } from '../../src/ChainedReducer';
 
 let registry: Registry;
 

@@ -1,4 +1,4 @@
-import { objectIs } from '../src/utils';
+import { objectIs } from '../../src/utils';
 
 describe('objectIs', () => {
   // ref. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is

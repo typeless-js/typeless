@@ -4,9 +4,13 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "lerna run test",
+    "test": "yarn build-dev && lerna run test",
     "pub": "lerna publish --force-publish",
-    "prepare": "lerna run --scope typeless prepare && lerna run --ignore typeless prepare"
+    "prepub": "yarn run clean && yarn run build-prod",
+    "prepare": "yarn run build-dev",
+    "clean": "lerna run clean",
+    "build-dev": "tsc -b .",
+    "build-prod": "tsc -b tsconfig.prod.json"
   },
   "workspaces": [
     "packages/*"
