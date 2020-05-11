@@ -1,11 +1,10 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { createModule } from '../src/createModule';
-import * as Rx from '../src/rx/rx';
-import { TypelessContext } from '../src/TypelessContext';
-import { Registry } from '../src/Registry';
 import { startHmr, stopHmr } from '../src/onHmr';
+import { Registry } from '../src/Registry';
+import * as Rx from '../src/rx/rx';
+import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
 let ModuleSymbol: symbol = null!;
@@ -24,17 +23,6 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null!;
 });
-
-function render(node: React.ReactChild) {
-  act(() => {
-    ReactDOM.render(
-      <TypelessContext.Provider value={{ registry }}>
-        {node}
-      </TypelessContext.Provider>,
-      container
-    );
-  });
-}
 
 function getModule() {
   const [useModule, Actions, getState] = createModule(ModuleSymbol).withActions(
@@ -78,7 +66,7 @@ it('ignore HMR reloads', () => {
     }
 
     // initial render
-    render(<App />);
+    renderWithProvider(<App />, container, registry);
 
     act(() => {
       registry.dispatch(Actions.ping());
@@ -142,7 +130,7 @@ it('reload epic on HMR', () => {
     }
 
     // initial render
-    render(<App />);
+    renderWithProvider(<App />, container, registry);
 
     act(() => {
       registry.dispatch(Actions.ping());

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { VirtualTimeScheduler, of, asyncScheduler } from 'rxjs';
-import { createModule } from '../src/createModule';
-import { useActions } from '../src/useActions';
-import { DefaultTypelessProvider } from '../src/TypelessContext';
+import { asyncScheduler, of, VirtualTimeScheduler } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { createModule } from '../src/createModule';
+import { defaultRegistry } from '../src/TypelessContext';
+import { useActions } from '../src/useActions';
+import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
 let scheduler: VirtualTimeScheduler;
@@ -22,15 +22,6 @@ afterEach(() => {
   document.body.removeChild(container);
   container = null!;
 });
-
-function render(node: React.ReactChild) {
-  act(() => {
-    ReactDOM.render(
-      <DefaultTypelessProvider>{node}</DefaultTypelessProvider>,
-      container
-    );
-  });
-}
 
 function clickButton(element: Element) {
   act(() => {
@@ -71,7 +62,7 @@ test('epic with delay', () => {
   }
 
   // initial render
-  render(<App />);
+  renderWithProvider(<App />, container, defaultRegistry);
 
   const button = container.querySelector('button')!;
 

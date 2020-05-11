@@ -16,6 +16,7 @@
       "api/createSelector",
       "api/useActions",
       "api/useMappedState",
+      "api/useSelector",
       "api/ChainedReducer",
       "api/Epic",
       "api/Handle",

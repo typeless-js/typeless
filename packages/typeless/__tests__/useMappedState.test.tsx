@@ -1,12 +1,11 @@
 import React from 'react';
-import { createModule } from '../src/createModule';
-import { useMappedState } from '../src/useMappedState';
 import { act } from 'react-dom/test-utils';
-import { TypelessContext } from '../src/TypelessContext';
-import { Registry } from '../src/Registry';
-import ReactDOM from 'react-dom';
 import { shallowEqualObjects } from 'shallow-equal';
+import { createModule } from '../src/createModule';
+import { Registry } from '../src/Registry';
 import { useActions } from '../src/useActions';
+import { useMappedState } from '../src/useMappedState';
+import { renderWithProvider } from './helpers';
 
 let container: HTMLDivElement = null!;
 let registry: Registry = null!;
@@ -22,16 +21,6 @@ afterEach(() => {
   registry = null;
 });
 
-function render(node: React.ReactChild) {
-  act(() => {
-    ReactDOM.render(
-      <TypelessContext.Provider value={{ registry }}>
-        {node}
-      </TypelessContext.Provider>,
-      container
-    );
-  });
-}
 function clickButton(element: Element) {
   act(() => {
     element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -79,7 +68,7 @@ describe('re-render prevention', () => {
 
     beforeEach(() => {
       renderCount = 0;
-      render(<App />);
+      renderWithProvider(<App />, container, registry);
     });
 
     function getActualValues() {
@@ -150,7 +139,7 @@ describe('re-render prevention', () => {
 
     beforeEach(() => {
       renderCount = 0;
-      render(<App />);
+      renderWithProvider(<App />, container, registry);
     });
 
     function getActualValues() {
@@ -237,7 +226,7 @@ describe('re-render with deps', () => {
       );
     }
     // initial
-    render(<App />);
+    renderWithProvider(<App />, container, registry);
 
     const inc = container.querySelector('#inc')!;
     const toggle = container.querySelector('#toggle')!;

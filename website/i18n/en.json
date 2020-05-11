@@ -61,6 +61,10 @@
         "title": "useMappedState",
         "sidebar_label": "useMappedState"
       },
+      "api/useSelector": {
+        "title": "useSelector",
+        "sidebar_label": "useSelector"
+      },
       "introduction/examples": {
         "title": "Examples",
         "sidebar_label": "Examples"
