@@ -2,7 +2,7 @@
 
 TypeScript + React Hooks + RxJS = 😻
 
-![Build Status](https://github.com/actions/typeless-js/typeless/workflows/ci/badge.svg)
+![Build Status](https://github.com/typeless-js/typeless/workflows/ci/badge.svg)
 [![npm module](https://badge.fury.io/js/typeless.svg)](https://www.npmjs.org/package/typeless)
 
 ## Installation
