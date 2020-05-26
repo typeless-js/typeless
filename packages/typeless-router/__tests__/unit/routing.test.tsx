@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { TypelessContext, Registry } from 'typeless';
-import { createUseRouter, RouterActions, getRouterState } from '../src/module';
+import {
+  createUseRouter,
+  RouterActions,
+  getRouterState,
+} from '../../src/module';
 
 let container: HTMLDivElement = null;
 let registry: Registry;

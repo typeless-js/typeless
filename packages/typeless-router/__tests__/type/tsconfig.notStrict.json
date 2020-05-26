@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "../../",
+    "outDir": "../../dist/dev/types/notStrict",
+    "strictNullChecks": false
+  },
+  "include": ["../../src", "."],
+  "references": [{ "path": "../../" }]
+}

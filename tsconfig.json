@@ -17,6 +17,10 @@
     },
     { "path": "./packages/typeless-router" },
     { "path": "./packages/typeless-router/tsconfig.cjs.json" },
-    { "path": "./packages/typeless-router/__tests__" }
+    { "path": "./packages/typeless-router/__tests__/unit" },
+    { "path": "./packages/typeless-router/__tests__/type" },
+    {
+      "path": "./packages/typeless-router/__tests__/type/tsconfig.notStrict.json"
+    }
   ]
 }
