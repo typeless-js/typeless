@@ -2,7 +2,7 @@ import { ChainedReducer } from './ChainedReducer';
 import { Epic } from './Epic';
 import * as React from 'react';
 import { getIsHmr } from './onHmr';
-import { StateGetter, Reducer } from './types';
+import { Action, Reducer, StateGetter, ExtractPayload } from './types';
 import { useMappedState } from './useMappedState';
 import { snakeCase } from './utils';
 import { useRegistry } from './useRegistry';
@@ -13,10 +13,11 @@ export type Nullable<T> = T | null;
 export type AnyFn = (...args: any[]) => any;
 
 export type ConvertAC<T> = T extends null
-  ? () => {}
-  : T extends AnyFn
-  ? T
+  ? () => Action<never>
+  : T extends (...args: infer Args) => any
+  ? (...args: Args) => Action<ExtractPayload<ReturnType<T>>>
   : never;
+
 export type ActionCreators<T> = { [P in keyof T]: ConvertAC<T[P]> };
 
 export type ActionMap = { [name: string]: Nullable<(...args: any[]) => {}> };
