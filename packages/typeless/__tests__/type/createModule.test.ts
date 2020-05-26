@@ -3,7 +3,7 @@ import { TT } from './TypeTester';
 
 TT.test('Actions should infer ActionCreator function', () => {
   const Actions = createModule(Symbol('test')).withActions({
-    noPayload: null,
+    noPayload: null as null,
     withPayload: () => ({ payload: { x: 'string' } }),
   })[1];
 
