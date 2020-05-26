@@ -37,13 +37,13 @@ export function createForm<TData>(options: FormOptions<TData>) {
       setErrors: (errors: { [x in keyof TData]?: string }) => ({
         payload: { errors },
       }),
-      touchAll: null,
-      submit: null,
-      setSubmitSucceeded: null,
-      setSubmitFailed: null,
-      reset: null,
-      resetTouched: null,
-      validate: null,
+      touchAll: null as null,
+      submit: null as null,
+      setSubmitSucceeded: null as null,
+      setSubmitFailed: null as null,
+      reset: null as null,
+      resetTouched: null as null,
+      validate: null as null,
     })
     .withState<FormState<TData>>();
 
