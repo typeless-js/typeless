@@ -4,6 +4,17 @@ import { createModule } from '../../src/createModule';
 import { Epic } from '../../src/Epic';
 import { Deps } from '../../src/types';
 
+async function runEpic<T = any[]>(
+  sourceEpic: Epic,
+  sourceAction: any
+): Promise<T[]> {
+  const results: T[] = [];
+  await merge(
+    ...sourceEpic.toStream(sourceAction, {} as Deps)
+  ).forEach(action => results.push(action));
+  return results;
+}
+
 describe('Epic#toStream', () => {
   describe('normally', () => {
     const Actions = createModule(Symbol('sample')).withActions({
@@ -16,10 +27,7 @@ describe('Epic#toStream', () => {
         .on(Actions.a, () => Promise.resolve(Actions.b()))
         .on(Actions.a, () => of(Actions.c()));
 
-      const results: any[] = [];
-      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
-        results.push(action)
-      );
+      const results = await runEpic(epic, Actions.a());
       expect(results).toMatchObject([Actions.c(), Actions.b()]);
     });
 
@@ -28,10 +36,7 @@ describe('Epic#toStream', () => {
         Promise.resolve([Actions.b(), Actions.c()])
       );
 
-      const results: any[] = [];
-      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
-        results.push(action)
-      );
+      const results = await runEpic(epic, Actions.a());
       expect(results).toMatchObject([Actions.b(), Actions.c()]);
     });
 
@@ -40,10 +45,7 @@ describe('Epic#toStream', () => {
         of([Actions.b(), Actions.c()])
       );
 
-      const results: any[] = [];
-      await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
-        results.push(action)
-      );
+      const results = await runEpic(epic, Actions.a());
       expect(results).toMatchObject([Actions.b(), Actions.c()]);
     });
 
@@ -53,15 +55,12 @@ describe('Epic#toStream', () => {
       });
 
       it('should be empty result', async () => {
-        const results: any[] = [];
-        await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
-          results.push(action)
-        );
+        const results = await runEpic(epic, Actions.a());
         expect(results).toStrictEqual([]);
       });
       it('should be threw', async () => {
         jest.useFakeTimers();
-        await merge(...epic.toStream(Actions.a(), {} as Deps)).toPromise();
+        await runEpic(epic, Actions.a());
         expect(() => jest.runAllTimers()).toThrowError('foo error');
       });
     });
