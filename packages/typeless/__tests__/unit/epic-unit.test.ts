@@ -31,6 +31,13 @@ describe('Epic#toStream', () => {
       expect(results).toMatchObject([Actions.c(), Actions.b()]);
     });
 
+    it('should return next Action from Action Array', async () => {
+      const epic = new Epic().on(Actions.a, () => [Actions.b(), Actions.c()]);
+
+      const results = await runEpic(epic, Actions.a());
+      expect(results).toMatchObject([Actions.b(), Actions.c()]);
+    });
+
     it('should return next Acton from Action array Promise', async () => {
       const epic = new Epic().on(Actions.a, () =>
         Promise.resolve([Actions.b(), Actions.c()])
@@ -93,6 +100,103 @@ describe('Epic#toStream', () => {
       o.subscribe(r => results.push(r));
       scheduler.flush();
       expect(results).toStrictEqual([Actions.pong()]);
+    });
+  });
+
+  describe('Invalid handler', () => {
+    const Actions = createModule(Symbol('sample')).withActions({ a: null })[1];
+    beforeEach(() => {
+      jest.resetAllMocks();
+      // tslint:disable-next-line: no-empty
+      jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    describe('returns `undefined`', () => {
+      const epic = new Epic().on(Actions.a, () => undefined);
+      it('should return empty action', async () => {
+        const results = await runEpic(epic, Actions.a());
+        expect(results).toStrictEqual([]);
+      });
+
+      it('should log error', async () => {
+        await runEpic(epic, Actions.a());
+
+        expect(console.error).toBeCalledWith(
+          'Invalid action returned in epic.',
+          {
+            sourceAction: Actions.a(),
+            action: undefined,
+            store: '',
+          }
+        );
+      });
+    });
+    describe('returns invalid Action', () => {
+      const invalidAction = { type: 'this is invalid action' };
+      // @ts-expect-error
+      const epic = new Epic().on(Actions.a, () => invalidAction);
+      it('should return empty action', async () => {
+        const results = await runEpic(epic, Actions.a());
+        expect(results).toStrictEqual([]);
+      });
+
+      it('should log error', async () => {
+        await runEpic(epic, Actions.a());
+
+        expect(console.error).toBeCalledWith(
+          'Invalid action returned in epic.',
+          {
+            sourceAction: Actions.a(),
+            action: invalidAction,
+            store: '',
+          }
+        );
+      });
+    });
+
+    describe('returns invalid Action Array', () => {
+      const invalidAction = { type: 'this is invalid action' };
+      // @ts-expect-error
+      const epic = new Epic().on(Actions.a, () => [invalidAction]);
+      it('should return empty action', async () => {
+        const results = await runEpic(epic, Actions.a());
+        expect(results).toStrictEqual([]);
+      });
+      it('should log error', async () => {
+        await runEpic(epic, Actions.a());
+
+        expect(console.error).toBeCalledWith(
+          'Invalid action returned in epic.',
+          {
+            sourceAction: Actions.a(),
+            action: [invalidAction],
+            store: '',
+          }
+        );
+      });
+    });
+    describe('returns invalid Promise Action Array', () => {
+      const invalidAction = { type: 'this is invalid action' };
+      const epic = new Epic().on(Actions.a, () =>
+        // @ts-expect-error
+        Promise.resolve([invalidAction])
+      );
+      it('should return empty action', async () => {
+        const results = await runEpic(epic, Actions.a());
+        expect(results).toStrictEqual([]);
+      });
+      it('should log error', async () => {
+        await runEpic(epic, Actions.a());
+
+        expect(console.error).toBeCalledWith(
+          'Invalid action returned in epic.',
+          {
+            sourceAction: Actions.a(),
+            action: [invalidAction],
+            store: '',
+          }
+        );
+      });
     });
   });
 });
