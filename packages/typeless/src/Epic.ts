@@ -122,14 +122,11 @@ export class Epic {
           return empty();
         }),
         catchError(err => {
-          console.error(
-            'An unhandled error occurred in epic.',
-            {
-              sourceAction,
-              store: name,
-            },
-            err
-          );
+          // Enable to capture Error in application.
+          setTimeout(() => {
+            throw err;
+          }, 0);
+
           return empty();
         })
       );

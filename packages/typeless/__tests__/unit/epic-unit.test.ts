@@ -46,6 +46,25 @@ describe('Epic#toStream', () => {
       );
       expect(results).toMatchObject([Actions.b(), Actions.c()]);
     });
+
+    describe('occurred error', () => {
+      const epic = new Epic().on(Actions.a, () => {
+        throw new Error('foo error');
+      });
+
+      it('should be empty result', async () => {
+        const results: any[] = [];
+        await merge(...epic.toStream(Actions.a(), {} as Deps)).forEach(action =>
+          results.push(action)
+        );
+        expect(results).toStrictEqual([]);
+      });
+      it('should be threw', async () => {
+        jest.useFakeTimers();
+        await merge(...epic.toStream(Actions.a(), {} as Deps)).toPromise();
+        expect(() => jest.runAllTimers()).toThrowError('foo error');
+      });
+    });
   });
 
   describe('with delay', () => {
