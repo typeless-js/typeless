@@ -6,11 +6,12 @@ import { Deps } from '../../src/types';
 
 async function runEpic<T = any[]>(
   sourceEpic: Epic,
-  sourceAction: any
+  sourceAction: any,
+  storeName = 'test store'
 ): Promise<T[]> {
   const results: T[] = [];
   await merge(
-    ...sourceEpic.toStream(sourceAction, {} as Deps)
+    ...sourceEpic.toStream(sourceAction, {} as Deps, storeName)
   ).forEach(action => results.push(action));
   return results;
 }
@@ -119,14 +120,14 @@ describe('Epic#toStream', () => {
       });
 
       it('should log error', async () => {
-        await runEpic(epic, Actions.a());
+        await runEpic(epic, Actions.a(), 'FooStore');
 
         expect(console.error).toBeCalledWith(
           'Invalid action returned in epic.',
           {
             sourceAction: Actions.a(),
             action: undefined,
-            store: '',
+            store: 'FooStore',
           }
         );
       });
@@ -148,7 +149,7 @@ describe('Epic#toStream', () => {
           {
             sourceAction: Actions.a(),
             action: invalidAction,
-            store: '',
+            store: 'test store',
           }
         );
       });
@@ -170,7 +171,7 @@ describe('Epic#toStream', () => {
           {
             sourceAction: Actions.a(),
             action: [invalidAction],
-            store: '',
+            store: 'test store',
           }
         );
       });
@@ -193,7 +194,7 @@ describe('Epic#toStream', () => {
           {
             sourceAction: Actions.a(),
             action: [invalidAction],
-            store: '',
+            store: 'test store',
           }
         );
       });

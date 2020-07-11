@@ -80,8 +80,13 @@ export class Epic {
     return this;
   }
 
-  // tslint:disable-next-line:no-empty
-  toStream(sourceAction: Action, deps: Deps, log: () => void = () => {}) {
+  toStream(
+    sourceAction: Action,
+    deps: Deps,
+    storeName = 'anonymous store',
+    // tslint:disable-next-line:no-empty
+    log: () => void = () => {}
+  ) {
     return this.getHandlers(sourceAction).map(handler => {
       return defer(() => {
         log();
@@ -105,7 +110,7 @@ export class Epic {
           console.error('Invalid action returned in epic.', {
             sourceAction,
             action,
-            store: name,
+            store: storeName,
           });
           return empty();
         }),
