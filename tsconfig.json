@@ -6,12 +6,21 @@
     { "path": "./packages/typeless" },
     { "path": "./packages/typeless/__tests__/unit" },
     { "path": "./packages/typeless/__tests__/type" },
+    { "path": "./packages/typeless/__tests__/type/tsconfig.notStrict.json" },
     { "path": "./packages/typeless/tsconfig.cjs.json" },
     { "path": "./packages/typeless-form" },
     { "path": "./packages/typeless-form/tsconfig.cjs.json" },
-    { "path": "./packages/typeless-form/__tests__" },
+    { "path": "./packages/typeless-form/__tests__/unit" },
+    { "path": "./packages/typeless-form/__tests__/type" },
+    {
+      "path": "./packages/typeless-form/__tests__/type/tsconfig.notStrict.json"
+    },
     { "path": "./packages/typeless-router" },
     { "path": "./packages/typeless-router/tsconfig.cjs.json" },
-    { "path": "./packages/typeless-router/__tests__" }
+    { "path": "./packages/typeless-router/__tests__/unit" },
+    { "path": "./packages/typeless-router/__tests__/type" },
+    {
+      "path": "./packages/typeless-router/__tests__/type/tsconfig.notStrict.json"
+    }
   ]
 }
