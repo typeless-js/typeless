@@ -10,6 +10,10 @@ TT.describe('useMappedState', () => {
   const getCountState = createTestModule<{ count: number }>();
   const getTextState = createTestModule<{ text: string }>();
 
+  TT.it('should error with empty array', () => {
+    // @ts-expect-error
+    useMappedState([], () => null);
+  });
   TT.it("should infer callback's arguments type", () => {
     useMappedState([getCountState, getTextState], (c, t) => {
       TT.assert<TT.Eq<typeof c, { count: number }>>();
