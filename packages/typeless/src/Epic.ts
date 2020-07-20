@@ -1,4 +1,4 @@
-import { Observable, defer, from, of, empty } from 'rxjs';
+import { Observable, defer, of, empty, isObservable } from 'rxjs';
 import {
   AC,
   Deps,
@@ -22,6 +22,9 @@ export type EpicHandler<TAC extends AC> = (
   action: ReturnType<TAC> & { type: symbol }
 ) => EpicResult;
 
+function isPromise<T = unknown>(target: unknown): target is Promise<T> {
+  return typeof (target as any)?.then === 'function';
+}
 export class Epic {
   private handlers: Map<symbol, Map<string, EpicHandler<any>[]>> = new Map();
   private moduleHandlers: Map<symbol, EpicHandler<any>[]> = new Map();
@@ -77,35 +80,25 @@ export class Epic {
     return this;
   }
 
-  // tslint:disable-next-line:no-empty
-  toStream(sourceAction: Action, deps: Deps, log: () => void = () => {}) {
+  toStream(
+    sourceAction: Action,
+    deps: Deps,
+    storeName = 'anonymous store',
+    // tslint:disable-next-line:no-empty
+    log: () => void = () => {}
+  ) {
     return this.getHandlers(sourceAction).map(handler => {
       return defer(() => {
         log();
         const result = handler(sourceAction.payload, deps, sourceAction);
-        if (Array.isArray(result)) {
-          return from(result);
-        }
-        if (isAction(result)) {
-          return of(result);
+        if (isObservable(result) || isPromise(result)) {
+          return result;
         }
 
-        if (result === null) {
-          return of(null);
-        }
-
-        return result;
+        return of(result);
       }).pipe(
         mergeMap((action: unknown) => {
           if (action === null) {
-            // ignore if action is null
-            return empty();
-          }
-          if (action === undefined) {
-            console.error('Undefined action returned in epic.', {
-              action,
-              store: name,
-            });
             return empty();
           }
           if (isAction(action)) {
@@ -117,7 +110,7 @@ export class Epic {
           console.error('Invalid action returned in epic.', {
             sourceAction,
             action,
-            store: name,
+            store: storeName,
           });
           return empty();
         }),

@@ -74,7 +74,7 @@ export class Store<TState = any> {
 
   getOutputStream(action: Action, deps: Deps) {
     if (this.isEnabled && this.epic != null) {
-      return this.epic.toStream(action, deps, () => {
+      return this.epic.toStream(action, deps, this.displayName, () => {
         if (process.env.NODE_ENV === 'development') {
           logAction(this.displayName, action);
         }
