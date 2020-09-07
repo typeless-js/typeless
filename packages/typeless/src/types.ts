@@ -31,6 +31,6 @@ export interface StateGetter<T> {
   useState(): T;
 }
 
-export type TupleOfStateGetter = [] | [StateGetter<any>, ...StateGetter<any>[]];
+export type TupleOfStateGetter = [StateGetter<any>, ...StateGetter<any>[]];
 
 export type EqualityFn<T> = (a: T, b: T) => boolean;
