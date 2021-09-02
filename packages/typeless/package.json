@@ -77,7 +77,7 @@
     "rxjs": "^6.3.3"
   },
   "dependencies": {
-    "immer": "^5.0.0"
+    "immer": "^9.0.6"
   },
   "resolutions": {
     "@types/react": "^16.8.12"
